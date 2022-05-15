@@ -2,6 +2,7 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
+import entity.Player;
 
 public class GamePanel extends JPanel implements Runnable {
     final int ogTileSize = 32; // 32x32 sprites and tiles
@@ -16,13 +17,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     Thread gameLoop;
     KeyController keyC = new KeyController();
+    Player player = new Player (this, this.keyC);
 
     final int fps = 60;
-
-    //player info
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
 
     public GamePanel () {
         this.setPreferredSize(new Dimension(this.screenWidth, this.screenHeight));
@@ -55,21 +52,11 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     public void update () {
-        if (this.keyC.up == true)
-            this.playerY -= this.playerSpeed;
-        else if (this.keyC.down == true)
-            this.playerY += this.playerSpeed;
-        else if (this.keyC.right == true)
-            this.playerX += playerSpeed;
-        else if (this.keyC.left == true)
-            this.playerX -= playerSpeed;
+        this.player.update();
     }
     @Override 
     public void paintComponent (Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setColor(Color.white);
-        g2.fillRect(this.playerX, this.playerY, this.tileSize, this.tileSize);
-        g2.dispose();
+        this.player.draw(g);
     }
 }
