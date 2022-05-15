@@ -1,13 +1,11 @@
 package entity;
 
-
 import main.GamePanel;
 import main.KeyController;
 import java.awt.*;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
-
 
 public class Player extends Entity {
     GamePanel gp;
@@ -58,7 +56,7 @@ public class Player extends Entity {
         speed = 4;
         direction = "down";
     }
-    public void draw (Graphics g) {
+    public void draw (Graphics2D g) {
       BufferedImage image = null;
       switch(direction){
         case "up":
@@ -95,7 +93,6 @@ public class Player extends Entity {
             break;
       }
       g.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
-
     }
 
     public void getPlayerImage(){
