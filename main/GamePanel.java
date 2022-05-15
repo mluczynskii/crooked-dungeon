@@ -29,16 +29,16 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
     }
     public void startGameThread () {
-        this.gameLoop = new Thread(this);
-        this.gameLoop.start();
+        gameLoop = new Thread(this);
+        gameLoop.start();
     }
     @Override
     public void run() {
-        double interval = 1e9 / this.fps;
+        double interval = 1e9 / fps;
         double nextDrawTime = System.nanoTime() + interval; 
-        while (this.gameLoop != null) {
-            this.update();
-            this.repaint();
+        while (gameLoop != null) {
+            update();
+            repaint();
             try {
                 double remainder = nextDrawTime - System.nanoTime();
                 remainder = remainder/1e6;
@@ -52,11 +52,11 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     public void update () {
-        this.player.update();
+        player.update();
     }
     @Override 
     public void paintComponent (Graphics g) {
         super.paintComponent(g);
-        this.player.draw(g);
+        player.draw(g);
     }
 }

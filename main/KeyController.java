@@ -12,16 +12,16 @@ public class KeyController implements KeyListener {
         int code = e.getKeyCode();
         switch (code) {
             case KeyEvent.VK_W:
-                this.up = true;
+                up = true;
                 break;
             case KeyEvent.VK_S:
-                this.down = true;
+                down = true;
                 break;
             case KeyEvent.VK_A:
-                this.left = true;
+                left = true;
                 break;
             case KeyEvent.VK_D:
-                this.right = true;
+                right = true;
                 break;
         }
     }
@@ -30,16 +30,16 @@ public class KeyController implements KeyListener {
         int code = e.getKeyCode();
         switch (code) {
             case KeyEvent.VK_W:
-                this.up = false;
+                up = false;
                 break;
             case KeyEvent.VK_S:
-                this.down = false;
+                down = false;
                 break;
             case KeyEvent.VK_A:
-                this.left = false;
+                left = false;
                 break;
             case KeyEvent.VK_D:
-                this.right = false;
+                right = false;
                 break;
         }
     }
