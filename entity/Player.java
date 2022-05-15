@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 public class Player extends Entity {
     GamePanel gp;
     KeyController keyC;
+    int idleCounter = 0;
 
     public Player (GamePanel gp, KeyController keyC) {
         this.gp = gp;
@@ -48,6 +49,14 @@ public class Player extends Entity {
             }
             spriteCounter=0;
         }
+
+        }
+        else{
+            idleCounter++;
+            if(idleCounter == 20){
+                spriteNum=2;
+                idleCounter = 0;
+            }
         }
     }
     public void setDefaultValues () {
@@ -97,10 +106,10 @@ public class Player extends Entity {
 
     public void getPlayerImage(){
         try{
-            up1 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_idle1.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_idle2.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_idle1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_idle2.png"));
+            up1 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_up1.png"));
+            up2 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_up2.png"));
+            down1 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_down1.png"));
+            down2 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_down2.png"));
             left1 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_left1.png"));
             left2 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_left2.png"));
             right1 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_right1.png"));
