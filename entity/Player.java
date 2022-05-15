@@ -17,54 +17,48 @@ public class Player extends Entity {
         this.gp = gp;
         this.keyC = keyC;
 
-        this.setDefaultValues();
-        this.getPlayerImage();
+        setDefaultValues();
+        getPlayerImage();
     }
     public void update () {
 
         if(keyC.up == true || keyC.down == true || keyC.right == true || keyC.left == true){
             
         if (this.keyC.up == true){
-            this.direction = "up";
-            this.y -= this.speed;
+            direction = "up";
+            y -= speed;
         }
-        else if (this.keyC.down == true){
-            this.direction = "down";
-            this.y += this.speed;
+        else if (keyC.down == true){
+            direction = "down";
+            y += speed;
         }
-        else if (this.keyC.right == true){
-            this.direction = "right";
-            this.x += this.speed;
+        else if (keyC.right == true){
+            direction = "right";
+            x += speed;
         }
-        else if (this.keyC.left == true){
-            this.direction = "left";
-            this.x -= this.speed;
+        else if (keyC.left == true){
+            direction = "left";
+            x -= speed;
         }
-        this.spriteCounter++;
-        if(this.spriteCounter>17){
-            if(this.spriteNum == 1){
-                this.spriteNum = 2;
+        spriteCounter++;
+        if(spriteCounter > spriteChangeRate){
+            if(spriteNum == 1){
+                spriteNum = 2;
             }
             else if (spriteNum == 2){
-                this.spriteNum=1;
+                spriteNum=1;
             }
-            this.spriteCounter=0;
+            spriteCounter=0;
         }
         }
-
-
     }
     public void setDefaultValues () {
-        this.x = 100;
-        this.y = 100;
-        this.speed = 4;
+        x = 100;
+        y = 100;
+        speed = 4;
         direction = "down";
     }
     public void draw (Graphics g) {
-      //  Graphics2D g2 = (Graphics2D)g;
-      //  g2.setColor(Color.white);
-      //  g2.fillRect(this.x, this.y, gp.tileSize, gp.tileSize);
-      //  g2.dispose();
       BufferedImage image = null;
       switch(direction){
         case "up":
