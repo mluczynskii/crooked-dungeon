@@ -15,9 +15,11 @@ public class Player extends Entity {
     public Player (GamePanel gp, KeyController keyC) {
         this.gp = gp;
         this.keyC = keyC;
-
+        
         setDefaultValues();
         getPlayerImage();
+
+        solidArea= new Rectangle(4,12,24,24);
     }
     public void update () {
 
@@ -39,6 +41,10 @@ public class Player extends Entity {
             direction = "left";
             x -= speed;
         }
+
+        collisionOn = false;
+        gp.checker()
+
         spriteCounter++;
         if(spriteCounter > spriteChangeRate){
             if(spriteNum == 1){

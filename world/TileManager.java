@@ -14,7 +14,8 @@ public class TileManager {
     static String tilePath = "/graphic_assets/tiles/";
     static String[] tileNames = {"grass.png", "stone_path1.png", "stone_path2.png", "stone1.png", "stone2.png", 
                                  "stone3.png", "stone4.png", "stone5.png", "water1.png", "water2.png", "water3.png",
-                                 "water4.png"};
+                                 "water4.png", "stone_path2.png", "tree_upperleft.png", "tree_upperright.png", "tree_botleft.png",
+                                 "tree_botright.png", "middle_fence1.png"};
 
     public TileManager (GamePanel gp) {
         this.gp = gp;
@@ -29,6 +30,11 @@ public class TileManager {
                 tiles[i] = new Tile();
                 tiles[i].image = ImageIO.read(getClass().getResourceAsStream(tilePath + tileNames[i]));
             }
+            for(int i = 13; i <= 17; i++){
+                tiles[i].collision=true;
+            }
+            tiles[8].collision=true;
+            tiles[9].collision=true;
         } catch (IOException e) {
             e.printStackTrace();
         }
