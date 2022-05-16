@@ -27,23 +27,29 @@ public class Player extends Entity {
             
         if (this.keyC.up == true){
             direction = "up";
-            y -= speed;
         }
         else if (keyC.down == true){
             direction = "down";
-            y += speed;
         }
         else if (keyC.right == true){
             direction = "right";
-            x += speed;
         }
         else if (keyC.left == true){
             direction = "left";
-            x -= speed;
         }
 
         collisionOn = false;
         gp.checker.checkTile(this);
+
+        if(collisionOn == false){
+            switch(direction){
+                case "up": y -= speed; break;
+                case "down": y += speed; break;
+                case "left": x -= speed; break;
+                case "right": x += speed; break;
+            }
+
+        }
 
         spriteCounter++;
         if(spriteCounter > spriteChangeRate){

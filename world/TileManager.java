@@ -8,8 +8,8 @@ import java.awt.*;
 
 public class TileManager {
     GamePanel gp;
-    Tile[] tiles;
-    int[][] mapTileNum;
+    public Tile[] tiles;
+    public int[][] mapTileNum;
 
     static String tilePath = "/graphic_assets/tiles/";
     static String[] tileNames = {"grass.png", "stone_path1.png", "stone_path2.png", "stone1.png", "stone2.png", 
