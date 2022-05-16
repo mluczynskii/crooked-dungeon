@@ -43,7 +43,7 @@ public class Player extends Entity {
         }
 
         collisionOn = false;
-        gp.checker()
+        gp.checker.checkTile(this);
 
         spriteCounter++;
         if(spriteCounter > spriteChangeRate){
