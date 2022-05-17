@@ -17,7 +17,7 @@ public class TileManager {
     // use '_' start for solid tiles
     static String[] tileNames = {"grass.png", "stone_path1.png", "stone_path2.png", // [0] [1] [2]
                                  "stone1.png", "stone2.png", "stone3.png", // [3] [4] [5]
-                                 "stone4.png", "stone5.png", "stone_path2.png", // [6] [7] [8]
+                                 "stone4.png", "stone5.png", "stone_path3.png", // [6] [7] [8]
                                  "tree_upperleft.png", "tree_upperright.png", "_tree_botleft.png", // [9] [10] [11]
                                  "_tree_botright.png", "_middle_fence1.png", "_water.png", // [12] [13] [14]
                                  "_water_right.png", "_water_botright.png", "_water_bot.png"}; // [15] [16] [17]
