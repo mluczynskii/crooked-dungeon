@@ -1,6 +1,7 @@
 package world;
 
 import java.io.*;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import main.GamePanel;
@@ -12,29 +13,43 @@ public class TileManager {
     public int[][] mapTileNum;
 
     static String tilePath = "/graphic_assets/tiles/";
-    static String[] tileNames = {"grass.png", "stone_path1.png", "stone_path2.png", "stone1.png", "stone2.png", 
-                                 "stone3.png", "stone4.png", "stone5.png", "water1.png", "water2.png", "water3.png",
-                                 "water4.png", "stone_path2.png", "tree_upperleft.png", "tree_upperright.png", "tree_botleft.png",
-                                 "tree_botright.png", "middle_fence1.png"};
+
+    // use '_' start for solid tiles
+    static String[] tileNames = {"grass.png", "stone_path1.png", "stone_path2.png", // [0] [1] [2]
+                                 "stone1.png", "stone2.png", "stone3.png", // [3] [4] [5]
+                                 "stone4.png", "stone5.png", "stone_path2.png", // [6] [7] [8]
+                                 "_tree_upperleft.png", "_tree_upperright.png", "_tree_botleft.png", // [9] [10] [11]
+                                 "_tree_botright.png", "_middle_fence1.png", "_water.png", // [12] [13] [14]
+                                 "_water_right.png", "_water_botright.png", "_water_bot.png"}; // [15] [16] [17]
+
+    static HashMap<String, Rectangle> tileSolidAreas = new HashMap<>();
+    private void initSolidAreaMap () {
+        tileSolidAreas.put("_water_bot.png", new Rectangle(0, 0, gp.tileSize, gp.tileSize));
+        // TODO: add every solidArea
+    }
 
     public TileManager (GamePanel gp) {
         this.gp = gp;
         this.tiles = new Tile[tileNames.length];
         this.mapTileNum = new int[gp.rowNum][gp.colNum];
+        initSolidAreaMap();
         getTileImages();
         loadMap("/graphic_assets/layouts/map1.txt");
     }
     void getTileImages() {
         try {
-            for (int i = 0; i < tileNames.length; i++) {
+            int i = 0;
+            while (i < tileNames.length) { // read normal tiles
                 tiles[i] = new Tile();
                 tiles[i].image = ImageIO.read(getClass().getResourceAsStream(tilePath + tileNames[i]));
+                if (tileNames[i].charAt(0) == '_') {
+                    tiles[i].solidArea = new Rectangle(0, 0, gp.tileSize, gp.tileSize);
+                }
+                else {
+                    tiles[i].solidArea = new Rectangle(0, 0, 0, 0);
+                }
+                i++;
             }
-            for(int i = 13; i <= 17; i++){
-                tiles[i].collision=true;
-            }
-            tiles[8].collision=true;
-            tiles[9].collision=true;
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -19,24 +19,16 @@ public class Player extends Entity {
         setDefaultValues();
         getPlayerImage();
 
-        solidArea= new Rectangle(4,12,24,24);
+        solidArea = new Rectangle(12 * gp.scale, 16 * gp.scale, 9 * gp.scale, 16 * gp.scale);
     }
     public void update () {
 
         if(keyC.up == true || keyC.down == true || keyC.right == true || keyC.left == true){
             
-        if (this.keyC.up == true){
-            direction = "up";
-        }
-        else if (keyC.down == true){
-            direction = "down";
-        }
-        else if (keyC.right == true){
-            direction = "right";
-        }
-        else if (keyC.left == true){
-            direction = "left";
-        }
+        if (this.keyC.up == true){ direction = "up"; }
+        else if (keyC.down == true){ direction = "down"; }
+        else if (keyC.right == true){ direction = "right"; }
+        else if (keyC.left == true){ direction = "left"; }
 
         collisionOn = false;
         gp.checker.checkTile(this);
@@ -48,7 +40,6 @@ public class Player extends Entity {
                 case "left": x -= speed; break;
                 case "right": x += speed; break;
             }
-
         }
 
         spriteCounter++;

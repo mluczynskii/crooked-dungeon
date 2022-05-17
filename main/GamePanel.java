@@ -7,7 +7,7 @@ import world.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
     final int ogTileSize = 32; // 32x32 sprites and tiles
-    final int scale = 2;
+    public final int scale = 2;
 
     public final int tileSize = ogTileSize * scale; // 64x64 after scaling
     public final int colNum = 16;
@@ -19,7 +19,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameLoop;
     KeyController keyC = new KeyController();
     Player player = new Player (this, this.keyC);
-    TileManager tM = new TileManager(this);
+    public TileManager tM = new TileManager(this);
     public CollisionChecker checker = new CollisionChecker(this);
 
     final int fps = 60;
