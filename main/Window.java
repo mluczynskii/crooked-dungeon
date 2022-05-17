@@ -7,7 +7,7 @@ public class Window {
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
-        window.setTitle("Placeholder");
+        window.setTitle("Crooked Dungeon");
 
         GamePanel gp = new GamePanel();
         window.add(gp);

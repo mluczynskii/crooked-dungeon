@@ -14,14 +14,16 @@ public class CollisionChecker {
     }
     private void detectCollision (Entity entity, Tile tile, int dx, int dy) {
         // t1B - Tile solidArea, entB - entity solidArea
+        // dx, dy - distance to upper-left corner of the tile (@)
         // @-----------------#   /\
-        // |      dx         |   || dy
+        // |                 |   || dy+entB.y
+        // |  dx+entB.x      |   \/ 
         // | <=========> #-------#   
         // |             |  entB | 
         // |             #-------#
-        // |    #-----#       |
-        // |    | t1B |       |
-        // |    |     |       |
+        // |    #-----#      |
+        // |    | t1B |      |
+        // |    |     |      |
         // #----#-----#------#
         TestArea area = new TestArea();
         area.one = tile.solidArea;
@@ -29,7 +31,6 @@ public class CollisionChecker {
         if (area.one.intersects(area.two)) {
             entity.collisionOn = true;
         }
-        // TODO: Figure out how to check intersection without including the borders
     }
     public void checkTile(Entity entity){
         int entityLeftX = entity.x + entity.solidArea.x;
@@ -52,7 +53,7 @@ public class CollisionChecker {
                 tile2 = gp.tM.tiles[gp.tM.mapTileNum[entityTopRow][entityRightCol]];
 
                 dx = entity.x - (entityLeftCol * gp.tileSize);
-                dy = entity.y - (entityTopRow * gp.tileSize);
+                dy = (entity.y - entity.speed) - (entityTopRow * gp.tileSize);
                 detectCollision (entity, tile1, dx, dy);
                 dx = entity.x - (entityRightCol * gp.tileSize);
                 detectCollision (entity, tile2, dx, dy);
@@ -64,7 +65,7 @@ public class CollisionChecker {
                 tile2 = gp.tM.tiles[gp.tM.mapTileNum[entityBotRow][entityRightCol]];
 
                 dx = entity.x - (entityLeftCol * gp.tileSize);
-                dy = entity.y - (entityBotRow * gp.tileSize);
+                dy = (entity.y + entity.speed) - (entityBotRow * gp.tileSize);
                 detectCollision (entity, tile1, dx, dy);
                 dx = entity.x - (entityRightCol * gp.tileSize);
                 detectCollision (entity, tile2, dx, dy);
@@ -75,7 +76,7 @@ public class CollisionChecker {
                 tile1 = gp.tM.tiles[gp.tM.mapTileNum[entityTopRow][entityLeftCol]];
                 tile2 = gp.tM.tiles[gp.tM.mapTileNum[entityBotRow][entityLeftCol]];
 
-                dx = entity.x - (entityLeftCol * gp.tileSize);
+                dx = (entity.x - entity.speed) - (entityLeftCol * gp.tileSize);
                 dy = entity.y - (entityTopRow * gp.tileSize);
                 detectCollision (entity, tile1, dx, dy);
                 dy = entity.y - (entityBotRow * gp.tileSize);
@@ -87,7 +88,7 @@ public class CollisionChecker {
                 tile1 = gp.tM.tiles[gp.tM.mapTileNum[entityTopRow][entityRightCol]];
                 tile2 = gp.tM.tiles[gp.tM.mapTileNum[entityBotRow][entityRightCol]];
 
-                dx = entity.x - (entityRightCol * gp.tileSize);
+                dx = (entity.x + entity.speed) - (entityRightCol * gp.tileSize);
                 dy = entity.y - (entityTopRow * gp.tileSize);
                 detectCollision (entity, tile1, dx, dy);
                 dy = entity.y - (entityBotRow * gp.tileSize);

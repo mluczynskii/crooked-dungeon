@@ -22,8 +22,8 @@ public class TileManager {
                                  "_water_right.png", "_water_botright.png", "_water_bot.png"}; // [15] [16] [17]
 
     private void initSolidBounds () {
-        tiles[11].solidArea = new Rectangle(24 * gp.scale, 21 * gp.scale, 8 * gp.scale, 11 * gp.scale); // "_tree_botleft.png"
-        tiles[12].solidArea = new Rectangle(0, 21 * gp.scale, 15 * gp.scale, 11 * gp.scale); // "_tree_botright.png"
+        tiles[11].solidArea = new Rectangle(24 * gp.scale, 16 * gp.scale, 8 * gp.scale, 16 * gp.scale); // "_tree_botleft.png"
+        tiles[12].solidArea = new Rectangle(0, 16 * gp.scale, 9 * gp.scale, 16 * gp.scale); // "_tree_botright.png"
         tiles[13].solidArea = new Rectangle(0, 5 * gp.scale, gp.tileSize, 26 * gp.scale); // "_middle_fence1.png"
         tiles[14].solidArea = new Rectangle(0, 0, gp.tileSize, gp.tileSize); // "_water.png"
         tiles[15].solidArea = new Rectangle(0, 0, 24 * gp.scale, gp.tileSize); // "_water_right.png"
