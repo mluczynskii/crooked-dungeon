@@ -1,4 +1,4 @@
-# oop-game
+# crooked-dungeon
 Uni class project, simple 2D tboi inspired game in Java 
 
 Compiling command:
