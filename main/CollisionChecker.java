@@ -2,16 +2,34 @@ package main;
 
 import entity.Entity;
 import world.Tile;
+import java.awt.Rectangle;
 
 public class CollisionChecker {
     GamePanel gp;
+    class TestArea {
+        public Rectangle one, two;
+    }
     public CollisionChecker(GamePanel gp){
         this.gp=gp;
     }
-    private void detectCollision (Entity entity, Tile tile1, Tile tile2) {
-        if (tile1.solidArea.intersects(entity.solidArea) || tile2.solidArea.intersects(entity.solidArea)) {
+    private void detectCollision (Entity entity, Tile tile, int dx, int dy) {
+        // t1B - Tile solidArea, entB - entity solidArea
+        // @-----------------#   /\
+        // |      dx         |   || dy
+        // | <=========> #-------#   
+        // |             |  entB | 
+        // |             #-------#
+        // |    #-----#       |
+        // |    | t1B |       |
+        // |    |     |       |
+        // #----#-----#------#
+        TestArea area = new TestArea();
+        area.one = tile.solidArea;
+        area.two = new Rectangle(dx + entity.solidArea.x, dy + entity.solidArea.y, entity.solidArea.width, entity.solidArea.height);
+        if (area.one.intersects(area.two)) {
             entity.collisionOn = true;
         }
+        // TODO: Figure out how to check intersection without including the borders
     }
     public void checkTile(Entity entity){
         int entityLeftX = entity.x + entity.solidArea.x;
@@ -19,40 +37,61 @@ public class CollisionChecker {
         int entityTopY = entity.y + entity.solidArea.y;
         int entityBotY = entity.y + entity.solidArea.y + entity.solidArea.height;
 
-        int entityLeftCol = Math.max(entityLeftX/gp.tileSize, 0);
-        int entityRightCol = Math.min(entityRightX/gp.tileSize, gp.colNum-1);
-        int entityTopRow = Math.max(entityTopY/gp.tileSize, 0);
-        int entityBotRow = Math.min(entityBotY/gp.tileSize, gp.rowNum);
+        int entityLeftCol = entityLeftX/gp.tileSize;
+        int entityRightCol = entityRightX/gp.tileSize;
+        int entityTopRow = entityTopY/gp.tileSize;
+        int entityBotRow = entityBotY/gp.tileSize;
 
-        int tileNum1, tileNum2;
+        Tile tile1, tile2;
+        int dx, dy;
 
         switch(entity.direction){
             case "up":
                 entityTopRow = (entityTopY - entity.speed)/gp.tileSize;
-                tileNum1 = gp.tM.mapTileNum[entityTopRow][entityLeftCol];
-                tileNum2 = gp.tM.mapTileNum[entityTopRow][entityRightCol];
-                detectCollision(entity, gp.tM.tiles[tileNum1], gp.tM.tiles[tileNum2]);
+                tile1 = gp.tM.tiles[gp.tM.mapTileNum[entityTopRow][entityLeftCol]];
+                tile2 = gp.tM.tiles[gp.tM.mapTileNum[entityTopRow][entityRightCol]];
+
+                dx = entity.x - (entityLeftCol * gp.tileSize);
+                dy = entity.y - (entityTopRow * gp.tileSize);
+                detectCollision (entity, tile1, dx, dy);
+                dx = entity.x - (entityRightCol * gp.tileSize);
+                detectCollision (entity, tile2, dx, dy);
                 break;
 
             case "down":
                 entityBotRow = (entityBotY + entity.speed)/gp.tileSize;
-                tileNum1 = gp.tM.mapTileNum[entityBotRow][entityLeftCol];
-                tileNum2 = gp.tM.mapTileNum[entityBotRow][entityRightCol];
-                detectCollision(entity, gp.tM.tiles[tileNum1], gp.tM.tiles[tileNum2]);
+                tile1 = gp.tM.tiles[gp.tM.mapTileNum[entityBotRow][entityLeftCol]];
+                tile2 = gp.tM.tiles[gp.tM.mapTileNum[entityBotRow][entityRightCol]];
+
+                dx = entity.x - (entityLeftCol * gp.tileSize);
+                dy = entity.y - (entityBotRow * gp.tileSize);
+                detectCollision (entity, tile1, dx, dy);
+                dx = entity.x - (entityRightCol * gp.tileSize);
+                detectCollision (entity, tile2, dx, dy);
                 break;
 
             case "left":
                 entityLeftCol = (entityLeftX - entity.speed)/gp.tileSize;
-                tileNum1 = gp.tM.mapTileNum[entityTopRow][entityLeftCol];
-                tileNum2 = gp.tM.mapTileNum[entityBotRow][entityLeftCol];
-                detectCollision(entity, gp.tM.tiles[tileNum1], gp.tM.tiles[tileNum2]);
+                tile1 = gp.tM.tiles[gp.tM.mapTileNum[entityTopRow][entityLeftCol]];
+                tile2 = gp.tM.tiles[gp.tM.mapTileNum[entityBotRow][entityLeftCol]];
+
+                dx = entity.x - (entityLeftCol * gp.tileSize);
+                dy = entity.y - (entityTopRow * gp.tileSize);
+                detectCollision (entity, tile1, dx, dy);
+                dy = entity.y - (entityBotRow * gp.tileSize);
+                detectCollision (entity, tile2, dx, dy);
                 break;
 
             case "right":
                 entityRightCol = (entityRightX + entity.speed)/gp.tileSize;
-                tileNum1 = gp.tM.mapTileNum[entityTopRow][entityRightCol];
-                tileNum2 = gp.tM.mapTileNum[entityBotRow][entityRightCol];
-                detectCollision(entity, gp.tM.tiles[tileNum1], gp.tM.tiles[tileNum2]);
+                tile1 = gp.tM.tiles[gp.tM.mapTileNum[entityTopRow][entityRightCol]];
+                tile2 = gp.tM.tiles[gp.tM.mapTileNum[entityBotRow][entityRightCol]];
+
+                dx = entity.x - (entityRightCol * gp.tileSize);
+                dy = entity.y - (entityTopRow * gp.tileSize);
+                detectCollision (entity, tile1, dx, dy);
+                dy = entity.y - (entityBotRow * gp.tileSize);
+                detectCollision (entity, tile2, dx, dy);
                 break;
         }
     }

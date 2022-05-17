@@ -1,7 +1,6 @@
 package world;
 
 import java.io.*;
-import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import main.GamePanel;
@@ -14,7 +13,7 @@ public class TileManager {
 
     static String tilePath = "/graphic_assets/tiles/";
 
-    // use '_' start for solid tiles
+    // use '_' prefix for solid tiles
     static String[] tileNames = {"grass.png", "stone_path1.png", "stone_path2.png", // [0] [1] [2]
                                  "stone1.png", "stone2.png", "stone3.png", // [3] [4] [5]
                                  "stone4.png", "stone5.png", "stone_path3.png", // [6] [7] [8]
@@ -22,39 +21,30 @@ public class TileManager {
                                  "_tree_botright.png", "_middle_fence1.png", "_water.png", // [12] [13] [14]
                                  "_water_right.png", "_water_botright.png", "_water_bot.png"}; // [15] [16] [17]
 
-    static HashMap<String, Rectangle> tileSolidAreas = new HashMap<>();
-    private void initSolidAreaMap () {
-        tileSolidAreas.put("_water.png", new Rectangle(0, 0, gp.tileSize, gp.tileSize));
-        tileSolidAreas.put("_water_right.png", new Rectangle(0, 0, 24 * gp.scale, gp.tileSize));
-        tileSolidAreas.put("_water_botright.png", new Rectangle(0, 0, 26 * gp.scale, 24 * gp.scale));
-        tileSolidAreas.put("_water_bot.png", new Rectangle(0, 0, gp.tileSize, 25 * gp.scale));
-        tileSolidAreas.put("_tree_botright.png", new Rectangle(0, 22 * gp.scale, 9 * gp.scale, 11 * gp.scale));
-        tileSolidAreas.put("_tree_botleft.png", new Rectangle(24 * gp.scale, 22 * gp.scale, 9 * gp.scale, 11 * gp.scale));
-        tileSolidAreas.put("_middle_fence1.png", new Rectangle(0, 6 * gp.scale, gp.tileSize, 26 * gp.scale));
-        // TODO: debug
+    private void initSolidBounds () {
+        tiles[11].solidArea = new Rectangle(24 * gp.scale, 21 * gp.scale, 8 * gp.scale, 11 * gp.scale); // "_tree_botleft.png"
+        tiles[12].solidArea = new Rectangle(0, 21 * gp.scale, 15 * gp.scale, 11 * gp.scale); // "_tree_botright.png"
+        tiles[13].solidArea = new Rectangle(0, 5 * gp.scale, gp.tileSize, 26 * gp.scale); // "_middle_fence1.png"
+        tiles[14].solidArea = new Rectangle(0, 0, gp.tileSize, gp.tileSize); // "_water.png"
+        tiles[15].solidArea = new Rectangle(0, 0, 24 * gp.scale, gp.tileSize); // "_water_right.png"
+        tiles[16].solidArea = new Rectangle(0, 0, 24 * gp.scale, 25 * gp.scale); // "_water_botright.png"
+        tiles[17].solidArea = new Rectangle(0, 0, gp.tileSize, 25 * gp.scale); // "_water_bot.png"
     }
 
     public TileManager (GamePanel gp) {
         this.gp = gp;
         this.tiles = new Tile[tileNames.length];
         this.mapTileNum = new int[gp.rowNum][gp.colNum];
-        initSolidAreaMap();
         getTileImages();
+        initSolidBounds();
         loadMap("/graphic_assets/layouts/map1.txt");
     }
     void getTileImages() {
         try {
             int i = 0;
-            while (i < tileNames.length) { // read normal tiles
+            while (i < tileNames.length) { 
                 tiles[i] = new Tile();
                 tiles[i].image = ImageIO.read(getClass().getResourceAsStream(tilePath + tileNames[i]));
-                if (tileNames[i].charAt(0) == '_') {
-                    //tiles[i].solidArea = tileSolidAreas.get(tileNames[i]);
-                    tiles[i].solidArea = new Rectangle(0, 0, gp.tileSize, gp.tileSize);
-                }
-                else {
-                    tiles[i].solidArea = new Rectangle(0, 0, 0, 0);
-                }
                 i++;
             }
         } catch (IOException e) {
@@ -87,7 +77,6 @@ public class TileManager {
             
             int col = 0;
             int row = 0;
-
             while (row < gp.rowNum) {
                 String line = br.readLine();
                 String[] numbers = line.split(" ");

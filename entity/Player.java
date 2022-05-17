@@ -19,7 +19,7 @@ public class Player extends Entity {
         setDefaultValues();
         getPlayerImage();
 
-        solidArea = new Rectangle(12 * gp.scale, 16 * gp.scale, 9 * gp.scale, 16 * gp.scale);
+        solidArea = new Rectangle(12 * gp.scale, 16 * gp.scale, 9 * gp.scale, 9 * gp.scale);
     }
     public void update () {
 
