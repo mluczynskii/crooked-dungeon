@@ -18,14 +18,20 @@ public class TileManager {
     static String[] tileNames = {"grass.png", "stone_path1.png", "stone_path2.png", // [0] [1] [2]
                                  "stone1.png", "stone2.png", "stone3.png", // [3] [4] [5]
                                  "stone4.png", "stone5.png", "stone_path2.png", // [6] [7] [8]
-                                 "_tree_upperleft.png", "_tree_upperright.png", "_tree_botleft.png", // [9] [10] [11]
+                                 "tree_upperleft.png", "tree_upperright.png", "_tree_botleft.png", // [9] [10] [11]
                                  "_tree_botright.png", "_middle_fence1.png", "_water.png", // [12] [13] [14]
                                  "_water_right.png", "_water_botright.png", "_water_bot.png"}; // [15] [16] [17]
 
     static HashMap<String, Rectangle> tileSolidAreas = new HashMap<>();
     private void initSolidAreaMap () {
-        tileSolidAreas.put("_water_bot.png", new Rectangle(0, 0, gp.tileSize, gp.tileSize));
-        // TODO: add every solidArea
+        tileSolidAreas.put("_water.png", new Rectangle(0, 0, gp.tileSize, gp.tileSize));
+        tileSolidAreas.put("_water_right.png", new Rectangle(0, 0, 24 * gp.scale, gp.tileSize));
+        tileSolidAreas.put("_water_botright.png", new Rectangle(0, 0, 26 * gp.scale, 24 * gp.scale));
+        tileSolidAreas.put("_water_bot.png", new Rectangle(0, 0, gp.tileSize, 25 * gp.scale));
+        tileSolidAreas.put("_tree_botright.png", new Rectangle(0, 22 * gp.scale, 9 * gp.scale, 11 * gp.scale));
+        tileSolidAreas.put("_tree_botleft.png", new Rectangle(24 * gp.scale, 22 * gp.scale, 9 * gp.scale, 11 * gp.scale));
+        tileSolidAreas.put("_middle_fence1.png", new Rectangle(0, 6 * gp.scale, gp.tileSize, 26 * gp.scale));
+        // TODO: debug
     }
 
     public TileManager (GamePanel gp) {
@@ -43,6 +49,7 @@ public class TileManager {
                 tiles[i] = new Tile();
                 tiles[i].image = ImageIO.read(getClass().getResourceAsStream(tilePath + tileNames[i]));
                 if (tileNames[i].charAt(0) == '_') {
+                    //tiles[i].solidArea = tileSolidAreas.get(tileNames[i]);
                     tiles[i].solidArea = new Rectangle(0, 0, gp.tileSize, gp.tileSize);
                 }
                 else {

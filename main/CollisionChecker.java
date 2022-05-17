@@ -19,10 +19,10 @@ public class CollisionChecker {
         int entityTopY = entity.y + entity.solidArea.y;
         int entityBotY = entity.y + entity.solidArea.y + entity.solidArea.height;
 
-        int entityLeftCol = entityLeftX/gp.tileSize;
-        int entityRightCol = entityRightX/gp.tileSize;
-        int entityTopRow = entityTopY/gp.tileSize;
-        int entityBotRow = entityBotY/gp.tileSize;
+        int entityLeftCol = Math.max(entityLeftX/gp.tileSize, 0);
+        int entityRightCol = Math.min(entityRightX/gp.tileSize, gp.colNum-1);
+        int entityTopRow = Math.max(entityTopY/gp.tileSize, 0);
+        int entityBotRow = Math.min(entityBotY/gp.tileSize, gp.rowNum);
 
         int tileNum1, tileNum2;
 
