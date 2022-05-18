@@ -13,13 +13,13 @@ public class TileManager {
 
     static String tilePath = "/graphic_assets/tiles/";
 
-    // use '_' prefix for solid tiles
+    // use '_' prefix for "tall" tiles
     static String[] tileNames = {"grass.png", "stone_path1.png", "stone_path2.png", // [0] [1] [2]
                                  "stone1.png", "stone2.png", "stone3.png", // [3] [4] [5]
                                  "stone4.png", "stone5.png", "stone_path3.png", // [6] [7] [8]
-                                 "tree_upperleft.png", "tree_upperright.png", "_tree_botleft.png", // [9] [10] [11]
-                                 "_tree_botright.png", "_middle_fence1.png", "_water.png", // [12] [13] [14]
-                                 "_water_right.png", "_water_botright.png", "_water_bot.png"}; // [15] [16] [17]
+                                 "_tree_upperleft.png", "_tree_upperright.png", "tree_botleft.png", // [9] [10] [11]
+                                 "tree_botright.png", "middle_fence1.png", "water.png", // [12] [13] [14]
+                                 "water_right.png", "water_botright.png", "water_bot.png"}; // [15] [16] [17]
 
     private void initSolidBounds () {
         tiles[11].solidArea = new Rectangle(24 * gp.scale, 16 * gp.scale, 8 * gp.scale, 16 * gp.scale); // "_tree_botleft.png"
@@ -51,7 +51,7 @@ public class TileManager {
             e.printStackTrace();
         }
     }
-    public void draw (Graphics2D g) {
+    public void draw_back (Graphics2D g) {
         int col = 0;
         int row = 0;
         int x = 0;
