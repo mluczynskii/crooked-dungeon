@@ -6,9 +6,6 @@ import java.awt.Rectangle;
 
 public class CollisionChecker {
     GamePanel gp;
-    class TestArea {
-        public Rectangle one, two;
-    }
     public CollisionChecker(GamePanel gp){
         this.gp=gp;
     }
@@ -25,10 +22,9 @@ public class CollisionChecker {
         // |    | t1B |      |
         // |    |     |      |
         // #----#-----#------#
-        TestArea area = new TestArea();
-        area.one = tile.solidArea;
-        area.two = new Rectangle(dx + entity.solidArea.x, dy + entity.solidArea.y, entity.solidArea.width, entity.solidArea.height);
-        if (area.one.intersects(area.two)) {
+        Rectangle one = tile.solidArea;
+        Rectangle two = new Rectangle(dx + entity.solidArea.x, dy + entity.solidArea.y, entity.solidArea.width, entity.solidArea.height);
+        if (one.intersects(two)) {
             entity.collisionOn = true;
         }
     }
