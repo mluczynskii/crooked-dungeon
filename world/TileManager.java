@@ -20,7 +20,9 @@ public class TileManager {
                                  "stone4.png", "stone5.png", "stone_path3.png", // [6] [7] [8]
                                  "_tree_upperleft.png", "_tree_upperright.png", "tree_botleft.png", // [9] [10] [11]
                                  "tree_botright.png", "middle_fence1.png", "water.png", // [12] [13] [14]
-                                 "water_right.png", "water_botright.png", "water_bot.png"}; // [15] [16] [17]
+                                 "water_right.png", "water_botright.png", "water_bot.png", // [15] [16] [17]
+                                 "water_botleft.png", "water_left.png", "water_topright.png", // [18] [19] [20]
+                                 "water_topleft.png", "water_top.png"}; // [21] [22]
 
     private void initSolidBounds () {
         tiles[11].solidArea = new Rectangle(24 * GamePanel.scale, 16 * GamePanel.scale, 8 * GamePanel.scale, 16 * GamePanel.scale); // "_tree_botleft.png"
@@ -30,6 +32,11 @@ public class TileManager {
         tiles[15].solidArea = new Rectangle(0, 0, 24 * GamePanel.scale, GamePanel.tileSize); // "_water_right.png"
         tiles[16].solidArea = new Rectangle(0, 0, 24 * GamePanel.scale, 25 * GamePanel.scale); // "_water_botright.png"
         tiles[17].solidArea = new Rectangle(0, 0, GamePanel.tileSize, 25 * GamePanel.scale); // "_water_bot.png"
+        tiles[18].solidArea = new Rectangle(8 * GamePanel.scale, 0, 24 * GamePanel.scale, 25 * GamePanel.scale); // "water_botleft.png"
+        tiles[19].solidArea = new Rectangle(8 * GamePanel.scale, 0, 24 * GamePanel.scale, GamePanel.tileSize); // "water_left.png"
+        tiles[20].solidArea = new Rectangle(0, 7 * GamePanel.scale, 24 * GamePanel.scale, 25 * GamePanel.scale); // "water_topright.png"
+        tiles[21].solidArea = new Rectangle(8 * GamePanel.scale, 7 * GamePanel.scale, 24 * GamePanel.scale, 25 * GamePanel.scale); // "water_topleft.png"
+        tiles[22].solidArea = new Rectangle(0, 7 * GamePanel.scale, GamePanel.tileSize, 25 * GamePanel.scale); // "water_top.png"
     }
 
     public TileManager () {
@@ -54,7 +61,7 @@ public class TileManager {
     }
     public void drawRoom (Graphics2D g) {
         currentRoom = currentLevel.roomGrid[roomY][roomX];
-        System.out.println(currentRoom.name);
+        System.out.println(Integer.toString(roomY) + " " + Integer.toString(roomX));
         int col = 0;
         int row = 0;
         int x = 0;

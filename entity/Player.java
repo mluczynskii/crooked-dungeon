@@ -62,6 +62,9 @@ public class Player extends Entity {
             }
         }
 
+        checkRoomTransition();
+    }
+    void checkRoomTransition () {
         if (x > GamePanel.screenWidth) {
             gp.tM.roomX = gp.tM.roomX + 1;
             x = 0;           
