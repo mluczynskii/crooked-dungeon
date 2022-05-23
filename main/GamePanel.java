@@ -6,26 +6,26 @@ import entity.Player;
 import world.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
-    final int ogTileSize = 32; // 32x32 sprites and tiles
-    public final int scale = 2;
+    static final int ogTileSize = 32; // 32x32 sprites and tiles
+    public static final int scale = 2;
 
-    public final int tileSize = ogTileSize * scale; // 64x64 after scaling
-    public final int colNum = 16;
-    public final int rowNum = 10;
+    public static final int tileSize = ogTileSize * scale; // 64x64 after scaling
+    public static final int colNum = 16;
+    public static final int rowNum = 10;
 
-    public final int screenWidth = colNum * tileSize; // 1024px
-    public final int screenHeight = rowNum * tileSize; // 640px
+    public static final int screenWidth = colNum * tileSize; // 1024px
+    public static final int screenHeight = rowNum * tileSize; // 640px
 
     Thread gameLoop;
     KeyController keyC = new KeyController();
     Player player = new Player (this, this.keyC);
-    public TileManager tM = new TileManager(this);
+    public TileManager tM = new TileManager();
     public CollisionChecker checker = new CollisionChecker(this);
 
     final int fps = 60;
 
     public GamePanel () {
-        this.setPreferredSize(new Dimension(this.screenWidth, this.screenHeight));
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(this.keyC);
@@ -62,7 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
-        tM.draw_back(g2);
+        tM.drawRoom(g2);
         player.draw(g2);
         
         g2.dispose();

@@ -19,39 +19,39 @@ public class Player extends Entity {
         setDefaultValues();
         getPlayerImage();
 
-        solidArea = new Rectangle(12 * gp.scale, 16 * gp.scale, 9 * gp.scale, 9 * gp.scale);
+        solidArea = new Rectangle(12 * GamePanel.scale, 16 * GamePanel.scale, 9 * GamePanel.scale, 9 * GamePanel.scale);
     }
     public void update () {
 
         if(keyC.up == true || keyC.down == true || keyC.right == true || keyC.left == true){
             
-        if (this.keyC.up == true){ direction = "up"; }
-        else if (keyC.down == true){ direction = "down"; }
-        else if (keyC.right == true){ direction = "right"; }
-        else if (keyC.left == true){ direction = "left"; }
+            if (this.keyC.up == true){ direction = "up"; }
+            else if (keyC.down == true){ direction = "down"; }
+            else if (keyC.right == true){ direction = "right"; }
+            else if (keyC.left == true){ direction = "left"; }
 
-        collisionOn = false;
-        gp.checker.checkTile(this);
+            collisionOn = false;
+            gp.checker.checkTile(this);
 
-        if(collisionOn == false){
-            switch(direction){
-                case "up": y -= speed; break;
-                case "down": y += speed; break;
-                case "left": x -= speed; break;
-                case "right": x += speed; break;
+            if(collisionOn == false){
+                switch(direction){
+                    case "up": y -= speed; break;
+                    case "down": y += speed; break;
+                    case "left": x -= speed; break;
+                    case "right": x += speed; break;
+                }
             }
-        }
 
-        spriteCounter++;
-        if(spriteCounter > spriteChangeRate){
-            if(spriteNum == 1){
-                spriteNum = 2;
+            spriteCounter++;
+            if(spriteCounter > spriteChangeRate){
+                if(spriteNum == 1){
+                    spriteNum = 2;
+                }
+                else if (spriteNum == 2){
+                    spriteNum=1;
+                }
+                spriteCounter=0;
             }
-            else if (spriteNum == 2){
-                spriteNum=1;
-            }
-            spriteCounter=0;
-        }
 
         }
         else{
@@ -60,6 +60,23 @@ public class Player extends Entity {
                 spriteNum=2;
                 idleCounter = 0;
             }
+        }
+
+        if (x > GamePanel.screenWidth) {
+            gp.tM.roomX = gp.tM.roomX + 1;
+            x = 0;           
+        }
+        if (x < 0) {
+            gp.tM.roomX = gp.tM.roomX - 1;
+            x = GamePanel.screenWidth - GamePanel.tileSize;           
+        }
+        if (y > GamePanel.screenHeight) {
+            gp.tM.roomY = gp.tM.roomY + 1;
+            y = 0;           
+        }
+        if (y < 0) {
+            gp.tM.roomY = gp.tM.roomY - 1;
+            y = GamePanel.screenHeight - GamePanel.tileSize;           
         }
     }
     public void setDefaultValues () {
@@ -104,7 +121,7 @@ public class Player extends Entity {
             }
             break;
       }
-      g.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+      g.drawImage(image, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
     }
 
     public void getPlayerImage(){

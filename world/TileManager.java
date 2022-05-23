@@ -1,15 +1,16 @@
 package world;
 
 import java.io.*;
-
 import javax.imageio.ImageIO;
 import main.GamePanel;
 import java.awt.*;
 
 public class TileManager {
-    GamePanel gp;
     public Tile[] tiles;
-    public int[][] mapTileNum;
+
+    public Level currentLevel;
+    public int roomX, roomY;
+    public Room currentRoom;
 
     static String tilePath = "/graphic_assets/tiles/";
 
@@ -22,22 +23,22 @@ public class TileManager {
                                  "water_right.png", "water_botright.png", "water_bot.png"}; // [15] [16] [17]
 
     private void initSolidBounds () {
-        tiles[11].solidArea = new Rectangle(24 * gp.scale, 16 * gp.scale, 8 * gp.scale, 16 * gp.scale); // "_tree_botleft.png"
-        tiles[12].solidArea = new Rectangle(0, 16 * gp.scale, 9 * gp.scale, 16 * gp.scale); // "_tree_botright.png"
-        tiles[13].solidArea = new Rectangle(0, 5 * gp.scale, gp.tileSize, 26 * gp.scale); // "_middle_fence1.png"
-        tiles[14].solidArea = new Rectangle(0, 0, gp.tileSize, gp.tileSize); // "_water.png"
-        tiles[15].solidArea = new Rectangle(0, 0, 24 * gp.scale, gp.tileSize); // "_water_right.png"
-        tiles[16].solidArea = new Rectangle(0, 0, 24 * gp.scale, 25 * gp.scale); // "_water_botright.png"
-        tiles[17].solidArea = new Rectangle(0, 0, gp.tileSize, 25 * gp.scale); // "_water_bot.png"
+        tiles[11].solidArea = new Rectangle(24 * GamePanel.scale, 16 * GamePanel.scale, 8 * GamePanel.scale, 16 * GamePanel.scale); // "_tree_botleft.png"
+        tiles[12].solidArea = new Rectangle(0, 16 * GamePanel.scale, 9 * GamePanel.scale, 16 * GamePanel.scale); // "_tree_botright.png"
+        tiles[13].solidArea = new Rectangle(0, 5 * GamePanel.scale, GamePanel.tileSize, 26 * GamePanel.scale); // "_middle_fence1.png"
+        tiles[14].solidArea = new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize); // "_water.png"
+        tiles[15].solidArea = new Rectangle(0, 0, 24 * GamePanel.scale, GamePanel.tileSize); // "_water_right.png"
+        tiles[16].solidArea = new Rectangle(0, 0, 24 * GamePanel.scale, 25 * GamePanel.scale); // "_water_botright.png"
+        tiles[17].solidArea = new Rectangle(0, 0, GamePanel.tileSize, 25 * GamePanel.scale); // "_water_bot.png"
     }
 
-    public TileManager (GamePanel gp) {
-        this.gp = gp;
+    public TileManager () {
         this.tiles = new Tile[tileNames.length];
-        this.mapTileNum = new int[gp.rowNum][gp.colNum];
         getTileImages();
         initSolidBounds();
-        loadMap("/graphic_assets/layouts/map1.txt");
+        currentLevel = new Level();
+        roomX = 0; roomY = 0;
+        currentRoom = currentLevel.roomGrid[0][0];
     }
     void getTileImages() {
         try {
@@ -51,46 +52,25 @@ public class TileManager {
             e.printStackTrace();
         }
     }
-    public void draw_back (Graphics2D g) {
+    public void drawRoom (Graphics2D g) {
+        currentRoom = currentLevel.roomGrid[roomY][roomX];
+        System.out.println(currentRoom.name);
         int col = 0;
         int row = 0;
         int x = 0;
         int y = 0;
 
-        while (row < gp.rowNum) {
-            while (col < gp.colNum) {
-                int tileNum = mapTileNum[row][col];
-                g.drawImage(tiles[tileNum].image, x, y, gp.tileSize, gp.tileSize, null);
+        while (row < GamePanel.rowNum) {
+            while (col < GamePanel.colNum) {
+                int tileNum = currentRoom.roomTileNum[row][col];
+                g.drawImage(tiles[tileNum].image, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
                 col++;
-                x = x + gp.tileSize;
+                x = x + GamePanel.tileSize;
             }
             col = 0;
             row++;
             x = 0;
-            y = y + gp.tileSize;
-        }
-    }
-    public void loadMap (String filepath) {
-        try {
-            InputStream is = getClass().getResourceAsStream(filepath);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            
-            int col = 0;
-            int row = 0;
-            while (row < gp.rowNum) {
-                String line = br.readLine();
-                String[] numbers = line.split(" ");
-                while (col < gp.colNum) {
-                    int num = Integer.parseInt(numbers[col]);
-                    mapTileNum[row][col] = num;
-                    col++;
-                }
-                col = 0;
-                row++;
-            }
-            br.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            y = y + GamePanel.tileSize;
         }
     }
 }
