@@ -65,19 +65,19 @@ public class Player extends Entity {
         checkRoomTransition();
     }
     void checkRoomTransition () {
-        if (x > GamePanel.screenWidth) {
+        if (x + solidArea.x + solidArea.width > GamePanel.screenWidth) {
             gp.tM.roomX = gp.tM.roomX + 1;
             x = 0;           
         }
-        if (x < 0) {
+        if (x + solidArea.x < 0) {
             gp.tM.roomX = gp.tM.roomX - 1;
             x = GamePanel.screenWidth - GamePanel.tileSize;           
         }
-        if (y > GamePanel.screenHeight) {
+        if (y + solidArea.y + solidArea.height > GamePanel.screenHeight) {
             gp.tM.roomY = gp.tM.roomY + 1;
             y = 0;           
         }
-        if (y < 0) {
+        if (y + solidArea.y < 0) {
             gp.tM.roomY = gp.tM.roomY - 1;
             y = GamePanel.screenHeight - GamePanel.tileSize;           
         }

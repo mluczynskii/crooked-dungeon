@@ -34,19 +34,17 @@ public class CollisionChecker {
         int entityTopY = entity.y + entity.solidArea.y;
         int entityBotY = entity.y + entity.solidArea.y + entity.solidArea.height;
 
-        int entityLeftCol = entityLeftX/GamePanel.tileSize;
-        int entityRightCol = entityRightX/GamePanel.tileSize;
-        int entityTopRow = entityTopY/GamePanel.tileSize;
-        int entityBotRow = entityBotY/GamePanel.tileSize;
+        int entityLeftCol = Math.max(entityLeftX/GamePanel.tileSize, 0);
+        int entityRightCol = Math.min(entityRightX/GamePanel.tileSize, GamePanel.colNum-1);
+        int entityTopRow = Math.max(entityTopY/GamePanel.tileSize, 0);
+        int entityBotRow = Math.min(entityBotY/GamePanel.tileSize, GamePanel.rowNum-1);
 
         Tile tile1, tile2;
         int dx, dy;
 
         switch(entity.direction){
             case "up":
-                if (entityTopY - entity.speed < 0)
-                    break;
-                entityTopRow = (entityTopY - entity.speed)/GamePanel.tileSize;
+                entityTopRow = Math.max((entityTopY - entity.speed)/GamePanel.tileSize, 0);
                 tile1 = gp.tM.tiles[gp.tM.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
                 tile2 = gp.tM.tiles[gp.tM.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
 
@@ -58,9 +56,7 @@ public class CollisionChecker {
                 break;
 
             case "down":
-                if (entityBotY + entity.speed > GamePanel.screenHeight)
-                        break;
-                entityBotRow = (entityBotY + entity.speed)/GamePanel.tileSize;
+                entityBotRow = Math.min((entityBotY + entity.speed)/GamePanel.tileSize, GamePanel.rowNum-1);
                 tile1 = gp.tM.tiles[gp.tM.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
                 tile2 = gp.tM.tiles[gp.tM.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
 
@@ -72,9 +68,7 @@ public class CollisionChecker {
                 break;
 
             case "left":
-                if (entityLeftX - entity.speed < 0)
-                        break;
-                entityLeftCol = (entityLeftX - entity.speed)/GamePanel.tileSize;
+                entityLeftCol = Math.max((entityLeftX - entity.speed)/GamePanel.tileSize, 0);
                 tile1 = gp.tM.tiles[gp.tM.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
                 tile2 = gp.tM.tiles[gp.tM.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
 
@@ -86,9 +80,7 @@ public class CollisionChecker {
                 break;
 
             case "right":
-                if (entityRightX + entity.speed > GamePanel.screenWidth)
-                        break;
-                entityRightCol = (entityRightX + entity.speed)/GamePanel.tileSize;
+                entityRightCol = Math.min((entityRightX + entity.speed)/GamePanel.tileSize, GamePanel.colNum-1);
                 tile1 = gp.tM.tiles[gp.tM.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
                 tile2 = gp.tM.tiles[gp.tM.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
 
