@@ -22,7 +22,8 @@ public class TileManager {
                                  "tree_botright.png", "middle_fence1.png", "water.png", // [12] [13] [14]
                                  "water_right.png", "water_botright.png", "water_bot.png", // [15] [16] [17]
                                  "water_botleft.png", "water_left.png", "water_topright.png", // [18] [19] [20]
-                                 "water_topleft.png", "water_top.png"}; // [21] [22]
+                                 "water_topleft.png", "water_top.png", "wall_top1.png", // [21] [22] [23]
+                                 "wall_top2.png"}; // [24]
 
     private void initSolidBounds () {
         tiles[11].solidArea = new Rectangle(24 * GamePanel.scale, 16 * GamePanel.scale, 8 * GamePanel.scale, 16 * GamePanel.scale); // "_tree_botleft.png"
@@ -37,6 +38,8 @@ public class TileManager {
         tiles[20].solidArea = new Rectangle(0, 7 * GamePanel.scale, 24 * GamePanel.scale, 25 * GamePanel.scale); // "water_topright.png"
         tiles[21].solidArea = new Rectangle(8 * GamePanel.scale, 7 * GamePanel.scale, 24 * GamePanel.scale, 25 * GamePanel.scale); // "water_topleft.png"
         tiles[22].solidArea = new Rectangle(0, 7 * GamePanel.scale, GamePanel.tileSize, 25 * GamePanel.scale); // "water_top.png"
+        tiles[23].solidArea = new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize); // "wall_top1.png"
+        tiles[24].solidArea = new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize); // "wall_top2.png"
     }
 
     public TileManager () {
