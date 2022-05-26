@@ -27,7 +27,8 @@ public class TileManager {
                                  "wall_right.png", "wall_bot2.png", "wall_bot1.png", // [27] [28] [29]
                                  "wall_bot_left.png", "wall_bot_right.png", "wall_top_right.png", // [30] [31] [32]
                                  "wall_left_up_entry.png", "wall_left_down_entry.png", "wall_right_up_entry.png", // [33] [34] [35]
-                                 "wall_right_down_entry.png", "wall_bot_left_entry.png", "wall_bot_right_entry.png"}; // [36] [37] [38]
+                                 "wall_right_down_entry.png", "wall_bot_left_entry.png", "wall_bot_right_entry.png", // [36] [37] [38]
+                                 "wall_top_left_entry.png", "wall_top_right_entry.png"}; // [39] [40]
 
     private void initSolidBounds () {
         tiles[11].solidArea = new Rectangle(24 * GamePanel.scale, 16 * GamePanel.scale, 8 * GamePanel.scale, 16 * GamePanel.scale); // "_tree_botleft.png"
