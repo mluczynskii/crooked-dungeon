@@ -6,6 +6,7 @@ import java.awt.*;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
+import java.awt.geom.Area;
 
 public class Player extends Entity {
     GamePanel gp;
@@ -19,7 +20,7 @@ public class Player extends Entity {
         setDefaultValues();
         getPlayerImage();
 
-        solidArea = new Rectangle(12 * GamePanel.scale, 16 * GamePanel.scale, 9 * GamePanel.scale, 9 * GamePanel.scale);
+        solidArea = new Area(new Rectangle(12 * GamePanel.scale, 16 * GamePanel.scale, 9 * GamePanel.scale, 9 * GamePanel.scale));
     }
     public void update () {
 
@@ -31,7 +32,7 @@ public class Player extends Entity {
             else if (keyC.left == true){ direction = "left"; }
 
             collisionOn = false;
-            gp.checker.checkTile(this);
+            gp.checker.checkTiles(this);
 
             if(collisionOn == false){
                 switch(direction){
@@ -65,19 +66,20 @@ public class Player extends Entity {
         checkRoomTransition();
     }
     void checkRoomTransition () {
-        if (x + solidArea.x + solidArea.width > GamePanel.screenWidth) {
+        Rectangle bounds = solidArea.getBounds();
+        if (x + bounds.x + bounds.width > GamePanel.screenWidth) {
             gp.tM.roomX = gp.tM.roomX + 1;
             x = 0;           
         }
-        if (x + solidArea.x < 0) {
+        if (x + bounds.x < 0) {
             gp.tM.roomX = gp.tM.roomX - 1;
             x = GamePanel.screenWidth - GamePanel.tileSize;           
         }
-        if (y + solidArea.y + solidArea.height > GamePanel.screenHeight) {
+        if (y + bounds.y + bounds.height > GamePanel.screenHeight) {
             gp.tM.roomY = gp.tM.roomY + 1;
             y = 0;           
         }
-        if (y + solidArea.y < 0) {
+        if (y + bounds.y < 0) {
             gp.tM.roomY = gp.tM.roomY - 1;
             y = GamePanel.screenHeight - GamePanel.tileSize;           
         }

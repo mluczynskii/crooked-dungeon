@@ -17,7 +17,7 @@ public class Level {
         generateRooms();
     }
     private void generateRooms () {
-        System.out.println("Generating " + Integer.toString(roomHeight) + "x" + Integer.toString(roomWidth));
+        //System.out.println("Generating " + Integer.toString(roomHeight) + "x" + Integer.toString(roomWidth));
         roomGrid[0][0] = new Room(layoutsPath + "topLeft" + Integer.toString(rand.nextInt(3)) + ".txt");
         for (int i = 1; i < roomWidth-1; i++)
             roomGrid[0][i] = new Room(layoutsPath + "top" + Integer.toString(rand.nextInt(3)) + ".txt");

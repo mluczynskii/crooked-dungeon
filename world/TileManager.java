@@ -4,6 +4,7 @@ import java.io.*;
 import javax.imageio.ImageIO;
 import main.GamePanel;
 import java.awt.*;
+import java.awt.geom.Area;
 
 public class TileManager {
     public Tile[] tiles;
@@ -31,20 +32,32 @@ public class TileManager {
                                  "wall_top_left_entry.png", "wall_top_right_entry.png"}; // [39] [40]
 
     private void initSolidBounds () {
-        tiles[11].solidArea = new Rectangle(24 * GamePanel.scale, 16 * GamePanel.scale, 8 * GamePanel.scale, 16 * GamePanel.scale); // "_tree_botleft.png"
-        tiles[12].solidArea = new Rectangle(0, 16 * GamePanel.scale, 9 * GamePanel.scale, 16 * GamePanel.scale); // "_tree_botright.png"
-        tiles[13].solidArea = new Rectangle(0, 5 * GamePanel.scale, GamePanel.tileSize, 26 * GamePanel.scale); // "_middle_fence1.png"
-        tiles[14].solidArea = new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize); // "_water.png"
-        tiles[15].solidArea = new Rectangle(0, 0, 24 * GamePanel.scale, GamePanel.tileSize); // "_water_right.png"
-        tiles[16].solidArea = new Rectangle(0, 0, 24 * GamePanel.scale, 25 * GamePanel.scale); // "_water_botright.png"
-        tiles[17].solidArea = new Rectangle(0, 0, GamePanel.tileSize, 25 * GamePanel.scale); // "_water_bot.png"
-        tiles[18].solidArea = new Rectangle(8 * GamePanel.scale, 0, 24 * GamePanel.scale, 25 * GamePanel.scale); // "water_botleft.png"
-        tiles[19].solidArea = new Rectangle(8 * GamePanel.scale, 0, 24 * GamePanel.scale, GamePanel.tileSize); // "water_left.png"
-        tiles[20].solidArea = new Rectangle(0, 7 * GamePanel.scale, 24 * GamePanel.scale, 25 * GamePanel.scale); // "water_topright.png"
-        tiles[21].solidArea = new Rectangle(8 * GamePanel.scale, 7 * GamePanel.scale, 24 * GamePanel.scale, 25 * GamePanel.scale); // "water_topleft.png"
-        tiles[22].solidArea = new Rectangle(0, 7 * GamePanel.scale, GamePanel.tileSize, 25 * GamePanel.scale); // "water_top.png"
-        tiles[23].solidArea = new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize); // "wall_top1.png"
-        tiles[24].solidArea = new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize); // "wall_top2.png"
+        Area defaultSolid = new Area(new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize));
+        tiles[11].solidArea = new Area(new Rectangle(24 * GamePanel.scale, 16 * GamePanel.scale, 8 * GamePanel.scale, 16 * GamePanel.scale)); // "_tree_botleft.png"
+        tiles[12].solidArea = new Area(new Rectangle(0, 16 * GamePanel.scale, 9 * GamePanel.scale, 16 * GamePanel.scale)); // "_tree_botright.png"
+        tiles[13].solidArea = new Area(new Rectangle(0, 5 * GamePanel.scale, GamePanel.tileSize, 26 * GamePanel.scale)); // "_middle_fence1.png"
+        tiles[14].solidArea = new Area(defaultSolid); // "_water.png"
+        tiles[15].solidArea = new Area(new Rectangle(0, 0, 24 * GamePanel.scale, GamePanel.tileSize)); // "_water_right.png"
+        tiles[16].solidArea = new Area(new Rectangle(0, 0, 24 * GamePanel.scale, 25 * GamePanel.scale)); // "_water_botright.png"
+        tiles[17].solidArea = new Area(new Rectangle(0, 0, GamePanel.tileSize, 25 * GamePanel.scale)); // "_water_bot.png"
+        tiles[18].solidArea = new Area(new Rectangle(8 * GamePanel.scale, 0, 24 * GamePanel.scale, 25 * GamePanel.scale)); // "water_botleft.png"
+        tiles[19].solidArea = new Area(new Rectangle(8 * GamePanel.scale, 0, 24 * GamePanel.scale, GamePanel.tileSize)); // "water_left.png"
+        tiles[20].solidArea = new Area(new Rectangle(0, 7 * GamePanel.scale, 24 * GamePanel.scale, 25 * GamePanel.scale)); // "water_topright.png"
+        tiles[21].solidArea = new Area(new Rectangle(8 * GamePanel.scale, 7 * GamePanel.scale, 24 * GamePanel.scale, 25 * GamePanel.scale)); // "water_topleft.png"
+        tiles[22].solidArea = new Area(new Rectangle(0, 7 * GamePanel.scale, GamePanel.tileSize, 25 * GamePanel.scale)); // "water_top.png"
+        tiles[23].solidArea = new Area(defaultSolid); // "wall_top1.png"
+        tiles[24].solidArea = new Area(defaultSolid); // "wall_top2.png"
+
+        tiles[25].solidArea = new Area(new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize-2));
+        tiles[25].solidArea.add(new Area(new Rectangle(0, GamePanel.tileSize-2, GamePanel.tileSize-4, 2))); // "wall_top_left.png"
+
+        tiles[26].solidArea = new Area(new Rectangle(0, 0, GamePanel.tileSize-4, GamePanel.tileSize)); // "wall_left.png"
+        tiles[27].solidArea = new Area(new Rectangle(4, 0, GamePanel.tileSize-4, GamePanel.tileSize)); // "wall_right.png"
+        tiles[28].solidArea = new Area(defaultSolid); // "wall_bot2.png"
+        tiles[29].solidArea = new Area(defaultSolid); // "wall_bot1.png"
+
+        tiles[30].solidArea = new Area(new Rectangle(0, 0, GamePanel.tileSize-4, GamePanel.tileSize));
+        tiles[30].solidArea.add(new Area(new Rectangle(GamePanel.tileSize-4, 2, 4, GamePanel.tileSize-2))); // "wall_bot_left.png"
     }
 
     public TileManager () {
@@ -69,7 +82,7 @@ public class TileManager {
     }
     public void drawRoom (Graphics2D g) {
         currentRoom = currentLevel.roomGrid[roomY][roomX];
-        System.out.println(Integer.toString(roomY) + " " + Integer.toString(roomX));
+        //System.out.println(Integer.toString(roomY) + " " + Integer.toString(roomX));
         int col = 0;
         int row = 0;
         int x = 0;
