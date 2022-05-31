@@ -1,6 +1,7 @@
 package world;
 
 import java.util.Random;
+import main.Sound;
 
 public class Level {
     static String layoutsPath = "/graphic_assets/layouts/level1/";
@@ -9,12 +10,14 @@ public class Level {
     int roomWidth, roomHeight;
     
     Random rand = new Random();
+    Sound backgroundMusic = new Sound();
 
     public Level() {
         roomWidth = rand.nextInt(10) + 2;
         roomHeight = rand.nextInt(10) + 2;
         roomGrid = new Room[roomHeight][roomWidth];
         generateRooms();
+        playMusic(0);
     }
     private void generateRooms () {
         //System.out.println("Generating " + Integer.toString(roomHeight) + "x" + Integer.toString(roomWidth));
@@ -39,5 +42,13 @@ public class Level {
                 roomGrid[i][j] = new Room(layoutsPath + "center" + Integer.toString(rand.nextInt(3)) + ".txt");
             }
         }
+    }
+    public void playMusic (int i) {
+        backgroundMusic.setFile(i);
+        backgroundMusic.play(0.01f);
+        backgroundMusic.loop();
+    }
+    public void stopMusci () {
+        backgroundMusic.stop();
     }
 }
