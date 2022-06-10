@@ -92,6 +92,7 @@ public class Player extends Entity {
         speed = 4;
         direction = "down";
     }
+    @Override
     public void draw (Graphics2D g) {
       BufferedImage image = null;
       switch(direction){

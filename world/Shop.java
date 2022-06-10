@@ -13,7 +13,7 @@ public class Shop extends Room {
     static String[] shop_layouts = {"shop1.txt", "shop2.txt", "shop3.txt"};
 
     String[] lowQualityItems = {"items.MagicMushroom"};
-    String[] medQualityItems = {"items.MagicMushroom"};
+    String[] medQualityItems = {"items.DevilPact"};
     String[] highQualityItems = {"items.MagicMushroom"};
 
     Item[] stock = new Item[3];
@@ -48,6 +48,6 @@ public class Shop extends Room {
     @Override
     void drawRoom (Graphics2D g) {
         super.drawRoom(g);
-        this.shopkeeper.drawEntity(g);
+        this.shopkeeper.draw(g);
     }
 }
