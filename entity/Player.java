@@ -85,6 +85,8 @@ public class Player extends Entity {
         }
     }
     public void setDefaultValues () {
+        maxHealth = 100;
+        currentHealth = maxHealth;
         x = 100;
         y = 100;
         speed = 4;

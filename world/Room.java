@@ -3,13 +3,16 @@ package world;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import entity.Entity;
 import main.GamePanel;
+import java.awt.Graphics2D;
 
 public class Room {
     public int[][] roomTileNum;
-    public String name;
+    public ArrayList<Entity> entityList = new ArrayList<>();
+
     public Room (String filepath) {
-        name = filepath;
         roomTileNum = new int[GamePanel.rowNum][GamePanel.colNum];
         try {
             InputStream is = getClass().getResourceAsStream(filepath);
@@ -31,6 +34,14 @@ public class Room {
             br.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    void drawRoom (Graphics2D g) {
+        for (int row = 0, y = 0; row < GamePanel.rowNum; row++, y += GamePanel.tileSize) {
+            for (int col = 0, x = 0; col < GamePanel.colNum; col++, x += GamePanel.tileSize) {
+                int tileNum = roomTileNum[row][col];
+                g.drawImage(TileManager.tiles[tileNum].image, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.geom.Area;
 
 public class TileManager {
-    public Tile[] tiles;
+    public static Tile[] tiles;
 
     public Level currentLevel;
     public int roomX, roomY;
@@ -29,7 +29,7 @@ public class TileManager {
                                  "wall_bot_left.png", "wall_bot_right.png", "wall_top_right.png", // [30] [31] [32]
                                  "wall_left_up_entry.png", "wall_left_down_entry.png", "wall_right_up_entry.png", // [33] [34] [35]
                                  "wall_right_down_entry.png", "wall_bot_left_entry.png", "wall_bot_right_entry.png", // [36] [37] [38]
-                                 "wall_top_left_entry.png", "wall_top_right_entry.png"}; // [39] [40]
+                                 "wall_top_left_entry.png", "wall_top_right_entry.png", "wooden_floor.png"}; // [39] [40] [41]
 
     private void initSolidBounds () {
         Area defaultSolid = new Area(new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize));
@@ -61,7 +61,7 @@ public class TileManager {
     }
 
     public TileManager () {
-        this.tiles = new Tile[tileNames.length];
+        tiles = new Tile[tileNames.length];
         getTileImages();
         initSolidBounds();
         currentLevel = new Level();
@@ -82,23 +82,6 @@ public class TileManager {
     }
     public void drawRoom (Graphics2D g) {
         currentRoom = currentLevel.roomGrid[roomY][roomX];
-        //System.out.println(Integer.toString(roomY) + " " + Integer.toString(roomX));
-        int col = 0;
-        int row = 0;
-        int x = 0;
-        int y = 0;
-
-        while (row < GamePanel.rowNum) {
-            while (col < GamePanel.colNum) {
-                int tileNum = currentRoom.roomTileNum[row][col];
-                g.drawImage(tiles[tileNum].image, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
-                col++;
-                x = x + GamePanel.tileSize;
-            }
-            col = 0;
-            row++;
-            x = 0;
-            y = y + GamePanel.tileSize;
-        }
+        currentRoom.drawRoom(g);
     }
 }

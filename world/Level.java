@@ -20,8 +20,7 @@ public class Level {
         playMusic(0);
     }
     private void generateRooms () {
-        //System.out.println("Generating " + Integer.toString(roomHeight) + "x" + Integer.toString(roomWidth));
-        roomGrid[0][0] = new Room(layoutsPath + "topLeft" + Integer.toString(rand.nextInt(3)) + ".txt");
+        roomGrid[0][0] = new Shop();
         for (int i = 1; i < roomWidth-1; i++)
             roomGrid[0][i] = new Room(layoutsPath + "top" + Integer.toString(rand.nextInt(3)) + ".txt");
 
@@ -48,7 +47,7 @@ public class Level {
         backgroundMusic.play(0.01f);
         backgroundMusic.loop();
     }
-    public void stopMusci () {
+    public void stopMusic () {
         backgroundMusic.stop();
     }
 }
