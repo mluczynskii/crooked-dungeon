@@ -24,6 +24,7 @@ public class GamePanel extends JPanel implements Runnable {
     public TileManager tM = new TileManager();
     public CollisionChecker checker = new CollisionChecker(this);
     PriorityQueue<Drawable> q = new PriorityQueue<>();
+    UI ui = new UI(this);
 
     final int fps = 60;
 
@@ -66,15 +67,15 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D)g;
 
         tM.drawRoom(g2);
-        
-        // TODO: Priority queue for objects implementing Drawable with Y position as the compare method
+
         q.add(player);
         for (Entity e : tM.currentRoom.entityList)
             q.add(e);
-        for (Drawable entity : q)
-            entity.draw(g2);
+        for (Drawable x : q)
+            x.draw(g2);
         q.clear();
         
+        ui.drawUI(g2);
         g2.dispose();
     }
 }

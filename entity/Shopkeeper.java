@@ -8,7 +8,8 @@ import main.GamePanel;
 public class Shopkeeper extends Entity {
     Shop shop;
     static String path = "/graphic_assets/characters/shopkeeper/";
-    public Shopkeeper () {
+    public Shopkeeper (Shop shop) {
+        this.shop = shop;
         try {
             this.idle = ImageIO.read(getClass().getResourceAsStream(path + "spamton.png"));
         } catch (IOException e) {

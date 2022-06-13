@@ -7,7 +7,7 @@ import main.GamePanel;
 import java.awt.geom.Area;
 import java.awt.*;
 
-public abstract class Entity implements Drawable, Comparable<Entity> {
+public abstract class Entity implements Drawable {
     public int speed, x, y;
     public double maxHealth, currentHealth;
     public double dmg;
@@ -37,10 +37,11 @@ public abstract class Entity implements Drawable, Comparable<Entity> {
     public void draw (Graphics2D g) {
         g.drawImage(idle, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
     }
-    public int compareTo (Entity e) { // Checks which entity is higher
-        if (this.y > e.y)
+    public int height () { return this.y; }
+    public int compareTo (Drawable e) { // Checks which entity is higher
+        if (this.height() > e.height())
             return 1;
-        else if (this.y == e.y)
+        else if (this.height() == e.height())
             return 0;
         return -1;
     }

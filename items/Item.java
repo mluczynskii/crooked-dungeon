@@ -9,7 +9,7 @@ import entity.Player;
 
 public abstract class Item {
     static String path = "/graphic_assets/sprites/items/";
-    String name, description;
+    public String name, description;
     BufferedImage sprite;
     int cost;
     public Item (String name, String description, int cost) {
@@ -24,9 +24,7 @@ public abstract class Item {
             e.printStackTrace();
         }
     }
-    void drawItem (Graphics2D g, int x, int y) {
-        if (sprite == null)
-            return;
+    public void drawItem (Graphics2D g, int x, int y) {
         g.drawImage(sprite, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
     }
     public abstract void action (Player player);

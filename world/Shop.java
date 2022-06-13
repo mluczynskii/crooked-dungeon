@@ -4,6 +4,7 @@ import java.util.Random;
 import entity.Shopkeeper;
 import java.awt.Graphics2D;
 import items.*;
+import main.GamePanel;
 
 
 public class Shop extends Room {
@@ -21,7 +22,7 @@ public class Shop extends Room {
 
     public Shop () {
         super(path + shop_layouts[rand.nextInt(shop_layouts.length)]);
-        this.shopkeeper = new Shopkeeper();
+        this.shopkeeper = new Shopkeeper(this);
         generateStock();
         entityList.add(shopkeeper);
     }
@@ -48,6 +49,13 @@ public class Shop extends Room {
     @Override
     void drawRoom (Graphics2D g) {
         super.drawRoom(g);
-        this.shopkeeper.draw(g);
+        int x = GamePanel.screenWidth/3 - GamePanel.tileSize/2;
+        int step = (x + GamePanel.tileSize)/3;
+        int y = GamePanel.screenHeight * 2/3;
+        for (Item item : stock) {
+            if (item != null)
+                item.drawItem(g, x, y);
+            x += step;
+        }
     }
 }

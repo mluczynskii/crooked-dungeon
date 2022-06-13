@@ -107,7 +107,8 @@ public class CollisionChecker {
 
                 // South-east tile
                 dx = entity.x - (entityRightCol * GamePanel.tileSize);
-                detectCollision (entity, tileSE.solidArea, dx, dy);   
+                detectCollision (entity, tileSE.solidArea, dx, dy);
+
                 for (Entity e : gp.tM.currentRoom.entityList) {
                     dx = entity.x - e.x;
                     dy = (entity.y + entity.speed) - e.y;
@@ -129,7 +130,7 @@ public class CollisionChecker {
                 detectCollision (entity, tileNW.solidArea, dx, dy);
 
                 // North-east tile
-                dy = entity.y - (entityRightCol * GamePanel.tileSize);
+                dx = (entity.x - entity.speed) - (entityRightCol * GamePanel.tileSize);
                 detectCollision (entity, tileNE.solidArea, dx, dy);
 
                 // South-west tile
@@ -138,7 +139,7 @@ public class CollisionChecker {
                 detectCollision (entity, tileSW.solidArea, dx, dy);
 
                 // South-east tile
-                dy = entity.y - (entityRightCol * GamePanel.tileSize);
+                dx = (entity.x - entity.speed) - (entityRightCol * GamePanel.tileSize);
                 detectCollision (entity, tileSE.solidArea, dx, dy);  
                 
                 for (Entity e : gp.tM.currentRoom.entityList) {
@@ -162,7 +163,7 @@ public class CollisionChecker {
                 detectCollision (entity, tileNW.solidArea, dx, dy);
 
                 // North-east tile
-                dy = entity.y - (entityRightCol * GamePanel.tileSize);
+                dx = (entity.x + entity.speed) - (entityRightCol * GamePanel.tileSize);
                 detectCollision (entity, tileNE.solidArea, dx, dy);
 
                 // South-west tile
@@ -171,7 +172,7 @@ public class CollisionChecker {
                 detectCollision (entity, tileSW.solidArea, dx, dy);
 
                 // South-east tile
-                dy = entity.y - (entityRightCol * GamePanel.tileSize);
+                dx = (entity.x + entity.speed) - (entityRightCol * GamePanel.tileSize);
                 detectCollision (entity, tileSE.solidArea, dx, dy);    
                 
                 for (Entity e : gp.tM.currentRoom.entityList) {
