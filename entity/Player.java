@@ -12,6 +12,7 @@ public class Player extends Entity {
     GamePanel gp;
     KeyController keyC;
     int idleCounter = 0;
+    public int money = 0;
 
     public Player (GamePanel gp, KeyController keyC) {
         this.gp = gp;

@@ -18,8 +18,13 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int screenWidth = colNum * tileSize; // 1024px
     public static final int screenHeight = rowNum * tileSize; // 640px
 
+    enum State {
+        PLAY, PAUSE
+    }
+    State gameState = State.PLAY;
+
     Thread gameLoop;
-    KeyController keyC = new KeyController();
+    KeyController keyC = new KeyController(this);
     Player player = new Player (this, this.keyC);
     public TileManager tM = new TileManager();
     public CollisionChecker checker = new CollisionChecker(this);
@@ -59,7 +64,8 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     public void update () {
-        player.update();
+        if (gameState == State.PLAY)
+            player.update();
     }
     @Override 
     public void paintComponent (Graphics g) {

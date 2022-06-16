@@ -3,39 +3,91 @@ package main;
 import java.awt.*;
 import javax.imageio.ImageIO;
 import java.awt.image.*;
+import java.awt.font.TextLayout;
+import java.awt.geom.*;
 
 public class UI {
     GamePanel gp;
-    Font font;
+
     static String path = "/graphic_assets/sprites/icons/";
-    BufferedImage dmg, speed;
+    static Font font = new Font("Impact", Font.PLAIN, 25);
+
+    // Colors
+    static Color textColor = Color.WHITE;
+    static Color hpBarColor = Color.RED;
+    static Color outlineColor = Color.BLACK;
+
+    // Icons
+    static int iconSize = GamePanel.tileSize * 2/3;
+    BufferedImage dmgIcon, speedIcon, coinIcon;
 
     public UI (GamePanel gp) {
         this.gp = gp;
-        this.font = new Font("Impact", Font.PLAIN, 20);
         try {
-            this.dmg = ImageIO.read(getClass().getResourceAsStream(path + "dmg.png"));
-            this.speed = ImageIO.read(getClass().getResourceAsStream(path + "speed.png"));
+            this.dmgIcon = ImageIO.read(getClass().getResourceAsStream(path + "dmg.png"));
+            this.speedIcon = ImageIO.read(getClass().getResourceAsStream(path + "speed.png"));
+            this.coinIcon = ImageIO.read(getClass().getResourceAsStream(path + "coin.png"));
         } catch (Exception e) {
             System.out.println("Missing sprites");
         }
     }
     public void drawUI (Graphics2D g) {
-        g.setFont(font);
-        g.setColor(Color.RED);
-        g.fillRect(0, 0, (int)(gp.player.currentHealth/gp.player.maxHealth * GamePanel.screenWidth/3), 25);
-        g.setColor(Color.WHITE);
-        g.drawString("HP: " + (int)gp.player.currentHealth + "/" + (int)gp.player.maxHealth, 0, 20);
-        
-        g.setColor(Color.BLACK);
-        // DMG meter
-        g.drawImage(dmg, 0, 26, 2*GamePanel.tileSize/3, 2*GamePanel.tileSize/3, null);
-        g.drawString(Double.toString(gp.player.dmg), 2*GamePanel.tileSize/3 + 2, 60);
+        switch (gp.gameState) {
+            case PLAY:
+                drawHP(g);
+                drawIcons(g);
+                break;
+            case PAUSE:
+                drawPauseScreen(g);
+                break;
+        }
+    }
+    void drawPauseScreen(Graphics2D g) {
+        // TODO: Do stuff
+    }
+    void drawIcons (Graphics2D g) {
+        Rectangle Info = new Rectangle(iconSize, 30, iconSize, iconSize);
+        g.drawImage(dmgIcon, 0, 30, iconSize, iconSize, null);
+        drawCenteredText(Info, Double.toString(gp.player.dmg), g);
 
-        // Speed meter
-        g.drawImage(speed, 85, 28, 2*GamePanel.tileSize/3, 2*GamePanel.tileSize/3, null);
-        g.drawString(Integer.toString(gp.player.speed), 2 * GamePanel.tileSize/2 + 80 + 2, 60);
+        g.drawImage(speedIcon, 2 * iconSize, 30, iconSize, iconSize, null);
+        Info.x = 3 * iconSize;
+        drawCenteredText(Info, Integer.toString(gp.player.speed), g);
 
-        // TODO: Come up with some smart grid-type icon/text placing
+        g.drawImage(coinIcon, 4 * iconSize, 30, iconSize, iconSize, null);
+        Info.x = 5 * iconSize;
+        drawCenteredText(Info, Integer.toString(gp.player.money), g);
+    }
+    void drawHP (Graphics2D g) {
+        int hp = (int)gp.player.currentHealth, maxHp = (int)gp.player.maxHealth;
+        int width = (int)(hp/maxHp * GamePanel.screenWidth/3);
+        int height = 30;
+        Rectangle hpBar = new Rectangle(0, 0, width, height);
+
+        g.setColor(hpBarColor);
+        g.fill(hpBar);
+
+        g.setColor(outlineColor);
+        g.draw(hpBar);
+
+        drawCenteredText(hpBar, "HP: " + hp + "/" + maxHp, g);
+    }
+    void drawCenteredText (Rectangle container, String str, Graphics2D g) {
+        FontMetrics metrics = g.getFontMetrics(font);
+        int x = container.x + (container.width - metrics.stringWidth(str)) / 2;
+        int y = container.y + ((container.height - metrics.getHeight()) / 2) + metrics.getAscent();
+        drawText(str, x, y, g);
+    }
+    void drawText (String str, int x, int y, Graphics2D g) {
+        TextLayout tl = new TextLayout(str, font, g.getFontRenderContext());
+        AffineTransform matrix = new AffineTransform();
+        matrix.translate(x, y);
+        Shape shape = tl.getOutline(matrix);
+        // Draw Text
+        g.setColor(textColor);
+        tl.draw(g, x, y);
+        // Draw outline
+        g.setColor(outlineColor);
+        g.draw(shape);
     }
 }
