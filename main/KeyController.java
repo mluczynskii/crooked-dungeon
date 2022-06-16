@@ -1,12 +1,28 @@
 package main;
 
 import java.awt.event.*;
+import main.GamePanel.State;
 
 public class KeyController implements KeyListener {
+    GamePanel gp;
     public boolean up, down, right, left;
 
+    public KeyController (GamePanel gp) {
+        this.gp = gp;
+    }
+
     @Override
-    public void keyTyped(KeyEvent e) { }
+    public void keyTyped(KeyEvent e) { 
+        int code = e.getKeyCode();
+        switch (code) {
+            case KeyEvent.VK_P:
+                if (gp.gameState == State.PLAY)
+                    gp.gameState = State.PAUSE;
+                else if (gp.gameState == State.PAUSE)
+                    gp.gameState = State.PLAY;
+                break;
+        }
+    }
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
