@@ -10,7 +10,8 @@ public class UI {
     GamePanel gp;
 
     static String path = "/graphic_assets/sprites/icons/";
-    static Font font = new Font("Impact", Font.PLAIN, 25);
+    static Font infoFont = new Font("Impact", Font.PLAIN, 25);
+    static Font pauseFont = new Font("Impact", Font.PLAIN, 60);
 
     // Colors
     static Color textColor = Color.WHITE;
@@ -43,20 +44,22 @@ public class UI {
         }
     }
     void drawPauseScreen(Graphics2D g) {
-        // TODO: Do stuff
+        Rectangle s = new Rectangle(0, 0, GamePanel.screenWidth, GamePanel.screenHeight);
+        g.draw(s);
+        drawCenteredText(s, "PAUSED", g, pauseFont);
     }
     void drawIcons (Graphics2D g) {
         Rectangle Info = new Rectangle(iconSize, 30, iconSize, iconSize);
         g.drawImage(dmgIcon, 0, 30, iconSize, iconSize, null);
-        drawCenteredText(Info, Double.toString(gp.player.dmg), g);
+        drawCenteredText(Info, Double.toString(gp.player.dmg), g, infoFont);
 
         g.drawImage(speedIcon, 2 * iconSize, 30, iconSize, iconSize, null);
         Info.x = 3 * iconSize;
-        drawCenteredText(Info, Integer.toString(gp.player.speed), g);
+        drawCenteredText(Info, Integer.toString(gp.player.speed), g, infoFont);
 
         g.drawImage(coinIcon, 4 * iconSize, 30, iconSize, iconSize, null);
         Info.x = 5 * iconSize;
-        drawCenteredText(Info, Integer.toString(gp.player.money), g);
+        drawCenteredText(Info, Integer.toString(gp.player.money), g, infoFont);
     }
     void drawHP (Graphics2D g) {
         int hp = (int)gp.player.currentHealth, maxHp = (int)gp.player.maxHealth;
@@ -70,15 +73,15 @@ public class UI {
         g.setColor(outlineColor);
         g.draw(hpBar);
 
-        drawCenteredText(hpBar, "HP: " + hp + "/" + maxHp, g);
+        drawCenteredText(hpBar, "HP: " + hp + "/" + maxHp, g, infoFont);
     }
-    void drawCenteredText (Rectangle container, String str, Graphics2D g) {
+    void drawCenteredText (Rectangle container, String str, Graphics2D g, Font font) {
         FontMetrics metrics = g.getFontMetrics(font);
         int x = container.x + (container.width - metrics.stringWidth(str)) / 2;
         int y = container.y + ((container.height - metrics.getHeight()) / 2) + metrics.getAscent();
-        drawText(str, x, y, g);
+        drawText(str, x, y, g, font);
     }
-    void drawText (String str, int x, int y, Graphics2D g) {
+    void drawText (String str, int x, int y, Graphics2D g, Font font) {
         TextLayout tl = new TextLayout(str, font, g.getFontRenderContext());
         AffineTransform matrix = new AffineTransform();
         matrix.translate(x, y);

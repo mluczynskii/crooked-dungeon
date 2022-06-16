@@ -39,6 +39,12 @@ public class KeyController implements KeyListener {
             case KeyEvent.VK_D:
                 right = true;
                 break;
+            case KeyEvent.VK_P:
+                if (gp.gameState == State.PLAY)
+                    gp.gameState = State.PAUSE;
+                else if (gp.gameState == State.PAUSE)
+                    gp.gameState = State.PLAY;
+                break;
         }
     }
     @Override
