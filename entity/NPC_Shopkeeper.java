@@ -5,10 +5,10 @@ import javax.imageio.ImageIO;
 import world.Shop;
 import main.GamePanel;
 
-public class Shopkeeper extends Entity {
+public class NPC_Shopkeeper extends Entity {
     Shop shop;
     static String path = "/graphic_assets/characters/shopkeeper/";
-    public Shopkeeper (Shop shop) {
+    public NPC_Shopkeeper (Shop shop) {
         this.shop = shop;
         try {
             this.idle = ImageIO.read(getClass().getResourceAsStream(path + "spamton.png"));
