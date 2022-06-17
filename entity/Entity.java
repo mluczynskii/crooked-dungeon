@@ -20,6 +20,7 @@ public abstract class Entity implements Drawable {
     public int spriteNum=1;
     public Area solidArea;
     public boolean collisionOn=false;
+    public Entity interactionEntity;
 
     static final int spriteChangeRate = 14;
     void setSolidArea (int x, int y, int width, int height) {

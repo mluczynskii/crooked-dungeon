@@ -18,10 +18,11 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int screenWidth = colNum * tileSize; // 1024px
     public static final int screenHeight = rowNum * tileSize; // 640px
 
-    enum State {
-        PLAY, PAUSE
+    public enum State {
+        PLAY, PAUSE, DIALOGUE
     }
-    State gameState = State.PLAY;
+    public State gameState = State.PLAY;
+
 
     Thread gameLoop;
     KeyController keyC = new KeyController(this);
@@ -64,8 +65,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     public void update () {
-        if (gameState == State.PLAY)
+        if (gameState != State.PAUSE)
             player.update();
+
     }
     @Override 
     public void paintComponent (Graphics g) {

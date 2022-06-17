@@ -12,9 +12,12 @@ public class CollisionChecker {
     public CollisionChecker(GamePanel gp){
         this.gp=gp;
     }
+
+
+
     private void detectCollision (Entity entity, Area solidArea, int dx, int dy) {
-        // t1B - Tile solidArea, entB - entity solidArea
-        // dx, dy - distance to upper-left corner of the tile (@)
+        // t1B - entity/tile solidArea, entB - entity solidArea
+        // dx, dy - distance to upper-left corner of the entity/tile (@)
         // @-----------------#   /\
         // |                 |   || dy+entB.y
         // |  dx+entB.x      |   \/ 
@@ -79,7 +82,13 @@ public class CollisionChecker {
                 for (Entity e : gp.tM.currentRoom.entityList) {
                     dx = entity.x - e.x;
                     dy = (entity.y - entity.speed) - e.y;
+
+                    boolean before = entity.collisionOn;
                     detectCollision(entity, e.solidArea, dx, dy);
+                    if(entity.collisionOn == true && before == false){
+                        entity.interactionEntity = e;
+                    }
+                    
                 }
                 break;
 
@@ -112,7 +121,12 @@ public class CollisionChecker {
                 for (Entity e : gp.tM.currentRoom.entityList) {
                     dx = entity.x - e.x;
                     dy = (entity.y + entity.speed) - e.y;
+                    boolean before = entity.collisionOn;
                     detectCollision(entity, e.solidArea, dx, dy);
+                    if(entity.collisionOn == true && before == false){
+                        entity.interactionEntity = e;
+                    }
+
                 }      
                 break;
 
@@ -145,7 +159,12 @@ public class CollisionChecker {
                 for (Entity e : gp.tM.currentRoom.entityList) {
                     dx = (entity.x - entity.speed) - e.x;
                     dy = entity.y - e.y;
+                    boolean before = entity.collisionOn;
                     detectCollision(entity, e.solidArea, dx, dy);
+                    if(entity.collisionOn == true && before == false){
+                        entity.interactionEntity = e;
+                    }
+
                 }
                 break;
 
@@ -178,7 +197,11 @@ public class CollisionChecker {
                 for (Entity e : gp.tM.currentRoom.entityList) {
                     dx = (entity.x + entity.speed) - e.x;
                     dy = entity.y - e.y;
+                    boolean before = entity.collisionOn;
                     detectCollision(entity, e.solidArea, dx, dy);
+                    if(entity.collisionOn == true && before == false){
+                        entity.interactionEntity = e;
+                    }
                 }
                 break;
         }

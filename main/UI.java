@@ -40,6 +40,8 @@ public class UI {
             case PAUSE:
                 drawPauseScreen(g);
                 break;
+            case DIALOGUE:
+                drawDialogueScreen(g);
         }
     }
     void drawPauseScreen(Graphics2D g) {
@@ -89,5 +91,18 @@ public class UI {
         // Draw outline
         g.setColor(outlineColor);
         g.draw(shape);
+    }
+    public void drawDialogueScreen(Graphics2D g){
+        int x = 120;
+        int y = 580;
+        int width = 784;
+        int height = 100;
+        
+        drawSubWindow(g,x,y,width,height);
+    }
+
+    public void drawSubWindow(Graphics2D g, int x, int y, int width, int height){
+        g.setColor(outlineColor);
+        g.fillRect(x, y, width, height);
     }
 }

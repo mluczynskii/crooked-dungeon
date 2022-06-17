@@ -1,5 +1,6 @@
 package entity;
 
+import main.GamePanel.State;
 import main.GamePanel;
 import main.KeyController;
 import java.awt.*;
@@ -24,9 +25,9 @@ public class Player extends Entity {
         solidArea = new Area(new Rectangle(12 * GamePanel.scale, 16 * GamePanel.scale, 9 * GamePanel.scale, 9 * GamePanel.scale));
     }
     public void update () {
-
+       
         if(keyC.up == true || keyC.down == true || keyC.right == true || keyC.left == true){
-            
+            this.interactionEntity = null;
             if (this.keyC.up == true){ direction = "up"; }
             else if (keyC.down == true){ direction = "down"; }
             else if (keyC.right == true){ direction = "right"; }
@@ -63,7 +64,9 @@ public class Player extends Entity {
                 idleCounter = 0;
             }
         }
-
+        
+        if(keyC.z == true) interactNPC(interactionEntity);
+        
         checkRoomTransition();
     }
     void checkRoomTransition () {
@@ -145,6 +148,12 @@ public class Player extends Entity {
             right2 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_right2.png"));
         }catch(IOException e){
             e.printStackTrace();
+        }
+    }
+
+    public void interactNPC(Entity interactionEntity){
+        if(interactionEntity != null){
+            gp.gameState = State.DIALOGUE;
         }
     }
 }
