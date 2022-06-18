@@ -97,9 +97,9 @@ public class UI {
     }
     public void drawDialogueScreen(Graphics2D g){
         int x = 120;
-        int y = 580;
+        int y = 400;
         int width = 784;
-        int height = 100;
+        int height = 190;
         
         drawSubWindow(g,x,y,width,height);
     }
@@ -107,5 +107,9 @@ public class UI {
     public void drawSubWindow(Graphics2D g, int x, int y, int width, int height){
         g.setColor(outlineColor);
         g.fillRect(x, y, width, height);
+
+        g.setColor(textColor);
+        g.setStroke(new BasicStroke(5));
+        g.drawRect(x+5, y+5, width-10, height-10);
     }
 }
