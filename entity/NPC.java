@@ -12,7 +12,6 @@ public abstract class NPC extends Entity {
 
     public String speak(){
         String text = dialogue[currentDialogue];
-        currentDialogue++;
         return text;
     }
 }

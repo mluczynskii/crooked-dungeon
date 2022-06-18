@@ -65,7 +65,5 @@ public class Slime extends Entity {
             interval = 120;
         }
     }
-    public String speak () {
-        return "gluurb";
-    }
+
 }

@@ -1,5 +1,5 @@
 package main;
-import java.io.InputStream;
+
 
 import java.awt.*;
 import javax.imageio.ImageIO;
@@ -13,9 +13,8 @@ public class UI {
     static String path = "/graphic_assets/sprites/icons/";
     static Font infoFont = new Font("Impact", Font.PLAIN, 25);
     static Font pauseFont = new Font("Impact", Font.PLAIN, 60);
+    static Font textFont = new Font ("haxorville Nerd Font", Font.PLAIN, 30);
     
-    InputStream stream;
-    Font font;
 
     // Colors
     static Color textColor = Color.WHITE;
@@ -37,14 +36,7 @@ public class UI {
             System.out.println("Missing sprites");
         }
     }
-    void get_font(){
-        try {
-            stream = ClassLoader.getSystemClassLoader().getResourceAsStream("/graphic_assets/fonts/pixel-hires.ttf");
-            font = Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(48f);
-        }
-        catch (Exception E){
-        }
-    }
+
     public void drawUI (Graphics2D g) {
         switch (gp.gameState) {
             case PLAY:
@@ -94,9 +86,9 @@ public class UI {
         FontMetrics metrics = g.getFontMetrics(font);
         int x = container.x + (container.width - metrics.stringWidth(str)) / 2;
         int y = container.y + ((container.height - metrics.getHeight()) / 2) + metrics.getAscent();
-        drawText(str, x, y, g, font);
+        drawTextOutline(str, x, y, g, font);
     }
-    void drawText (String str, int x, int y, Graphics2D g, Font font) {
+    void drawTextOutline (String str, int x, int y, Graphics2D g, Font font) {
         TextLayout tl = new TextLayout(str, font, g.getFontRenderContext());
         AffineTransform matrix = new AffineTransform();
         matrix.translate(x, y);
@@ -108,15 +100,26 @@ public class UI {
         g.setColor(outlineColor);
         g.draw(shape);
     }
+    void drawText (String str, int x, int y, Graphics2D g, Font font) {
+        TextLayout tl = new TextLayout(str, font, g.getFontRenderContext());
+        AffineTransform matrix = new AffineTransform();
+        matrix.translate(x, y);
+        // Draw Text
+        g.setColor(textColor);
+        tl.draw(g, x, y);
+
+    }
     public void drawDialogueScreen(Graphics2D g){
         int x = 120;
         int y = 400;
         int width = 784;
         int height = 190;
+        Stroke defaultStroke = g.getStroke();
         
-       // currentDialogue = gp.player.interactionEntity.speak();
+        currentDialogue = gp.player.interactionNPC.speak();
         drawSubWindow(g,x,y,width,height);
-       // drawDialogueText(g,currentDialogue,x,y,width,height);
+        drawDialogueText(g,currentDialogue,x,y,width,height,defaultStroke);
+
     }
 
     public void drawSubWindow(Graphics2D g, int x, int y, int width, int height){
@@ -128,7 +131,9 @@ public class UI {
         g.drawRect(x+5, y+5, width-10, height-10);
     }
 
-    public void drawDialogueText(Graphics2D g,String text, int x, int y, int width, int height){     
-        drawText(text, x, y, g, infoFont);
+    public void drawDialogueText(Graphics2D g,String text, int x, int y, int width, int height, Stroke st){     
+       g.setColor(textColor);
+       g.setStroke(st);
+        drawText(text, x+30, y+50, g, textFont);
     }
 }
