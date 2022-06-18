@@ -25,7 +25,4 @@ public class NPC_Shopkeeper extends NPC {
         this.dialogueEnd = "naura";
 
     }
-    public void update () { 
-        // nothing to do 
-    }
 }

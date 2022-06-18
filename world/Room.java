@@ -9,11 +9,15 @@ import entity.NPC;
 import entity.Entity;
 import main.GamePanel;
 import java.awt.Graphics2D;
+import entity.*;
 
 public class Room {
     public int[][] roomTileNum;
+
     public ArrayList<Entity> entityList = new ArrayList<>();
     public ArrayList<NPC> npcList = new ArrayList<>();
+    public ArrayList<Monster> monsterList = new ArrayList<>();
+
     static String[] enemyNames = {"entity.Slime"};
     static int enemyCap = 3;
     Random rand = new Random();
@@ -57,14 +61,15 @@ public class Room {
         }
     }
     void generateEnemy (String enemyName) {
-            Entity monster = null;
+            Monster monster = null;
             try {
                 Class<?> classDef = Class.forName(enemyName);
                 int x = Math.max(GamePanel.tileSize + 5, rand.nextInt(GamePanel.screenWidth - (GamePanel.tileSize + 5)));
                 int y = Math.max(GamePanel.tileSize + 5, rand.nextInt(GamePanel.screenHeight - (GamePanel.tileSize + 5)));
                 Class<?>[] cArg = {Integer.TYPE, Integer.TYPE};
-                monster = (Entity) classDef.getDeclaredConstructor(cArg).newInstance(x, y);
+                monster = (Monster) classDef.getDeclaredConstructor(cArg).newInstance(x, y);
                 entityList.add(monster);
+                monsterList.add(monster);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -14,7 +14,7 @@ public abstract class Entity implements Drawable {
 
     public BufferedImage idle;
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-    public String direction;
+    public String direction = "up";
 
     public int spriteCounter=0;
     public int spriteNum=1;
@@ -45,5 +45,4 @@ public abstract class Entity implements Drawable {
             return 0;
         return -1;
     }
-    public abstract void update ();
 }

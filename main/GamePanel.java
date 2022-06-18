@@ -67,7 +67,10 @@ public class GamePanel extends JPanel implements Runnable {
     public void update () {
         if (gameState != State.PAUSE) {
             player.update();
-            TileManager.currentRoom.entityList.forEach((n) -> n.update());
+            for (Monster m : TileManager.currentRoom.monsterList) {
+                if (m != null)
+                    m.update();
+            }
         }
     }
     @Override 
