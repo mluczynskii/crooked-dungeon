@@ -16,6 +16,7 @@ public class Player extends Entity {
     KeyController keyC;
     int idleCounter = 0;
     public int money = 0;
+    NPC interactionNPC = null;
 
     public Player (GamePanel gp, KeyController keyC) {
         this.gp = gp;
@@ -29,7 +30,6 @@ public class Player extends Entity {
     public void update () {
        
         if(keyC.up == true || keyC.down == true || keyC.right == true || keyC.left == true){
-            this.interactionEntity = null;
             if (this.keyC.up == true){ direction = "up"; }
             else if (keyC.down == true){ direction = "down"; }
             else if (keyC.right == true){ direction = "right"; }
@@ -67,7 +67,7 @@ public class Player extends Entity {
             }
         }
         
-        if(keyC.z == true) interactNPC(interactionEntity);
+        if(keyC.z == true) interactNPC(interactionNPC);
         
         checkRoomTransition();
     }
@@ -153,9 +153,28 @@ public class Player extends Entity {
         }
     }
 
+    private void findInteraction() {
+        Double min = Double.MAX_VALUE;
+        NPC temp = null;
+        for (NPC npc : TileManager.currentRoom.npcList) {
+            Rectangle one = solidArea.getBounds();
+            Rectangle two = npc.solidArea.getBounds();
+            Double d = Math.sqrt(Math.pow(one.x - two.x, 2) + Math.pow(one.y - one.y, 2));
+            if (d < min) {
+                temp = npc;
+                min = d;
+            }
+        }
+        if (min < GamePanel.tileSize - 5)
+            interactionNPC = temp;
+    }
+
     public void interactNPC(Entity interactionEntity){
+        findInteraction();
         if(interactionEntity != null){
             gp.gameState = State.DIALOGUE;
         }
     }
+
+
 }

@@ -25,6 +25,7 @@ public class Shop extends Room {
         this.shopkeeper = new NPC_Shopkeeper(this);
         generateStock();
         entityList.add(shopkeeper);
+        npcList.add(shopkeeper);
     }
     void generateStock () {
         int index = rand.nextInt(lowQualityItems.length);

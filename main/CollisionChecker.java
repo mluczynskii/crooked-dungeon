@@ -76,12 +76,7 @@ public class CollisionChecker {
                     dx = entity.x - e.x;
                     dy = (entity.y - entity.speed) - e.y;
 
-                    boolean before = entity.collisionOn;
-                    detectCollision(entity, e.solidArea, dx, dy);
-                    if(entity.collisionOn == true && before == false){
-                        entity.interactionEntity = e;
-                    }
-                    
+                    detectCollision(entity, e.solidArea, dx, dy);                    
                 }
                 break;
 
@@ -114,11 +109,8 @@ public class CollisionChecker {
                 for (Entity e : TileManager.currentRoom.entityList) {
                     dx = entity.x - e.x;
                     dy = (entity.y + entity.speed) - e.y;
-                    boolean before = entity.collisionOn;
                     detectCollision(entity, e.solidArea, dx, dy);
-                    if(entity.collisionOn == true && before == false){
-                        entity.interactionEntity = e;
-                    }
+
                 }      
                 break;
 
@@ -151,11 +143,8 @@ public class CollisionChecker {
                 for (Entity e : TileManager.currentRoom.entityList) {
                     dx = (entity.x - entity.speed) - e.x;
                     dy = entity.y - e.y;
-                    boolean before = entity.collisionOn;
                     detectCollision(entity, e.solidArea, dx, dy);
-                    if(entity.collisionOn == true && before == false){
-                        entity.interactionEntity = e;
-                    }
+                  
                 }
                 break;
 
@@ -188,11 +177,7 @@ public class CollisionChecker {
                 for (Entity e : TileManager.currentRoom.entityList) {
                     dx = (entity.x + entity.speed) - e.x;
                     dy = entity.y - e.y;
-                    boolean before = entity.collisionOn;
                     detectCollision(entity, e.solidArea, dx, dy);
-                    if(entity.collisionOn == true && before == false){
-                        entity.interactionEntity = e;
-                    }
                 }
                 break;
         }

@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
-
+import entity.NPC;
 import entity.Entity;
 import main.GamePanel;
 import java.awt.Graphics2D;
@@ -13,6 +13,7 @@ import java.awt.Graphics2D;
 public class Room {
     public int[][] roomTileNum;
     public ArrayList<Entity> entityList = new ArrayList<>();
+    public ArrayList<NPC> npcList = new ArrayList<>();
     static String[] enemyNames = {"entity.Slime"};
     static int enemyCap = 6;
     Random rand = new Random();
