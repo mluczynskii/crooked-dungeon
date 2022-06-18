@@ -1,4 +1,5 @@
 package main;
+import java.io.InputStream;
 
 import java.awt.*;
 import javax.imageio.ImageIO;
@@ -12,6 +13,9 @@ public class UI {
     static String path = "/graphic_assets/sprites/icons/";
     static Font infoFont = new Font("Impact", Font.PLAIN, 25);
     static Font pauseFont = new Font("Impact", Font.PLAIN, 60);
+    
+    InputStream stream;
+    Font font;
 
     // Colors
     static Color textColor = Color.WHITE;
@@ -21,6 +25,7 @@ public class UI {
     // Icons
     static int iconSize = GamePanel.tileSize * 2/3;
     BufferedImage dmgIcon, speedIcon, coinIcon;
+    String currentDialogue = "";
 
     public UI (GamePanel gp) {
         this.gp = gp;
@@ -30,6 +35,14 @@ public class UI {
             this.coinIcon = ImageIO.read(getClass().getResourceAsStream(path + "coin.png"));
         } catch (Exception e) {
             System.out.println("Missing sprites");
+        }
+    }
+    void get_font(){
+        try {
+            stream = ClassLoader.getSystemClassLoader().getResourceAsStream("/graphic_assets/fonts/pixel-hires.ttf");
+            font = Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(48f);
+        }
+        catch (Exception E){
         }
     }
     public void drawUI (Graphics2D g) {
@@ -101,7 +114,9 @@ public class UI {
         int width = 784;
         int height = 190;
         
+       // currentDialogue = gp.player.interactionEntity.speak();
         drawSubWindow(g,x,y,width,height);
+       // drawDialogueText(g,currentDialogue,x,y,width,height);
     }
 
     public void drawSubWindow(Graphics2D g, int x, int y, int width, int height){
@@ -111,5 +126,9 @@ public class UI {
         g.setColor(textColor);
         g.setStroke(new BasicStroke(5));
         g.drawRect(x+5, y+5, width-10, height-10);
+    }
+
+    public void drawDialogueText(Graphics2D g,String text, int x, int y, int width, int height){     
+        drawText(text, x, y, g, infoFont);
     }
 }

@@ -2,7 +2,6 @@ package entity;
 
 import java.util.Random;
 import javax.imageio.ImageIO;
-import main.CollisionChecker;
 
 public class Slime extends Entity {
     Random rand = new Random();
@@ -21,5 +20,8 @@ public class Slime extends Entity {
     @Override
     public void update () {
         System.out.println("chuj");
+    }
+    public String speak () {
+        return "gluurb";
     }
 }
