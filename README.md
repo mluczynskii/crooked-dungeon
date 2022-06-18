@@ -11,3 +11,4 @@ Compiling command linux:
 javac -cp . -d ./bin main/Window.java
 
 Run command linux:
+ java -cp ./bin main.Window
