@@ -3,6 +3,7 @@ package entity;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import main.GamePanel;
+import main.CollisionChecker;
 
 public class Slime extends Entity {
     Random rand = new Random();
@@ -42,7 +43,7 @@ public class Slime extends Entity {
         }
 
         collisionOn = false;
-        gp.checker.checkTiles(this);
+        CollisionChecker.checkTiles(this);
 
         if (collisionOn == false) {
             switch (direction) {

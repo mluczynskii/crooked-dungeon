@@ -27,8 +27,8 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameLoop;
     KeyController keyC = new KeyController(this);
     Player player = new Player (this, this.keyC);
-    public TileManager tM = new TileManager();
-    public CollisionChecker checker = new CollisionChecker(this);
+    TileManager tM = new TileManager();
+    CollisionChecker checker = new CollisionChecker();
     PriorityQueue<Drawable> q = new PriorityQueue<>();
     UI ui = new UI(this);
 
@@ -67,7 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void update () {
         if (gameState != State.PAUSE) {
             player.update();
-            for (Entity e : tM.currentRoom.entityList) {
+            for (Entity e : TileManager.currentRoom.entityList) {
                 e.update();
             }
         }
@@ -80,7 +80,7 @@ public class GamePanel extends JPanel implements Runnable {
         tM.drawRoom(g2);
 
         q.add(player);
-        for (Entity e : tM.currentRoom.entityList)
+        for (Entity e : TileManager.currentRoom.entityList)
             q.add(e);
         for (Drawable x : q)
             x.draw(g2);

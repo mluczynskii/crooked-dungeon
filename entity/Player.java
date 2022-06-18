@@ -1,6 +1,8 @@
 package entity;
 
 import main.GamePanel.State;
+import world.TileManager;
+import main.CollisionChecker;
 import main.GamePanel;
 import main.KeyController;
 import java.awt.*;
@@ -34,7 +36,7 @@ public class Player extends Entity {
             else if (keyC.left == true){ direction = "left"; }
 
             collisionOn = false;
-            gp.checker.checkTiles(this);
+            CollisionChecker.checkTiles(this);
 
             if(collisionOn == false){
                 switch(direction){
@@ -72,19 +74,19 @@ public class Player extends Entity {
     void checkRoomTransition () {
         Rectangle bounds = solidArea.getBounds();
         if (x + bounds.x + bounds.width > GamePanel.screenWidth) {
-            gp.tM.roomX = gp.tM.roomX + 1;
+            TileManager.roomX = TileManager.roomX + 1;
             x = 0;           
         }
         if (x + bounds.x < 0) {
-            gp.tM.roomX = gp.tM.roomX - 1;
+            TileManager.roomX = TileManager.roomX - 1;
             x = GamePanel.screenWidth - GamePanel.tileSize;           
         }
         if (y + bounds.y + bounds.height > GamePanel.screenHeight) {
-            gp.tM.roomY = gp.tM.roomY + 1;
+            TileManager.roomY = TileManager.roomY + 1;
             y = 0;           
         }
         if (y + bounds.y < 0) {
-            gp.tM.roomY = gp.tM.roomY - 1;
+            TileManager.roomY = TileManager.roomY - 1;
             y = GamePanel.screenHeight - GamePanel.tileSize;           
         }
     }

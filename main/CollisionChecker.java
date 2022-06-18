@@ -8,11 +8,7 @@ import java.awt.geom.AffineTransform;
 import world.TileManager;
 
 public class CollisionChecker {
-    GamePanel gp;
-    public CollisionChecker(GamePanel gp){
-        this.gp=gp;
-    }
-    private void detectCollision (Entity entity, Area solidArea, int dx, int dy) {
+    private static void detectCollision (Entity entity, Area solidArea, int dx, int dy) {
         // t1B - entity/tile solidArea, entB - entity solidArea
         // dx, dy - distance to upper-left corner of the entity/tile (@)
         // @-----------------#   /\
@@ -34,7 +30,7 @@ public class CollisionChecker {
             entity.collisionOn = true;
         }
     }
-    public void checkTiles (Entity entity) {
+    public static void checkTiles (Entity entity) {
         Rectangle bounds = entity.solidArea.getBounds();
         int entityLeftX = entity.x + bounds.x;
         int entityRightX = entity.x + bounds.x + bounds.width;
@@ -53,10 +49,10 @@ public class CollisionChecker {
             case "up":
                 entityTopRow = Math.max((entityTopY - entity.speed)/GamePanel.tileSize, 0);
 
-                tileNW = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
-                tileNE = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
-                tileSW = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
-                tileSE = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
+                tileNW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
+                tileNE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
+                tileSW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
+                tileSE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
                 
                 // North-west tile
                 dx = entity.x - (entityLeftCol * GamePanel.tileSize);
@@ -76,7 +72,7 @@ public class CollisionChecker {
                 dx = entity.x - (entityRightCol * GamePanel.tileSize);
                 detectCollision (entity, tileSE.solidArea, dx, dy);
                 
-                for (Entity e : gp.tM.currentRoom.entityList) {
+                for (Entity e : TileManager.currentRoom.entityList) {
                     dx = entity.x - e.x;
                     dy = (entity.y - entity.speed) - e.y;
 
@@ -92,10 +88,10 @@ public class CollisionChecker {
             case "down":
                 entityBotRow = Math.min((entityBotY + entity.speed)/GamePanel.tileSize, GamePanel.rowNum-1);
                 
-                tileNW = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
-                tileNE = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
-                tileSW = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
-                tileSE = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
+                tileNW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
+                tileNE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
+                tileSW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
+                tileSE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
                 
                 // North-west tile
                 dx = entity.x - (entityLeftCol * GamePanel.tileSize);
@@ -115,7 +111,7 @@ public class CollisionChecker {
                 dx = entity.x - (entityRightCol * GamePanel.tileSize);
                 detectCollision (entity, tileSE.solidArea, dx, dy);
 
-                for (Entity e : gp.tM.currentRoom.entityList) {
+                for (Entity e : TileManager.currentRoom.entityList) {
                     dx = entity.x - e.x;
                     dy = (entity.y + entity.speed) - e.y;
                     boolean before = entity.collisionOn;
@@ -129,10 +125,10 @@ public class CollisionChecker {
             case "left":
                 entityLeftCol = Math.max((entityLeftX - entity.speed)/GamePanel.tileSize, 0);
                 
-                tileNW = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
-                tileNE = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
-                tileSW = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
-                tileSE = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
+                tileNW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
+                tileNE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
+                tileSW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
+                tileSE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
                 
                 // North-west tile
                 dx = (entity.x - entity.speed) - (entityLeftCol * GamePanel.tileSize);
@@ -152,7 +148,7 @@ public class CollisionChecker {
                 dx = (entity.x - entity.speed) - (entityRightCol * GamePanel.tileSize);
                 detectCollision (entity, tileSE.solidArea, dx, dy);  
                 
-                for (Entity e : gp.tM.currentRoom.entityList) {
+                for (Entity e : TileManager.currentRoom.entityList) {
                     dx = (entity.x - entity.speed) - e.x;
                     dy = entity.y - e.y;
                     boolean before = entity.collisionOn;
@@ -166,10 +162,10 @@ public class CollisionChecker {
             case "right":
                 entityRightCol = Math.min((entityRightX + entity.speed)/GamePanel.tileSize, GamePanel.colNum-1);
                 
-                tileNW = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
-                tileNE = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
-                tileSW = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
-                tileSE = TileManager.tiles[gp.tM.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
+                tileNW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
+                tileNE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
+                tileSW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
+                tileSE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
                 
                 // North-west tile
                 dx = (entity.x + entity.speed) - (entityLeftCol * GamePanel.tileSize);
@@ -189,7 +185,7 @@ public class CollisionChecker {
                 dx = (entity.x + entity.speed) - (entityRightCol * GamePanel.tileSize);
                 detectCollision (entity, tileSE.solidArea, dx, dy);    
                 
-                for (Entity e : gp.tM.currentRoom.entityList) {
+                for (Entity e : TileManager.currentRoom.entityList) {
                     dx = (entity.x + entity.speed) - e.x;
                     dy = entity.y - e.y;
                     boolean before = entity.collisionOn;

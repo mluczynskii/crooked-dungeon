@@ -9,9 +9,9 @@ import java.awt.geom.Area;
 public class TileManager {
     public static Tile[] tiles;
 
-    public Level currentLevel;
-    public int roomX, roomY;
-    public Room currentRoom;
+    public static Level currentLevel;
+    public static int roomX, roomY;
+    public static Room currentRoom;
 
     static String tilePath = "/graphic_assets/tiles/";
 
