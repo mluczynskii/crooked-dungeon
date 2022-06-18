@@ -14,7 +14,7 @@ public class Room {
     public int[][] roomTileNum;
     public ArrayList<Entity> entityList = new ArrayList<>();
     static String[] enemyNames = {"entity.Slime"};
-    static int enemyCap = 6;
+    static int enemyCap = 3;
     Random rand = new Random();
 
     public Room (String filepath) {
@@ -40,12 +40,12 @@ public class Room {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        /*int it = rand.nextInt(enemyCap);
+        int it = rand.nextInt(enemyCap);
         while (it > 0) {
             String name = enemyNames[rand.nextInt(enemyNames.length)];
             generateEnemy(name);
             it--;
-        }*/
+        }
     }
     void drawRoom (Graphics2D g) {
         for (int row = 0, y = 0; row < GamePanel.rowNum; row++, y += GamePanel.tileSize) {
@@ -61,11 +61,11 @@ public class Room {
                 Class<?> classDef = Class.forName(enemyName);
                 int x = Math.max(GamePanel.tileSize + 5, rand.nextInt(GamePanel.screenWidth - (GamePanel.tileSize + 5)));
                 int y = Math.max(GamePanel.tileSize + 5, rand.nextInt(GamePanel.screenHeight - (GamePanel.tileSize + 5)));
-                Class<?>[] cArg = {Integer.class, Integer.class};
+                Class<?>[] cArg = {Integer.TYPE, Integer.TYPE};
                 monster = (Entity) classDef.getDeclaredConstructor(cArg).newInstance(x, y);
+                entityList.add(monster);
             } catch (Exception e) {
-                System.out.println("Couldn't find class: " + enemyName);
+                e.printStackTrace();
             }
-            entityList.add(monster);
     }
 }

@@ -67,9 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void update () {
         if (gameState != State.PAUSE) {
             player.update();
-            for (Entity e : TileManager.currentRoom.entityList) {
-                e.update();
-            }
+            TileManager.currentRoom.entityList.forEach((n) -> n.update());
         }
     }
     @Override 
@@ -82,9 +80,9 @@ public class GamePanel extends JPanel implements Runnable {
         q.add(player);
         for (Entity e : TileManager.currentRoom.entityList)
             q.add(e);
-        for (Drawable x : q)
-            x.draw(g2);
-        q.clear();
+        while (!q.isEmpty()) {
+            q.poll().draw(g2);
+        }
         
         ui.drawUI(g2);
         g2.dispose();

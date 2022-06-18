@@ -73,6 +73,8 @@ public class CollisionChecker {
                 detectCollision (entity, tileSE.solidArea, dx, dy);
                 
                 for (Entity e : TileManager.currentRoom.entityList) {
+                    if (entity.equals(e))
+                        continue;
                     dx = entity.x - e.x;
                     dy = (entity.y - entity.speed) - e.y;
 
