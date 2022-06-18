@@ -12,9 +12,6 @@ public class CollisionChecker {
     public CollisionChecker(GamePanel gp){
         this.gp=gp;
     }
-
-
-
     private void detectCollision (Entity entity, Area solidArea, int dx, int dy) {
         // t1B - entity/tile solidArea, entB - entity solidArea
         // dx, dy - distance to upper-left corner of the entity/tile (@)
@@ -126,7 +123,6 @@ public class CollisionChecker {
                     if(entity.collisionOn == true && before == false){
                         entity.interactionEntity = e;
                     }
-
                 }      
                 break;
 
@@ -164,7 +160,6 @@ public class CollisionChecker {
                     if(entity.collisionOn == true && before == false){
                         entity.interactionEntity = e;
                     }
-
                 }
                 break;
 

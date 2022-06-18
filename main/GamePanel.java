@@ -65,9 +65,12 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     public void update () {
-        if (gameState != State.PAUSE)
+        if (gameState != State.PAUSE) {
             player.update();
-
+            for (Entity e : tM.currentRoom.entityList) {
+                e.update();
+            }
+        }
     }
     @Override 
     public void paintComponent (Graphics g) {

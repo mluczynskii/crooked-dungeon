@@ -19,4 +19,7 @@ public class NPC_Shopkeeper extends Entity {
         super.setPosition((Integer)GamePanel.screenWidth/2 - GamePanel.tileSize/2, (Integer)GamePanel.screenHeight/3 - GamePanel.tileSize/3);
         super.setSolidArea(10, 0, 15, 32);
     }
+    public void update () { 
+        // nothing to do 
+    }
 }

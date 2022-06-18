@@ -46,4 +46,5 @@ public abstract class Entity implements Drawable {
             return 0;
         return -1;
     }
+    public abstract void update ();
 }
