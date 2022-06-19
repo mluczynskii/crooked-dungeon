@@ -5,7 +5,7 @@ import main.GamePanel.State;
 
 public class KeyController implements KeyListener {
     GamePanel gp;
-    public boolean up, down, right, left, z;
+    public boolean up, down, right, left, z, attack;
 
     public KeyController (GamePanel gp) {
         this.gp = gp;
@@ -48,6 +48,9 @@ public class KeyController implements KeyListener {
                 else if (gp.gameState == State.PAUSE)
                     gp.gameState = State.PLAY;
                 break;
+            case KeyEvent.VK_X:
+                attack = true;
+                break;
         }
     }
     @Override
@@ -68,6 +71,9 @@ public class KeyController implements KeyListener {
                 break;
             case KeyEvent.VK_Z:
                 z = false;
+                break;
+            case KeyEvent.VK_X:
+                attack = false;
                 break;
         }
     }

@@ -6,6 +6,7 @@ import main.Drawable;
 import main.GamePanel;
 import java.awt.geom.Area;
 import java.awt.*;
+import java.util.ArrayList;
 
 public abstract class Entity implements Drawable {
     public int speed, x, y;
@@ -13,11 +14,12 @@ public abstract class Entity implements Drawable {
     public double dmg;
 
     public BufferedImage idle;
-    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
+    public ArrayList<BufferedImage> up, down, left, right; // walking animation frames
+    public ArrayList<BufferedImage> at_up, at_down, at_left, at_right; // attack animation frames
     public String direction = "up";
 
     public int spriteCounter=0;
-    public int spriteNum=1;
+    public int spriteNum=0;
     public Area solidArea;
     public boolean collisionOn=false;
 

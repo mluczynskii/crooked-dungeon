@@ -8,19 +8,24 @@ import main.KeyController;
 import java.awt.*;
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.awt.geom.Area;
 
 public class Player extends Entity {
+    static String path = "/graphic_assets/characters/ax/";
     GamePanel gp;
     KeyController keyC;
-    int idleCounter = 0;
     public int money = 0;
     public NPC interactionNPC = null;
+    boolean attacking = false;
 
     public Player (GamePanel gp, KeyController keyC) {
         this.gp = gp;
         this.keyC = keyC;
+
+        up = new ArrayList<>(); down = new ArrayList<>(); left = new ArrayList<>(); right = new ArrayList<>();
+        at_up = new ArrayList<>(); at_down = new ArrayList<>(); at_left = new ArrayList<>(); at_right = new ArrayList<>(); 
         
         setDefaultValues();
         getPlayerImage();
@@ -28,7 +33,13 @@ public class Player extends Entity {
         solidArea = new Area(new Rectangle(12 * GamePanel.scale, 16 * GamePanel.scale, 9 * GamePanel.scale, 9 * GamePanel.scale));
     }
     public void update () {
-       
+        /*if (attacking == true) {
+            attack();
+        }
+        else if (keyC.attack == true) { 
+            spriteCounter = 0;
+            attacking = true; 
+        }*/
         if(keyC.up == true || keyC.down == true || keyC.right == true || keyC.left == true){
             if (this.keyC.up == true){ direction = "up"; }
             else if (keyC.down == true){ direction = "down"; }
@@ -49,27 +60,30 @@ public class Player extends Entity {
 
             spriteCounter++;
             if(spriteCounter > spriteChangeRate){
-                if(spriteNum == 1){
-                    spriteNum = 2;
-                }
-                else if (spriteNum == 2){
-                    spriteNum=1;
+                switch (direction) {
+                    case "up": spriteNum = (spriteNum + 1) % up.size(); break;
+                    case "down": spriteNum = (spriteNum + 1) % down.size(); break;
+                    case "left": spriteNum = (spriteNum + 1) % left.size(); break;
+                    case "right": spriteNum = (spriteNum + 1) % right.size(); break;
                 }
                 spriteCounter=0;
             }
 
         }
-        else{
-            idleCounter++;
-            if(idleCounter == 20){
-                spriteNum=2;
-                idleCounter = 0;
-            }
-        }
         
         if(keyC.z == true) interactNPC(interactionNPC);
         
         checkRoomTransition();
+    }
+    void attack () {
+        spriteCounter++;
+        if (spriteCounter <= 5) spriteNum = 0;
+        else if (spriteCounter > 5 && spriteCounter <= 25) spriteNum = 1;
+        else {
+            spriteNum = 0;
+            spriteCounter = 0;
+            attacking = false;
+        }
     }
     void checkRoomTransition () {
         Rectangle bounds = solidArea.getBounds();
@@ -103,36 +117,20 @@ public class Player extends Entity {
       BufferedImage image = null;
       switch(direction){
         case "up":
-            if(spriteNum == 1){
-                image = up1;
-            }
-            if(spriteNum == 2){
-                image = up2;
-            }
+            if (attacking == true) image = at_up.get(spriteNum);
+            else image = up.get(spriteNum);
             break;
         case "down":
-            if(spriteNum == 1){
-                image = down1;
-            }
-            if(spriteNum == 2){
-                 image = down2;
-            }
+            if (attacking == true) image = at_down.get(spriteNum);
+            else image = down.get(spriteNum);
             break;
         case "left":
-            if(spriteNum == 1){
-                image = left1;
-            }
-            if(spriteNum == 2){
-                image = left2;
-            }
+            if (attacking == true) image = at_left.get(spriteNum);
+            else image = left.get(spriteNum);
             break;
         case "right":
-            if(spriteNum == 1){
-                image = right1;
-            }
-            if(spriteNum == 2){
-                image = right2;
-            }
+            if (attacking == true) image = at_right.get(spriteNum);
+            else image = right.get(spriteNum);
             break;
       }
       g.drawImage(image, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
@@ -140,14 +138,16 @@ public class Player extends Entity {
 
     public void getPlayerImage(){
         try{
-            up1 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_up1.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_up2.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_down1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_down2.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_left1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_left2.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_right1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/characters/ax/ax_right2.png"));
+            for (int i = 1; i <= 2; i++) {
+                up.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_up" + i + ".png")));
+                down.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_down" + i + ".png")));
+                left.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_left" + i + ".png")));
+                right.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_right" + i + ".png")));
+                /*at_up.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_at_up" + i + ".png")));
+                at_down.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_at_down" + i + ".png")));
+                at_left.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_at_left" + i + ".png")));
+                at_right.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_at_right" + i + ".png")));*/
+            }
         }catch(IOException e){
             e.printStackTrace();
         }
