@@ -6,9 +6,10 @@ import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.geom.AffineTransform;
 import world.TileManager;
+import entity.*;
 
 public class CollisionChecker {
-    private static void detectCollision (Entity entity, Area solidArea, int dx, int dy) {
+    private static boolean detectCollision (Entity entity, Area solidArea, int dx, int dy) {
         // t1B - entity/tile solidArea, entB - entity solidArea
         // dx, dy - distance to upper-left corner of the entity/tile (@)
         // @-----------------#   /\
@@ -27,10 +28,11 @@ public class CollisionChecker {
         Area two = entity.solidArea.createTransformedArea(matrix);
         one.intersect(two);
         if (!(one.isEmpty())) {
-            entity.collisionOn = true;
+            return true;
         }
+        return false;
     }
-    public static void checkTiles (Entity entity) {
+    public static void check (Entity entity) {
         Rectangle bounds = entity.solidArea.getBounds();
         int entityLeftX = entity.x + bounds.x;
         int entityRightX = entity.x + bounds.x + bounds.width;
@@ -57,20 +59,20 @@ public class CollisionChecker {
                 // North-west tile
                 dx = entity.x - (entityLeftCol * GamePanel.tileSize);
                 dy = (entity.y - entity.speed) - (entityTopRow * GamePanel.tileSize);
-                detectCollision (entity, tileNW.solidArea, dx, dy);
+                if (detectCollision (entity, tileNW.solidArea, dx, dy)) entity.collisionOn = true;
 
                 // North-east tile
                 dx = entity.x - (entityRightCol * GamePanel.tileSize);
-                detectCollision (entity, tileNE.solidArea, dx, dy);
+                if (detectCollision (entity, tileNE.solidArea, dx, dy)) entity.collisionOn = true;
 
                 // South-west tile
                 dx = entity.x - (entityLeftCol * GamePanel.tileSize);
                 dy = (entity.y - entity.speed) - (entityBotRow * GamePanel.tileSize);
-                detectCollision (entity, tileSW.solidArea, dx, dy);
+                if (detectCollision (entity, tileSW.solidArea, dx, dy)) entity.collisionOn = true;
 
                 // South-east tile
                 dx = entity.x - (entityRightCol * GamePanel.tileSize);
-                detectCollision (entity, tileSE.solidArea, dx, dy);
+                if (detectCollision (entity, tileSE.solidArea, dx, dy)) entity.collisionOn = true;
                 
                 for (Entity e : TileManager.currentRoom.entityList) {
                     if (entity.equals(e))
@@ -78,7 +80,14 @@ public class CollisionChecker {
                     dx = entity.x - e.x;
                     dy = (entity.y - entity.speed) - e.y;
 
-                    detectCollision(entity, e.solidArea, dx, dy);                    
+                    if (detectCollision(entity, e.solidArea, dx, dy)) {
+                        entity.collisionOn = true;
+                        if (entity instanceof Player && e instanceof Monster && !entity.invulnerable) {
+                            entity.currentHealth -= e.dmg;
+                            entity.invulnerable = true;
+                            entity.invulnerable_tick = 0;
+                        }
+                    }                    
                 }
                 break;
 
@@ -93,27 +102,34 @@ public class CollisionChecker {
                 // North-west tile
                 dx = entity.x - (entityLeftCol * GamePanel.tileSize);
                 dy = (entity.y + entity.speed) - (entityTopRow * GamePanel.tileSize);
-                detectCollision (entity, tileNW.solidArea, dx, dy);
+                if (detectCollision (entity, tileNW.solidArea, dx, dy)) entity.collisionOn = true;
 
                 // North-east tile
                 dx = entity.x - (entityRightCol * GamePanel.tileSize);
-                detectCollision (entity, tileNE.solidArea, dx, dy);
+                if (detectCollision (entity, tileNE.solidArea, dx, dy)) entity.collisionOn = true;
 
                 // South-west tile
                 dx = entity.x - (entityLeftCol * GamePanel.tileSize);
                 dy = (entity.y + entity.speed) - (entityBotRow * GamePanel.tileSize);
-                detectCollision (entity, tileSW.solidArea, dx, dy);
+                if (detectCollision (entity, tileSW.solidArea, dx, dy)) entity.collisionOn = true;
 
                 // South-east tile
                 dx = entity.x - (entityRightCol * GamePanel.tileSize);
-                detectCollision (entity, tileSE.solidArea, dx, dy);
+                if (detectCollision (entity, tileSE.solidArea, dx, dy)) entity.collisionOn = true;
 
                 for (Entity e : TileManager.currentRoom.entityList) {
                     if (e.equals(entity))
                         continue;
                     dx = entity.x - e.x;
                     dy = (entity.y + entity.speed) - e.y;
-                    detectCollision(entity, e.solidArea, dx, dy);
+                    if (detectCollision(entity, e.solidArea, dx, dy)) {
+                        entity.collisionOn = true;
+                        if (entity instanceof Player && e instanceof Monster && !entity.invulnerable) {
+                            entity.currentHealth -= e.dmg;
+                            entity.invulnerable = true;
+                            entity.invulnerable_tick = 0;
+                        }
+                    }    
                 }      
                 break;
 
@@ -128,27 +144,34 @@ public class CollisionChecker {
                 // North-west tile
                 dx = (entity.x - entity.speed) - (entityLeftCol * GamePanel.tileSize);
                 dy = entity.y - (entityTopRow * GamePanel.tileSize);
-                detectCollision (entity, tileNW.solidArea, dx, dy);
+                if (detectCollision (entity, tileNW.solidArea, dx, dy)) entity.collisionOn = true;
 
                 // North-east tile
                 dx = (entity.x - entity.speed) - (entityRightCol * GamePanel.tileSize);
-                detectCollision (entity, tileNE.solidArea, dx, dy);
+                if (detectCollision (entity, tileNE.solidArea, dx, dy)) entity.collisionOn = true;
 
                 // South-west tile
                 dx = (entity.x - entity.speed) - (entityLeftCol * GamePanel.tileSize);
                 dy = entity.y - (entityBotRow * GamePanel.tileSize);
-                detectCollision (entity, tileSW.solidArea, dx, dy);
+                if (detectCollision (entity, tileSW.solidArea, dx, dy)) entity.collisionOn = true;
 
                 // South-east tile
                 dx = (entity.x - entity.speed) - (entityRightCol * GamePanel.tileSize);
-                detectCollision (entity, tileSE.solidArea, dx, dy);  
+                if (detectCollision (entity, tileSE.solidArea, dx, dy)) entity.collisionOn = true;  
                 
                 for (Entity e : TileManager.currentRoom.entityList) {
                     if (e.equals(entity))
                         continue;
                     dx = (entity.x - entity.speed) - e.x;
                     dy = entity.y - e.y;
-                    detectCollision(entity, e.solidArea, dx, dy); 
+                    if (detectCollision(entity, e.solidArea, dx, dy)) {
+                        entity.collisionOn = true;
+                        if (entity instanceof Player && e instanceof Monster && !entity.invulnerable) {
+                            entity.currentHealth -= e.dmg;
+                            entity.invulnerable = true;
+                            entity.invulnerable_tick = 0;
+                        }
+                    }     
                 }
                 break;
 
@@ -163,27 +186,34 @@ public class CollisionChecker {
                 // North-west tile
                 dx = (entity.x + entity.speed) - (entityLeftCol * GamePanel.tileSize);
                 dy = entity.y - (entityTopRow * GamePanel.tileSize);
-                detectCollision (entity, tileNW.solidArea, dx, dy);
+                if (detectCollision (entity, tileNW.solidArea, dx, dy)) entity.collisionOn = true;
 
                 // North-east tile
                 dx = (entity.x + entity.speed) - (entityRightCol * GamePanel.tileSize);
-                detectCollision (entity, tileNE.solidArea, dx, dy);
+                if (detectCollision (entity, tileNE.solidArea, dx, dy)) entity.collisionOn = true;
 
                 // South-west tile
                 dx = (entity.x + entity.speed) - (entityLeftCol * GamePanel.tileSize);
                 dy = entity.y - (entityBotRow * GamePanel.tileSize);
-                detectCollision (entity, tileSW.solidArea, dx, dy);
+                if (detectCollision (entity, tileSW.solidArea, dx, dy)) entity.collisionOn = true;
 
                 // South-east tile
                 dx = (entity.x + entity.speed) - (entityRightCol * GamePanel.tileSize);
-                detectCollision (entity, tileSE.solidArea, dx, dy);    
+                if (detectCollision (entity, tileSE.solidArea, dx, dy)) entity.collisionOn = true;    
                 
                 for (Entity e : TileManager.currentRoom.entityList) {
                     if (e.equals(entity))
                         continue;
                     dx = (entity.x + entity.speed) - e.x;
                     dy = entity.y - e.y;
-                    detectCollision(entity, e.solidArea, dx, dy);
+                    if (detectCollision(entity, e.solidArea, dx, dy)) {
+                        entity.collisionOn = true;
+                        if (entity instanceof Player && e instanceof Monster && !entity.invulnerable) {
+                            entity.currentHealth -= e.dmg;
+                            entity.invulnerable = true;
+                            entity.invulnerable_tick = 0;
+                        }
+                    }    
                 }
                 break;
         }

@@ -14,11 +14,23 @@ import java.awt.geom.Area;
 
 public class Player extends Entity {
     static String path = "/graphic_assets/characters/ax/";
+
     GamePanel gp;
     KeyController keyC;
     public int money = 0;
     public NPC interactionNPC = null;
     boolean attacking = false;
+
+    final int invulnerable_cd = 100;
+
+    Area attack_area = null;
+
+    final Area solid_at_up = new Area(new Rectangle(0, -GamePanel.tileSize, GamePanel.tileSize, GamePanel.tileSize * 2));
+    final Area solid_at_down = new Area(new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize * 2));
+    final Area solid_at_left = new Area(new Rectangle(-GamePanel.tileSize, 0, GamePanel.tileSize * 2, GamePanel.tileSize));
+    final Area solid_at_right = new Area(new Rectangle(0, 0, GamePanel.tileSize * 2, GamePanel.tileSize));
+
+    final Area solid_default = new Area(new Rectangle(12 * GamePanel.scale, 16 * GamePanel.scale, 9 * GamePanel.scale, 9 * GamePanel.scale));
 
     public Player (GamePanel gp, KeyController keyC) {
         this.gp = gp;
@@ -30,9 +42,19 @@ public class Player extends Entity {
         setDefaultValues();
         getPlayerImage();
 
-        solidArea = new Area(new Rectangle(12 * GamePanel.scale, 16 * GamePanel.scale, 9 * GamePanel.scale, 9 * GamePanel.scale));
+        solidArea = solid_default;
+    }
+    void changeHitbox () {
+        switch (direction) {
+            case "up": solidArea = (attacking ? solid_at_up : solid_default); break;
+            case "down": solidArea = (attacking ? solid_at_down : solid_default); break;
+            case "left": solidArea = (attacking ? solid_at_left : solid_default); break;
+            case "right": solidArea = (attacking ? solid_at_right : solid_default); break;
+        }
     }
     public void update () {
+        System.out.println(currentHealth);
+        changeHitbox();
         if (attacking == true) {
             attack();
         }
@@ -47,7 +69,7 @@ public class Player extends Entity {
             else if (keyC.left == true){ direction = "left"; }
 
             collisionOn = false;
-            CollisionChecker.checkTiles(this);
+            CollisionChecker.check(this);
 
             if(collisionOn == false){
                 switch(direction){
@@ -70,7 +92,11 @@ public class Player extends Entity {
             }
 
         }
-        
+
+        if (invulnerable_tick < invulnerable_cd) 
+            invulnerable_tick++;
+        else invulnerable = false;
+
         if(keyC.z == true) interactNPC(interactionNPC);
         
         checkRoomTransition();
@@ -116,9 +142,10 @@ public class Player extends Entity {
     public void draw (Graphics2D g) {
       BufferedImage image = null;
       int height = GamePanel.tileSize; int width = GamePanel.tileSize;
+      int x = this.x; int y = this.y;
       switch(direction){
         case "up":
-            if (attacking == true) { image = at_up.get(spriteNum); height = height * 2; }
+            if (attacking == true) { image = at_up.get(spriteNum); height = height * 2; y = y - GamePanel.tileSize; }
             else image = up.get(spriteNum);
             break;
         case "down":
@@ -126,7 +153,7 @@ public class Player extends Entity {
             else image = down.get(spriteNum);
             break;
         case "left":
-            if (attacking == true) { image = at_left.get(spriteNum); width = width * 2; }
+            if (attacking == true) { image = at_left.get(spriteNum); width = width * 2; x = x - GamePanel.tileSize; }
             else image = left.get(spriteNum);
             break;
         case "right":
@@ -135,6 +162,10 @@ public class Player extends Entity {
             break;
       }
       g.drawImage(image, x, y, width, height, null);
+
+      // debug
+      Rectangle bounds = solidArea.getBounds();
+      g.drawRect(this.x + bounds.x, this.y + bounds.y, bounds.width, bounds.height);
     }
 
     public void getPlayerImage(){

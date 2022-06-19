@@ -17,7 +17,7 @@ public class NPC_Shopkeeper extends NPC {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        super.setStats(Integer.MAX_VALUE, 0);
+        super.setStats(Integer.MAX_VALUE, 0, 0);
         super.setPosition((Integer)GamePanel.screenWidth/2 - GamePanel.tileSize/2, (Integer)GamePanel.screenHeight/3 - GamePanel.tileSize/3);
         super.setSolidArea(10, 0, 15, 32);
         String [] tmp = {"Moj stary jest fanatykiem wedkowania", "carp"};

@@ -14,6 +14,8 @@ import entity.*;
 public class Room {
     public int[][] roomTileNum;
 
+
+    GamePanel gp;
     public ArrayList<Entity> entityList = new ArrayList<>();
     public ArrayList<NPC> npcList = new ArrayList<>();
     public ArrayList<Monster> monsterList = new ArrayList<>();
@@ -22,7 +24,9 @@ public class Room {
     static int enemyCap = 3;
     Random rand = new Random();
 
-    public Room (String filepath) {
+    public Room (String filepath, GamePanel gp) {
+        this.gp = gp;
+        entityList.add(gp.player);
         roomTileNum = new int[GamePanel.rowNum][GamePanel.colNum];
         try {
             InputStream is = getClass().getResourceAsStream(filepath);

@@ -29,7 +29,7 @@ public class Window {
             if (ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("/graphic_assets/fonts/haxorville.ttf"))))
                 System.out.println("Success");
        } catch (Exception e) {
-            System.out.print("Failed to import");
+            System.out.println("Failed to import");
        }
     }
 }

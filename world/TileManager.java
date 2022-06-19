@@ -12,6 +12,7 @@ public class TileManager {
     public static Level currentLevel;
     public static int roomX, roomY;
     public static Room currentRoom;
+    GamePanel gp;
 
     static String tilePath = "/graphic_assets/tiles/";
 
@@ -60,11 +61,12 @@ public class TileManager {
         tiles[30].solidArea.add(new Area(new Rectangle(GamePanel.tileSize-4, 2, 4, GamePanel.tileSize-2))); // "wall_bot_left.png"
     }
 
-    public TileManager () {
+    public TileManager (GamePanel gp) {
         tiles = new Tile[tileNames.length];
+        this.gp = gp;
         getTileImages();
         initSolidBounds();
-        currentLevel = new Level();
+        currentLevel = new Level(gp);
         roomX = 0; roomY = 0;
         currentRoom = currentLevel.roomGrid[0][0];
     }

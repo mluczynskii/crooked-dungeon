@@ -20,8 +20,8 @@ public class Shop extends Room {
     Item[] stock = new Item[3];
     static Random rand = new Random ();
 
-    public Shop () {
-        super(path + shop_layouts[rand.nextInt(shop_layouts.length)]);
+    public Shop (GamePanel gp) {
+        super(path + shop_layouts[rand.nextInt(shop_layouts.length)], gp);
         this.shopkeeper = new NPC_Shopkeeper(this);
         generateStock();
         entityList.add(shopkeeper);

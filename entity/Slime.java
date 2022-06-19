@@ -4,6 +4,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import main.CollisionChecker;
+import main.GamePanel;
 
 public class Slime extends Monster {
     Random rand = new Random();
@@ -15,7 +16,7 @@ public class Slime extends Monster {
         } catch (Exception e) {
             System.out.println("Missing sprites");
         }
-        setStats(100, 2);
+        setStats(100, 2, 2);
         setPosition(x, y);
         setSolidArea(2, 2, 28, 28);
     }
@@ -32,13 +33,13 @@ public class Slime extends Monster {
             interval = 0;
         }
         collisionOn = false;
-        CollisionChecker.checkTiles(this);
+        CollisionChecker.check(this);
         if (collisionOn != true) {
             switch (direction) {
-                case "up": y -= speed; break;
-                case "down": y += speed; break;
-                case "right": x += speed; break;
-                case "left": x -= speed; break;
+                case "up": y = Math.max(GamePanel.tileSize, y - speed); break;
+                case "down": y = Math.min(GamePanel.screenHeight - GamePanel.tileSize, y + speed); break;
+                case "right": x = Math.min(GamePanel.screenWidth - GamePanel.tileSize, x + speed); break;
+                case "left": x = Math.max(GamePanel.tileSize, x - speed); break;
             }
         }
         else

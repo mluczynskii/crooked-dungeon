@@ -27,8 +27,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     Thread gameLoop;
     KeyController keyC = new KeyController(this);
-    Player player = new Player (this, this.keyC);
-    TileManager tM = new TileManager();
+    public Player player = new Player (this, this.keyC);
+    TileManager tM = new TileManager(this);
     CollisionChecker checker = new CollisionChecker();
     PriorityQueue<Drawable> q = new PriorityQueue<>();
     UI ui = new UI(this);

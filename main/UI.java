@@ -48,6 +48,7 @@ public class UI {
                 break;
             case DIALOGUE:
                 drawDialogueScreen(g);
+                break;
         }
     }
     void drawPauseScreen(Graphics2D g) {
@@ -69,8 +70,9 @@ public class UI {
         drawCenteredText(Info, Integer.toString(gp.player.money), g, infoFont);
     }
     void drawHP (Graphics2D g) {
+        // TODO: Miriam fix pls bo ja nie umiem
         int hp = (int)gp.player.currentHealth, maxHp = (int)gp.player.maxHealth;
-        int width = (int)(hp/maxHp * GamePanel.screenWidth/3);
+        int width = hp/maxHp * GamePanel.screenWidth/3;
         int height = 30;
         Rectangle hpBar = new Rectangle(0, 0, width, height);
 

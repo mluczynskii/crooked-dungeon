@@ -18,16 +18,20 @@ public abstract class Entity implements Drawable {
     public ArrayList<BufferedImage> at_up, at_down, at_left, at_right; // attack animation frames
     public String direction = "up";
 
-    public int spriteCounter=0;
-    public int spriteNum=0;
+    public int spriteCounter = 0;
+    public int spriteNum = 0;
     public Area solidArea;
-    public boolean collisionOn=false;
+    public boolean collisionOn = false;
+
+    public boolean invulnerable = false;
+    public int invulnerable_tick = 0;
 
     static final int spriteChangeRate = 14;
     void setSolidArea (int x, int y, int width, int height) {
         solidArea = new Area (new Rectangle(x * GamePanel.scale, y * GamePanel.scale, width * GamePanel.scale, height * GamePanel.scale));
     }
-    void setStats (double maxHealth, int speed) {
+    void setStats (double maxHealth, int speed, int dmg) {
+        this.dmg = dmg;
         this.maxHealth = maxHealth;
         this.currentHealth = maxHealth;
         this.speed = speed;
