@@ -33,14 +33,14 @@ public class Player extends Entity {
         solidArea = new Area(new Rectangle(12 * GamePanel.scale, 16 * GamePanel.scale, 9 * GamePanel.scale, 9 * GamePanel.scale));
     }
     public void update () {
-        /*if (attacking == true) {
+        if (attacking == true) {
             attack();
         }
         else if (keyC.attack == true) { 
             spriteCounter = 0;
             attacking = true; 
-        }*/
-        if(keyC.up == true || keyC.down == true || keyC.right == true || keyC.left == true){
+        }
+        else if(keyC.up == true || keyC.down == true || keyC.right == true || keyC.left == true){
             if (this.keyC.up == true){ direction = "up"; }
             else if (keyC.down == true){ direction = "down"; }
             else if (keyC.right == true){ direction = "right"; }
@@ -115,25 +115,26 @@ public class Player extends Entity {
     @Override
     public void draw (Graphics2D g) {
       BufferedImage image = null;
+      int height = GamePanel.tileSize; int width = GamePanel.tileSize;
       switch(direction){
         case "up":
-            if (attacking == true) image = at_up.get(spriteNum);
+            if (attacking == true) { image = at_up.get(spriteNum); height = height * 2; }
             else image = up.get(spriteNum);
             break;
         case "down":
-            if (attacking == true) image = at_down.get(spriteNum);
+            if (attacking == true) { image = at_down.get(spriteNum); height = height * 2; }
             else image = down.get(spriteNum);
             break;
         case "left":
-            if (attacking == true) image = at_left.get(spriteNum);
+            if (attacking == true) { image = at_left.get(spriteNum); width = width * 2; }
             else image = left.get(spriteNum);
             break;
         case "right":
-            if (attacking == true) image = at_right.get(spriteNum);
+            if (attacking == true) { image = at_right.get(spriteNum); width = width * 2; }
             else image = right.get(spriteNum);
             break;
       }
-      g.drawImage(image, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
+      g.drawImage(image, x, y, width, height, null);
     }
 
     public void getPlayerImage(){
@@ -143,10 +144,10 @@ public class Player extends Entity {
                 down.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_down" + i + ".png")));
                 left.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_left" + i + ".png")));
                 right.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_right" + i + ".png")));
-                /*at_up.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_at_up" + i + ".png")));
+                at_up.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_at_up" + i + ".png")));
                 at_down.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_at_down" + i + ".png")));
                 at_left.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_at_left" + i + ".png")));
-                at_right.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_at_right" + i + ".png")));*/
+                at_right.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_at_right" + i + ".png")));
             }
         }catch(IOException e){
             e.printStackTrace();
