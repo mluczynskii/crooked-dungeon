@@ -13,15 +13,7 @@ public class KeyController implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) { 
-        int code = e.getKeyCode();
-        switch (code) {
-            case KeyEvent.VK_P:
-                if (gp.gameState == State.PLAY)
-                    gp.gameState = State.PAUSE;
-                else if (gp.gameState == State.PAUSE)
-                    gp.gameState = State.PLAY;
-                break;
-        }
+        // Nothing
     }
     @Override
     public void keyPressed(KeyEvent e) {

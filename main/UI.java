@@ -15,7 +15,6 @@ public class UI {
     static Font pauseFont = new Font("Impact", Font.PLAIN, 60);
     static Font textFont = new Font ("haxorville Nerd Font", Font.PLAIN, 30);
     
-
     // Colors
     static Color textColor = Color.WHITE;
     static Color hpBarColor = Color.RED;
@@ -25,6 +24,7 @@ public class UI {
     static int iconSize = GamePanel.tileSize * 2/3;
     BufferedImage dmgIcon, speedIcon, coinIcon;
 
+    Rectangle hpContainer = new Rectangle(0, 0, GamePanel.screenWidth/3, 30);
 
     public UI (GamePanel gp) {
         this.gp = gp;
@@ -70,19 +70,20 @@ public class UI {
         drawCenteredText(Info, Integer.toString(gp.player.money), g, infoFont);
     }
     void drawHP (Graphics2D g) {
-        // TODO: Miriam fix pls bo ja nie umiem
-        int hp = (int)gp.player.currentHealth, maxHp = (int)gp.player.maxHealth;
-        int width = hp/maxHp * GamePanel.screenWidth/3;
-        int height = 30;
-        Rectangle hpBar = new Rectangle(0, 0, width, height);
+        g.setColor(Color.BLACK);
+        g.fill(hpContainer);
+
+        double hp = gp.player.currentHealth;
+        double maxHp = gp.player.maxHealth;
+        double percent = hp/maxHp;
+        int width = (int)(percent * hpContainer.width);
+        Rectangle hpBar = new Rectangle (0, 0, width, hpContainer.height);
 
         g.setColor(hpBarColor);
         g.fill(hpBar);
 
-        g.setColor(outlineColor);
-        g.draw(hpBar);
-
-        drawCenteredText(hpBar, "HP: " + hp + "/" + maxHp, g, infoFont);
+        String msg = "HP: " + gp.player.currentHealth + "/" + gp.player.maxHealth;
+        drawCenteredText(hpContainer, msg, g, infoFont);
     }
     void drawCenteredText (Rectangle container, String str, Graphics2D g, Font font) {
         FontMetrics metrics = g.getFontMetrics(font);
