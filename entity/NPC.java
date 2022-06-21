@@ -2,8 +2,9 @@ package entity;
 
 public abstract class NPC extends Entity {
     String [] dialogue;
-    String dialogueEnd;
-    int currentDialogue = 0;
+    public int dialogueLength;
+    public int currentDialogue;
+    public int nextDialogue;
 
     void loadDialogue (String[] s) {
         this.dialogue = new String [s.length];
@@ -11,6 +12,12 @@ public abstract class NPC extends Entity {
     }
 
     public String speak(){
+
+        if(currentDialogue == dialogueLength){
+            currentDialogue = dialogueLength-1;
+            return ""; 
+        }
+        currentDialogue = nextDialogue;
         String text = dialogue[currentDialogue];
         return text;
     }

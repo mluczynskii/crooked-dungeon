@@ -97,7 +97,15 @@ public class Player extends Entity {
             invulnerable_tick++;
         else invulnerable = false;
 
-        if(keyC.z == true) interactNPC(interactionNPC);
+        if(keyC.z == true) {
+            interactNPC(interactionNPC);
+        }
+        
+        else if(keyC.zs == true){
+            increaseDialogue(interactionNPC);
+            keyC.zs = false;
+        }
+
         
         checkRoomTransition();
     }
@@ -199,9 +207,18 @@ public class Player extends Entity {
         }
         if (min < GamePanel.tileSize - 5)
             interactionNPC = temp;
+        
     }
-
-    public void interactNPC(Entity interactionEntity){
+    public void increaseDialogue(NPC interactionEntity){
+        if(interactionEntity != null){
+            interactionEntity.currentDialogue +=1;
+        }
+    }
+    public void interactNPC(NPC interactionEntity){
+        /*if(interactionEntity!=null){
+            interactionEntity.currentDialogue +=1;
+        }
+        */
         findInteraction();
         if(interactionEntity != null){
             gp.gameState = State.DIALOGUE;

@@ -24,7 +24,7 @@ public class UI {
     // Icons
     static int iconSize = GamePanel.tileSize * 2/3;
     BufferedImage dmgIcon, speedIcon, coinIcon;
-    String currentDialogue = "";
+
 
     public UI (GamePanel gp) {
         this.gp = gp;
@@ -118,7 +118,10 @@ public class UI {
         int height = 190;
         Stroke defaultStroke = g.getStroke();
         
-        currentDialogue = gp.player.interactionNPC.speak();
+        String currentDialogue = gp.player.interactionNPC.speak();
+        if(currentDialogue == ""){
+            return;
+        }
         drawSubWindow(g,x,y,width,height);
         drawDialogueText(g,currentDialogue,x,y,width,height,defaultStroke);
 
