@@ -3,7 +3,7 @@ package world;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.Random;
 import entity.NPC;
 import entity.Entity;
@@ -17,10 +17,10 @@ public class Room {
 
 
     GamePanel gp;
-    public ArrayList<Entity> entityList = new ArrayList<>();
-    public ArrayList<NPC> npcList = new ArrayList<>();
-    public ArrayList<Monster> monsterList = new ArrayList<>();
-    public ArrayList<Pickup> pickupList = new ArrayList<>();
+    public ConcurrentLinkedQueue<Entity> entityList = new ConcurrentLinkedQueue<>();
+    public ConcurrentLinkedQueue<NPC> npcList = new ConcurrentLinkedQueue<>();
+    public ConcurrentLinkedQueue<Monster> monsterList = new ConcurrentLinkedQueue<>();
+    public ConcurrentLinkedQueue<Pickup> pickupList = new ConcurrentLinkedQueue<>();
     public Player player;
 
     static String[] enemyNames = {"entity.Slime"};

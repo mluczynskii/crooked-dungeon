@@ -19,9 +19,9 @@ public class Player extends Entity {
     KeyController keyC;
     public int money = 0;
     public NPC interactionNPC = null;
-    boolean attacking = false;
+    public boolean attacking = false;
 
-    final int invulnerable_cd = 100;
+    final int invulnerable_cd = 60;
 
     Area attack_area = null;
 
@@ -52,8 +52,9 @@ public class Player extends Entity {
             case "right": solidArea = (attacking ? solid_at_right : solid_default); break;
         }
     }
-    public void takeDamage (Monster monster) {
-        currentHealth = currentHealth - monster.dmg;
+    @Override
+    public void takeDamage (Entity monster) {
+        super.takeDamage(monster);
         invulnerable = true;
         invulnerable_tick = 0;
     }
@@ -148,6 +149,7 @@ public class Player extends Entity {
         x = 100;
         y = 100;
         speed = 4;
+        dmg = 2;
         direction = "down";
     }
     @Override

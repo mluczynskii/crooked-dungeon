@@ -3,6 +3,9 @@ package main;
 
 import java.awt.*;
 import javax.imageio.ImageIO;
+
+import world.TileManager;
+import entity.*;
 import java.awt.image.*;
 import java.awt.font.TextLayout;
 import java.awt.geom.*;
@@ -42,6 +45,7 @@ public class UI {
             case PLAY:
                 drawHP(g);
                 drawIcons(g);
+                drawMonsterHP(g);
                 break;
             case PAUSE:
                 drawPauseScreen(g);
@@ -49,6 +53,22 @@ public class UI {
             case DIALOGUE:
                 drawDialogueScreen(g);
                 break;
+        }
+    }
+    void drawMonsterHP (Graphics2D g) {
+        for (Monster m : TileManager.currentRoom.monsterList) {
+            g.setColor(Color.BLACK);
+            Rectangle monsterHPContainer = new Rectangle (m.x, m.y - 10, GamePanel.tileSize, 3);
+            g.fill(monsterHPContainer);
+
+            double hp = m.currentHealth;
+            double maxHp = m.maxHealth;
+            double percent = hp/maxHp;
+            int width = (int)(percent * monsterHPContainer.width);
+            Rectangle hpBar = new Rectangle (m.x, m.y - 10, width, monsterHPContainer.height);
+
+            g.setColor(hpBarColor);
+            g.fill(hpBar);
         }
     }
     void drawPauseScreen(Graphics2D g) {

@@ -56,7 +56,10 @@ public class CollisionChecker {
         Player player = TileManager.currentRoom.player;
         int[] d = calculateDistance(monster, player);
         int dx = d[0]; int dy = d[1];
-        if (detectCollision(player.solidArea, monster.solidArea, dx, dy) && player.invulnerable == false)
+        boolean flag = detectCollision(player.solidArea, monster.solidArea, dx, dy);
+        if (flag && player.attacking == true)
+            monster.takeDamage(player);
+        else if (flag && player.invulnerable == false)
             player.takeDamage(monster);
     }
     public static void checkPlayer (Player player) {
@@ -65,7 +68,10 @@ public class CollisionChecker {
         for (Monster monster : TileManager.currentRoom.monsterList) {
             int[] d = calculateDistance(player, monster);
             dx = d[0]; dy = d[1];
-            if (detectCollision(player.solidArea, monster.solidArea, dx, dy) && player.invulnerable == false)
+            boolean flag = detectCollision(player.solidArea, monster.solidArea, dx, dy);
+            if (flag && player.attacking == true)
+                monster.takeDamage(player);
+            else if (flag && player.invulnerable == false)
                 player.takeDamage(monster);
         }
     }
