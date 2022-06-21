@@ -73,6 +73,7 @@ public class UI {
         g.setColor(Color.BLACK);
         g.fill(hpContainer);
 
+        // Calculate the width of the HP bar
         double hp = gp.player.currentHealth;
         double maxHp = gp.player.maxHealth;
         double percent = hp/maxHp;

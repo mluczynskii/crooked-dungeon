@@ -7,6 +7,7 @@ import java.awt.geom.Area;
 import java.awt.geom.AffineTransform;
 import world.TileManager;
 import entity.*;
+import pickup.*;
 
 public class CollisionChecker {
     private static boolean detectCollision (Area one, Area two, int dx, int dy) {
@@ -41,6 +42,14 @@ public class CollisionChecker {
                 break;
         }
         return d;
+    }
+    public static void checkPickup (Player player) {
+        int dx, dy;
+        for (Pickup pickup : TileManager.currentRoom.pickupList) {
+            dx = pickup.x - player.x; dy = pickup.y - player.y;
+            if (detectCollision(player.solidArea, pickup.solidArea, dx, dy))
+                pickup.getPickedUp(player);
+        }
     }
     public static void checkMonster (Monster monster) {
         checkEntity(monster);

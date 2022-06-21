@@ -21,7 +21,7 @@ public class Player extends Entity {
     public NPC interactionNPC = null;
     boolean attacking = false;
 
-    final int invulnerable_cd = 200;
+    final int invulnerable_cd = 100;
 
     Area attack_area = null;
 

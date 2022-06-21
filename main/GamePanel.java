@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import entity.Player;
+import pickup.*;
 import world.TileManager;
 import java.util.PriorityQueue;
 import entity.*;
@@ -84,6 +85,8 @@ public class GamePanel extends JPanel implements Runnable {
         q.add(player);
         for (Entity e : TileManager.currentRoom.entityList)
             q.add(e);
+        for (Pickup pickup : TileManager.currentRoom.pickupList)
+            q.add(pickup);
         while (!q.isEmpty()) {
             q.poll().draw(g2);
         }

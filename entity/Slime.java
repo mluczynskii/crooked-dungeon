@@ -2,7 +2,7 @@ package entity;
 
 import java.util.Random;
 import javax.imageio.ImageIO;
-
+import world.*;
 import main.CollisionChecker;
 import main.GamePanel;
 
@@ -10,7 +10,9 @@ public class Slime extends Monster {
     Random rand = new Random();
     static String path = "/graphic_assets/characters/slime/";
     int interval = 0;
-    public Slime (int x, int y) {
+    boolean dead = false;
+    public Slime (int x, int y, Room room) {
+        this.room = room;
         try {
             this.idle = ImageIO.read(getClass().getResourceAsStream(path + "slime.png"));
         } catch (Exception e) {
@@ -21,6 +23,9 @@ public class Slime extends Monster {
         setSolidArea(2, 2, 28, 28);
     }
     public void update () {
+        if (dead)
+            die(); // Yeah well...
+
         interval++;
         if (interval >= 120) {
             int choice = rand.nextInt(4);
@@ -46,5 +51,8 @@ public class Slime extends Monster {
         }
         else
             interval = 120;
+
+        if (currentHealth == 0) 
+            dead = true;
     }
 }

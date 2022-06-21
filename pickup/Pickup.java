@@ -7,14 +7,20 @@ import main.Drawable;
 import main.GamePanel;
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
+import world.*;
 
 public abstract class Pickup implements Drawable {
     static String path = "/graphic_assets/sprites/pickups/";
     static int pickupSize = GamePanel.tileSize / 4;
     BufferedImage sprite;
-    int x, y;
-    Area solidArea;
-    public abstract void action (Player player);
+    public int x, y;
+    public Area solidArea;
+    Room room;
+    abstract void action (Player player);
+    public void getPickedUp (Player player) {
+        room.pickupList.remove(this);
+        action(player);
+    }
     void loadImage (String filename) {
         try {
             this.sprite = ImageIO.read(getClass().getResourceAsStream(path + filename));

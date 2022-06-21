@@ -10,6 +10,7 @@ import entity.Entity;
 import main.GamePanel;
 import java.awt.Graphics2D;
 import entity.*;
+import pickup.*;
 
 public class Room {
     public int[][] roomTileNum;
@@ -19,6 +20,7 @@ public class Room {
     public ArrayList<Entity> entityList = new ArrayList<>();
     public ArrayList<NPC> npcList = new ArrayList<>();
     public ArrayList<Monster> monsterList = new ArrayList<>();
+    public ArrayList<Pickup> pickupList = new ArrayList<>();
     public Player player;
 
     static String[] enemyNames = {"entity.Slime"};
@@ -72,8 +74,8 @@ public class Room {
                 Class<?> classDef = Class.forName(enemyName);
                 int x = Math.max(GamePanel.tileSize + 5, rand.nextInt(GamePanel.screenWidth - (GamePanel.tileSize + 5)));
                 int y = Math.max(GamePanel.tileSize + 5, rand.nextInt(GamePanel.screenHeight - (GamePanel.tileSize + 5)));
-                Class<?>[] cArg = {Integer.TYPE, Integer.TYPE};
-                monster = (Monster) classDef.getDeclaredConstructor(cArg).newInstance(x, y);
+                Class<?>[] cArg = {Integer.TYPE, Integer.TYPE, Room.class};
+                monster = (Monster) classDef.getDeclaredConstructor(cArg).newInstance(x, y, this);
                 entityList.add(monster);
                 monsterList.add(monster);
             } catch (Exception e) {
