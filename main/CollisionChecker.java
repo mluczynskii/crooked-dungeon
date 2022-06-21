@@ -10,53 +10,58 @@ import entity.*;
 import pickup.*;
 
 public class CollisionChecker {
-    private static boolean detectCollision (Area one, Area two, int dx, int dy) {
+    private static class Distance {
+        public int x, y;
+        public Distance (int dx, int dy) {
+            this.x = dx;
+            this.y = dy;
+        }
+    }
+    private static boolean detectCollision (Area one, Area two, Distance d) {
         Area a = new Area(one);
 
         // We need to translate one of the solidAreas because they dont have the same point of reference
         AffineTransform matrix = new AffineTransform();
-        matrix.translate(dx, dy);
+        matrix.translate(d.x, d.y);
         Area b = two.createTransformedArea(matrix);
 
         a.intersect(b); // Sets [a] to intersection of [a] and [b]
         return a.isEmpty() ? false : true; // If intersection is empty then that means there is no collision
     }
-    static int[] calculateDistance (Entity origin, Entity target) {
-        int[] d = {0, 0};
+    static Distance calculateDistance (Entity origin, int x, int y) {
+        int dx = 0, dy = 0;
         switch (origin.direction) {
             case "up":
-                d[0] = target.x - origin.x;
-                d[1] = target.y - (origin.y - origin.speed);
+                dx = x - origin.x;
+                dy = y - (origin.y - origin.speed);
                 break;
             case "down":
-                d[0] = target.x - origin.x;
-                d[1] = target.y - (origin.y + origin.speed);
+                dx = x - origin.x;
+                dy = y - (origin.y + origin.speed);
                 break;
             case "left":
-                d[0] = target.x - (origin.x - origin.speed);
-                d[1] = target.y - origin.y;
+                dx = x - (origin.x - origin.speed);
+                dy = y - origin.y;
                 break;
             case "right":
-                d[0] = target.x - (origin.x + origin.speed);
-                d[1] = target.y - origin.y;
+                dx = x - (origin.x + origin.speed);
+                dy = y - origin.y;
                 break;
+            default:
+                System.out.println("Unknown direction: " + origin.direction);
         }
-        return d;
+        return new Distance (dx, dy);
     }
     public static void checkPickup (Player player) {
-        int dx, dy;
         for (Pickup pickup : TileManager.currentRoom.pickupList) {
-            dx = pickup.x - player.x; dy = pickup.y - player.y;
-            if (detectCollision(player.solidArea, pickup.solidArea, dx, dy))
+            if (detectCollision(player.solidArea, pickup.solidArea, calculateDistance(player, pickup.x, pickup.y)))
                 pickup.getPickedUp(player);
         }
     }
     public static void checkMonster (Monster monster) {
         checkEntity(monster);
         Player player = TileManager.currentRoom.player;
-        int[] d = calculateDistance(monster, player);
-        int dx = d[0]; int dy = d[1];
-        boolean flag = detectCollision(player.solidArea, monster.solidArea, dx, dy);
+        boolean flag = detectCollision(player.solidArea, monster.solidArea, calculateDistance(monster, player.x, player.y));
         if (flag && player.attacking == true)
             monster.takeDamage(player);
         else if (flag && player.invulnerable == false)
@@ -64,11 +69,8 @@ public class CollisionChecker {
     }
     public static void checkPlayer (Player player) {
         checkEntity (player);
-        int dx, dy;
         for (Monster monster : TileManager.currentRoom.monsterList) {
-            int[] d = calculateDistance(player, monster);
-            dx = d[0]; dy = d[1];
-            boolean flag = detectCollision(player.solidArea, monster.solidArea, dx, dy);
+            boolean flag = detectCollision(player.solidArea, monster.solidArea, calculateDistance(player, monster.x, monster.y));
             if (flag && player.attacking == true)
                 monster.takeDamage(player);
             else if (flag && player.invulnerable == false)
@@ -76,15 +78,12 @@ public class CollisionChecker {
         }
     }
     public static void findInteraction (Player player) {
-        int dx, dy;
         for (NPC npc : TileManager.currentRoom.npcList) {
-            int[] d = calculateDistance(player, npc);
-            dx = d[0]; dy = d[1];
-            if (detectCollision(player.solidArea, npc.solidArea, dx, dy))
+            if (detectCollision(player.solidArea, npc.solidArea, calculateDistance(player, npc.x, npc.y)))
                 player.interactionNPC = npc;
         }
     }
-    public static void checkEntity (Entity entity) {
+    static void checkEntity (Entity entity) {
         Rectangle bounds = entity.solidArea.getBounds();
 
         // Positions of each side of the bounding rectangle
@@ -99,153 +98,53 @@ public class CollisionChecker {
         int entityTopRow = Math.max(entityTopY/GamePanel.tileSize, 0);
         int entityBotRow = Math.min(entityBotY/GamePanel.tileSize, GamePanel.rowNum-1);
 
-        Tile tileNW, tileNE, tileSW, tileSE;
-        int dx, dy;
-
-        switch(entity.direction){
+        // Calculate possibly changed indexes after shifting the hitbox according to current direction
+        switch (entity.direction) {
             case "up":
                 entityTopRow = Math.max((entityTopY - entity.speed)/GamePanel.tileSize, 0);
-
-                tileNW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
-                tileNE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
-                tileSW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
-                tileSE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
-                
-                // North-west tile
-                dx = entity.x - (entityLeftCol * GamePanel.tileSize);
-                dy = (entity.y - entity.speed) - (entityTopRow * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileNW.solidArea, dx, dy)) entity.collisionOn = true;
-
-                // North-east tile
-                dx = entity.x - (entityRightCol * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileNE.solidArea, dx, dy)) entity.collisionOn = true;
-
-                // South-west tile
-                dx = entity.x - (entityLeftCol * GamePanel.tileSize);
-                dy = (entity.y - entity.speed) - (entityBotRow * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileSW.solidArea, dx, dy)) entity.collisionOn = true;
-
-                // South-east tile
-                dx = entity.x - (entityRightCol * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileSE.solidArea, dx, dy)) entity.collisionOn = true;
-                
-                for (Entity e : TileManager.currentRoom.entityList) {
-                    if (entity.equals(e))
-                        continue;
-                    int[] d = calculateDistance(entity, e);
-                    dx = d[0]; dy = d[1];
-
-                    if (detectCollision(entity.solidArea, e.solidArea, dx, dy)) entity.collisionOn = true;                  
-                }
+                entityBotRow = Math.max((entityBotY - entity.speed)/GamePanel.tileSize, 0);
                 break;
-
             case "down":
+                entityTopRow = Math.min((entityTopY + entity.speed)/GamePanel.tileSize, GamePanel.rowNum-1);
                 entityBotRow = Math.min((entityBotY + entity.speed)/GamePanel.tileSize, GamePanel.rowNum-1);
-                
-                tileNW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
-                tileNE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
-                tileSW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
-                tileSE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
-                
-                // North-west tile
-                dx = entity.x - (entityLeftCol * GamePanel.tileSize);
-                dy = (entity.y + entity.speed) - (entityTopRow * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileNW.solidArea, dx, dy)) entity.collisionOn = true;
-
-                // North-east tile
-                dx = entity.x - (entityRightCol * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileNE.solidArea, dx, dy)) entity.collisionOn = true;
-
-                // South-west tile
-                dx = entity.x - (entityLeftCol * GamePanel.tileSize);
-                dy = (entity.y + entity.speed) - (entityBotRow * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileSW.solidArea, dx, dy)) entity.collisionOn = true;
-
-                // South-east tile
-                dx = entity.x - (entityRightCol * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileSE.solidArea, dx, dy)) entity.collisionOn = true;
-
-                for (Entity e : TileManager.currentRoom.entityList) {
-                    if (entity.equals(e))
-                        continue;
-                    int[] d = calculateDistance(entity, e);
-                    dx = d[0]; dy = d[1];
-
-                    if (detectCollision(entity.solidArea, e.solidArea, dx, dy)) entity.collisionOn = true;                  
-                }      
                 break;
-
             case "left":
                 entityLeftCol = Math.max((entityLeftX - entity.speed)/GamePanel.tileSize, 0);
-                
-                tileNW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
-                tileNE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
-                tileSW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
-                tileSE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
-                
-                // North-west tile
-                dx = (entity.x - entity.speed) - (entityLeftCol * GamePanel.tileSize);
-                dy = entity.y - (entityTopRow * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileNW.solidArea, dx, dy)) entity.collisionOn = true;
-
-                // North-east tile
-                dx = (entity.x - entity.speed) - (entityRightCol * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileNE.solidArea, dx, dy)) entity.collisionOn = true;
-
-                // South-west tile
-                dx = (entity.x - entity.speed) - (entityLeftCol * GamePanel.tileSize);
-                dy = entity.y - (entityBotRow * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileSW.solidArea, dx, dy)) entity.collisionOn = true;
-
-                // South-east tile
-                dx = (entity.x - entity.speed) - (entityRightCol * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileSE.solidArea, dx, dy)) entity.collisionOn = true;  
-                
-                for (Entity e : TileManager.currentRoom.entityList) {
-                    if (entity.equals(e))
-                        continue;
-                    int[] d = calculateDistance(entity, e);
-                    dx = d[0]; dy = d[1];
-
-                    if (detectCollision(entity.solidArea, e.solidArea, dx, dy)) entity.collisionOn = true;                  
-                }
+                entityRightCol = Math.max((entityRightX - entity.speed)/GamePanel.tileSize, 0);
                 break;
-
             case "right":
+                entityLeftCol = Math.min((entityLeftX + entity.speed)/GamePanel.tileSize, GamePanel.colNum-1);
                 entityRightCol = Math.min((entityRightX + entity.speed)/GamePanel.tileSize, GamePanel.colNum-1);
-                
-                tileNW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
-                tileNE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
-                tileSW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
-                tileSE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
-                
-                // North-west tile
-                dx = (entity.x + entity.speed) - (entityLeftCol * GamePanel.tileSize);
-                dy = entity.y - (entityTopRow * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileNW.solidArea, dx, dy)) entity.collisionOn = true;
-
-                // North-east tile
-                dx = (entity.x + entity.speed) - (entityRightCol * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileNE.solidArea, dx, dy)) entity.collisionOn = true;
-
-                // South-west tile
-                dx = (entity.x + entity.speed) - (entityLeftCol * GamePanel.tileSize);
-                dy = entity.y - (entityBotRow * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileSW.solidArea, dx, dy)) entity.collisionOn = true;
-
-                // South-east tile
-                dx = (entity.x + entity.speed) - (entityRightCol * GamePanel.tileSize);
-                if (detectCollision (entity.solidArea, tileSE.solidArea, dx, dy)) entity.collisionOn = true;    
-                
-                for (Entity e : TileManager.currentRoom.entityList) {
-                    if (entity.equals(e))
-                        continue;
-                    int[] d = calculateDistance(entity, e);
-                    dx = d[0]; dy = d[1];
-
-                    if (detectCollision(entity.solidArea, e.solidArea, dx, dy)) entity.collisionOn = true;                  
-                }
                 break;
+            default:
+                System.out.println("Unknown direction: " + entity.direction);
+                break;
+        }
+
+        // Save adjacent tiles
+        Tile NW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
+        Tile NE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
+        Tile SW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
+        Tile SE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
+
+        int top = entityTopRow * GamePanel.tileSize;
+        int bot = entityBotRow * GamePanel.tileSize;
+        int left = entityLeftCol * GamePanel.tileSize;
+        int right = entityRightCol * GamePanel.tileSize;
+
+        if (detectCollision(entity.solidArea, NW.solidArea, calculateDistance(entity, left, top)) || // Check north-west tile
+            detectCollision(entity.solidArea, NE.solidArea, calculateDistance(entity, right, top)) || // Check north-east tile
+            detectCollision(entity.solidArea, SW.solidArea, calculateDistance(entity, left, bot)) || // Check south-west tile
+            detectCollision(entity.solidArea, SE.solidArea, calculateDistance(entity, right, bot))) { // Check south-east tile
+                entity.collisionOn = true;
+        }
+
+        // Check collision with other entities
+        for (Entity e : TileManager.currentRoom.entityList) {
+            if (entity.equals(e))
+                continue;
+            if (detectCollision(entity.solidArea, e.solidArea, calculateDistance(entity, e.x, e.y))) 
+                entity.collisionOn = true;                  
         }
     }
 }
