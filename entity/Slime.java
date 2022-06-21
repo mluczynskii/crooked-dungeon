@@ -32,8 +32,10 @@ public class Slime extends Monster {
             }
             interval = 0;
         }
+
         collisionOn = false;
-        CollisionChecker.check(this);
+        CollisionChecker.checkMonster(this);
+        
         if (collisionOn != true) {
             switch (direction) {
                 case "up": y = Math.max(GamePanel.tileSize, y - speed); break;

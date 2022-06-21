@@ -21,7 +21,7 @@ public class Player extends Entity {
     public NPC interactionNPC = null;
     boolean attacking = false;
 
-    final int invulnerable_cd = 100;
+    final int invulnerable_cd = 200;
 
     Area attack_area = null;
 
@@ -52,8 +52,14 @@ public class Player extends Entity {
             case "right": solidArea = (attacking ? solid_at_right : solid_default); break;
         }
     }
+    public void takeDamage (Monster monster) {
+        currentHealth = currentHealth - monster.dmg;
+        invulnerable = true;
+        invulnerable_tick = 0;
+    }
     public void update () {
-        System.out.println(currentHealth);
+        System.out.println(currentHealth); // Debug
+
         changeHitbox();
         if (attacking == true) {
             attack();
@@ -69,7 +75,7 @@ public class Player extends Entity {
             else if (keyC.left == true){ direction = "left"; }
 
             collisionOn = false;
-            CollisionChecker.check(this);
+            CollisionChecker.checkPlayer(this);
 
             if(collisionOn == false){
                 switch(direction){
@@ -100,13 +106,11 @@ public class Player extends Entity {
         if(keyC.z == true) {
             interactNPC(interactionNPC);
         }
-        
         else if(keyC.zs == true){
             increaseDialogue(interactionNPC);
             keyC.zs = false;
         }
-
-        
+ 
         checkRoomTransition();
     }
     void attack () {
@@ -176,8 +180,9 @@ public class Player extends Entity {
       g.drawRect(this.x + bounds.x, this.y + bounds.y, bounds.width, bounds.height);
     }
 
-    public void getPlayerImage(){
+    public void getPlayerImage() {
         try{
+            // Can split into several loops if animation length is different for any of the directions/actions
             for (int i = 1; i <= 2; i++) {
                 up.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_up" + i + ".png")));
                 down.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_down" + i + ".png")));
@@ -188,38 +193,17 @@ public class Player extends Entity {
                 at_left.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_at_left" + i + ".png")));
                 at_right.add(ImageIO.read(getClass().getResourceAsStream(path + "ax_at_right" + i + ".png")));
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    private void findInteraction() {
-        Double min = Double.MAX_VALUE;
-        NPC temp = null;
-        for (NPC npc : TileManager.currentRoom.npcList) {
-            Rectangle one = solidArea.getBounds();
-            Rectangle two = npc.solidArea.getBounds();
-            Double d = Math.sqrt(Math.pow(one.x - two.x, 2) + Math.pow(one.y - one.y, 2));
-            if (d < min) {
-                temp = npc;
-                min = d;
-            }
-        }
-        if (min < GamePanel.tileSize - 5)
-            interactionNPC = temp;
-        
-    }
-    public void increaseDialogue(NPC interactionEntity){
-        if(interactionEntity != null){
+    public void increaseDialogue (NPC interactionEntity) {
+        if (interactionEntity != null){
             interactionEntity.currentDialogue +=1;
         }
     }
     public void interactNPC(NPC interactionEntity){
-        /*if(interactionEntity!=null){
-            interactionEntity.currentDialogue +=1;
-        }
-        */
-        findInteraction();
+        CollisionChecker.findInteraction(this);
         if(interactionEntity != null){
             gp.gameState = State.DIALOGUE;
         }

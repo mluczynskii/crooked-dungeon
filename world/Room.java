@@ -19,6 +19,7 @@ public class Room {
     public ArrayList<Entity> entityList = new ArrayList<>();
     public ArrayList<NPC> npcList = new ArrayList<>();
     public ArrayList<Monster> monsterList = new ArrayList<>();
+    public Player player;
 
     static String[] enemyNames = {"entity.Slime"};
     static int enemyCap = 3;
@@ -26,7 +27,8 @@ public class Room {
 
     public Room (String filepath, GamePanel gp) {
         this.gp = gp;
-        entityList.add(gp.player);
+        player = gp.player;
+        entityList.add(player);
         roomTileNum = new int[GamePanel.rowNum][GamePanel.colNum];
         try {
             InputStream is = getClass().getResourceAsStream(filepath);

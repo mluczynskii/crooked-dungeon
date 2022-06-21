@@ -42,6 +42,11 @@ public abstract class Entity implements Drawable {
     }
     public void draw (Graphics2D g) {
         g.drawImage(idle, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
+
+        // Debug
+        Rectangle bounds = solidArea.getBounds();
+        g.setColor(Color.RED);
+        g.drawRect(x + bounds.x, y + bounds.y, bounds.width, bounds.height);
     }
     public int height () { return this.y; }
     public int compareTo (Drawable e) { // Checks which entity is higher
