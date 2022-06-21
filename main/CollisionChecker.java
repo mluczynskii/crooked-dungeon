@@ -21,6 +21,27 @@ public class CollisionChecker {
         Area a = new Area(one);
 
         // We need to translate one of the solidAreas because they dont have the same point of reference
+
+        // Distance is calculated from A to B
+        // A ################## B ##################
+        // #                  # #   xxxxxxx        #  
+        // #                  # #   x two x        #
+        // #     xxxxxxx      # #   xxxxxxx        #
+        // #     x one x      # #                  #
+        // #     xxxxxxx      # #                  #
+        // #                  # #                  #
+        // #################### ####################
+        //
+        // AB ################# C ######################################
+        // #   xxxxxxx        # #                       xxxxxxx        #
+        // #   x two x        # #                       x two x        #
+        // #   =======        # #     xxxxxxx           xxxxxxx        #
+        // #   x one x        # #     x one x                          #
+        // #   xxxxxxx        # #     xxxxxxx                          #
+        // #                  # #                                      #
+        // #################### ########################################
+        // WITHOUT  TRANSLATION             WITH TRANSLATION
+
         AffineTransform matrix = new AffineTransform();
         matrix.translate(d.x, d.y);
         Area b = two.createTransformedArea(matrix);
@@ -127,6 +148,7 @@ public class CollisionChecker {
         Tile SW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
         Tile SE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
 
+        // Get adjacent tiles (x, y) positions
         int top = entityTopRow * GamePanel.tileSize;
         int bot = entityBotRow * GamePanel.tileSize;
         int left = entityLeftCol * GamePanel.tileSize;
