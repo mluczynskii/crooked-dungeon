@@ -2,7 +2,7 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.io.InputStream;
 
 public class Window {
     public static void main (String[] args) {
@@ -23,13 +23,16 @@ public class Window {
         gp.startGameThread();
     }
     static void get_font(){
+        // https://stackoverflow.com/questions/16570523/getresourceasstream-returns-null
+        // https://stackoverflow.com/questions/16621750/using-custom-fonts-java-io-ioexception-error-reading-font-data
         try {
-            GraphicsEnvironment ge = 
-            GraphicsEnvironment.getLocalGraphicsEnvironment();
-            if (ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("/graphic_assets/fonts/haxorville.ttf"))))
+            InputStream is = Window.class.getResourceAsStream("/graphic_assets/fonts/haxorville.ttf");
+            Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            if (ge.registerFont(font))
                 System.out.println("Success");
-       } catch (Exception e) {
-            System.out.println("Failed to import");
-       }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

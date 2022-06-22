@@ -33,9 +33,9 @@ public class CollisionChecker {
         // #################### ####################
         //
         // AB ################# C ######################################
-        // #   xxxxxxx        # #                       xxxxxxx        #
-        // #   x two x        # #                       x two x        #
-        // #   =======        # #     xxxxxxx           xxxxxxx        #
+        // #     xxxxxxx      # #                       xxxxxxx        #
+        // #     x two x      # #                       x two x        #
+        // #   xx=====xx      # #     xxxxxxx           xxxxxxx        #
         // #   x one x        # #     x one x                          #
         // #   xxxxxxx        # #     xxxxxxx                          #
         // #                  # #                                      #
@@ -75,7 +75,7 @@ public class CollisionChecker {
     }
     public static void checkPickup (Player player) {
         for (Pickup pickup : TileManager.currentRoom.pickupList) {
-            if (detectCollision(player.solidArea, pickup.solidArea, calculateDistance(player, pickup.x, pickup.y)))
+            if (detectCollision(player.solidArea, pickup.solidArea, new Distance (player.x - pickup.x, player.y - pickup.y)))
                 pickup.getPickedUp(player);
         }
     }

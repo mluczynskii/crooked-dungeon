@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.awt.geom.Area;
+import main.Sound;
 
 public class Player extends Entity {
     static String path = "/graphic_assets/characters/ax/";
@@ -20,6 +21,7 @@ public class Player extends Entity {
     public int money = 0;
     public NPC interactionNPC = null;
     public boolean attacking = false;
+    Sound soundEffects = new Sound();
 
     final int invulnerable_cd = 60;
 

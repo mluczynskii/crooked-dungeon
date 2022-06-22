@@ -14,6 +14,8 @@ public class UI {
     GamePanel gp;
 
     static String path = "/graphic_assets/sprites/icons/";
+
+    // Fonts
     static Font infoFont = new Font("Impact", Font.PLAIN, 25);
     static Font pauseFont = new Font("Impact", Font.PLAIN, 60);
     static Font textFont = new Font ("haxorville Nerd Font", Font.PLAIN, 30);
@@ -159,8 +161,8 @@ public class UI {
     }
 
     public void drawDialogueText(Graphics2D g,String text, int x, int y, int width, int height, Stroke st){     
-       g.setColor(textColor);
-       g.setStroke(st);
+        g.setColor(textColor);
+        g.setStroke(st);
         drawText(text, x+30, y+50, g, textFont);
     }
 }
