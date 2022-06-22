@@ -23,7 +23,7 @@ public class Player extends Entity {
 
     final int invulnerable_cd = 60;
 
-    Area attack_area = null;
+    public Area attackArea = null;
 
     final Area solid_at_up = new Area(new Rectangle(0, -GamePanel.tileSize, GamePanel.tileSize, GamePanel.tileSize * 2));
     final Area solid_at_down = new Area(new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize * 2));
@@ -46,10 +46,10 @@ public class Player extends Entity {
     }
     void changeHitbox () {
         switch (direction) {
-            case "up": solidArea = (attacking ? solid_at_up : solid_default); break;
-            case "down": solidArea = (attacking ? solid_at_down : solid_default); break;
-            case "left": solidArea = (attacking ? solid_at_left : solid_default); break;
-            case "right": solidArea = (attacking ? solid_at_right : solid_default); break;
+            case "up": attackArea = (attacking ? solid_at_up : null); break;
+            case "down": attackArea = (attacking ? solid_at_down : null); break;
+            case "left": attackArea = (attacking ? solid_at_left : null); break;
+            case "right": attackArea = (attacking ? solid_at_right : null); break;
         }
     }
     @Override
@@ -59,7 +59,7 @@ public class Player extends Entity {
         invulnerable_tick = 0;
     }
     public void update () {
-        System.out.println(currentHealth); // Debug
+        // System.out.println(currentHealth); // Debug
 
         changeHitbox();
         if (attacking == true) {
@@ -179,7 +179,13 @@ public class Player extends Entity {
 
       // debug
       Rectangle bounds = solidArea.getBounds();
+      g.setColor(Color.BLACK);
       g.drawRect(this.x + bounds.x, this.y + bounds.y, bounds.width, bounds.height);
+      if (attackArea != null) {
+            Rectangle bounds2 = attackArea.getBounds();
+            g.setColor(Color.RED);
+            g.drawRect(this.x + bounds2.x, this.y + bounds2.y, bounds2.width, bounds2.height);
+      }
     }
 
     public void getPlayerImage() {

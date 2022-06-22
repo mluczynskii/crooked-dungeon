@@ -82,19 +82,28 @@ public class CollisionChecker {
     public static void checkMonster (Monster monster) {
         checkEntity(monster);
         Player player = TileManager.currentRoom.player;
-        boolean flag = detectCollision(player.solidArea, monster.solidArea, calculateDistance(monster, player.x, player.y));
-        if (flag && player.attacking == true)
-            monster.takeDamage(player);
-        else if (flag && player.invulnerable == false)
+        boolean flag;
+        if (player.attackArea != null) {
+            flag = detectCollision(player.attackArea, monster.solidArea, new Distance (monster.x - player.x, monster.y - player.y));
+            if (flag && player.attacking == true)
+                monster.takeDamage(player);
+        }
+        flag = detectCollision(player.solidArea, monster.solidArea, calculateDistance(monster, player.x, player.y));
+        if (flag && player.invulnerable == false)
             player.takeDamage(monster);
     }
     public static void checkPlayer (Player player) {
         checkEntity (player);
+        checkPickup(player);
         for (Monster monster : TileManager.currentRoom.monsterList) {
-            boolean flag = detectCollision(player.solidArea, monster.solidArea, calculateDistance(player, monster.x, monster.y));
-            if (flag && player.attacking == true)
-                monster.takeDamage(player);
-            else if (flag && player.invulnerable == false)
+            boolean flag;
+            if (player.attackArea != null) {
+                flag = detectCollision(player.attackArea, monster.solidArea, new Distance (player.x - monster.x, player.y - monster.y));
+                if (flag && player.attacking == true)
+                    monster.takeDamage(player);
+            }
+            flag = detectCollision(player.solidArea, monster.solidArea, calculateDistance(player, monster.x, monster.y));
+            if (flag && player.invulnerable == false)
                 player.takeDamage(monster);
         }
     }

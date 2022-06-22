@@ -11,7 +11,7 @@ import world.*;
 
 public abstract class Pickup implements Drawable {
     static String path = "/graphic_assets/sprites/pickups/";
-    static int pickupSize = GamePanel.tileSize / 4;
+    static int pickupSize = GamePanel.tileSize / 3;
     BufferedImage sprite;
     public int x, y;
     public Area solidArea;

@@ -10,7 +10,7 @@ public abstract class Monster extends Entity {
     void die () {
         room.monsterList.remove(this);
         room.entityList.remove(this);
-        // generateDrop (0);
+        generateDrop (0);
         // drop ();
     }
     void generateDrop (int index) {

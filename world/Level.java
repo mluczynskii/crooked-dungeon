@@ -21,7 +21,7 @@ public class Level {
         roomHeight = rand.nextInt(10) + 2;
         roomGrid = new Room[roomHeight][roomWidth];
         generateRooms();
-        playMusic(0);
+        //playMusic(0);
     }
     private void generateRooms () {
         roomGrid[0][0] = new Shop(gp);
