@@ -8,14 +8,16 @@ import main.GamePanel;
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
 import world.*;
+import java.awt.*;
 
 public abstract class Pickup implements Drawable {
     static String path = "/graphic_assets/sprites/pickups/";
-    static int pickupSize = GamePanel.tileSize / 3;
+    static int pickupSize = GamePanel.tileSize / 2;
     BufferedImage sprite;
     public int x, y;
     public Area solidArea;
     Room room;
+    
     abstract void action (Player player);
     public void getPickedUp (Player player) {
         room.pickupList.remove(this);
@@ -27,6 +29,14 @@ public abstract class Pickup implements Drawable {
         } catch (Exception e) {
             System.out.println("Missing image: " + filename);
         }
+    }
+    Pickup (int x, int y, Room room) {
+        this.x = x;
+        this.y = y;
+        this.room = room;
+    }
+    void setSolidArea (int x, int y, int width, int height) {
+        this.solidArea = new Area (new Rectangle (x * GamePanel.scale, y * GamePanel.scale, width * GamePanel.scale, height * GamePanel.scale));
     }
     public int height () { return this.y; }
     public int compareTo (Drawable e) { 

@@ -11,6 +11,8 @@ public class Slime extends Monster {
     static String path = "/graphic_assets/characters/slime/";
     int interval = 0;
     boolean dead = false;
+    int[] possibleDrops = {0, 1};
+
     public Slime (int x, int y, Room room) {
         this.room = room;
         try {
@@ -21,6 +23,10 @@ public class Slime extends Monster {
         setStats(100, 2, 2);
         setPosition(x, y);
         setSolidArea(2, 2, 28, 28);
+    }
+    void drop () {
+        int index = rand.nextInt(possibleDrops.length);
+        generateDrop(possibleDrops[index]);
     }
     public void update () {
         if (dead)
