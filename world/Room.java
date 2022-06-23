@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.Random;
 import entity.NPC;
 import entity.Entity;
+import main.CollisionChecker;
 import main.GamePanel;
 import java.awt.Graphics2D;
 import entity.*;
@@ -24,7 +25,7 @@ public class Room {
     public Player player;
 
     static String[] enemyNames = {"entity.Slime"};
-    static int enemyCap = 3;
+    static int enemyCap = 5;
     Random rand = new Random();
 
     public Room (String filepath, GamePanel gp) {
@@ -53,7 +54,7 @@ public class Room {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        int it = rand.nextInt(enemyCap);
+        int it = rand.nextInt(enemyCap) + 1;
         while (it > 0) {
             String name = enemyNames[rand.nextInt(enemyNames.length)];
             generateEnemy(name);
@@ -76,8 +77,25 @@ public class Room {
                 int y = Math.max(GamePanel.tileSize + 5, rand.nextInt(GamePanel.screenHeight - (GamePanel.tileSize + 5)));
                 Class<?>[] cArg = {Integer.TYPE, Integer.TYPE, Room.class};
                 monster = (Monster) classDef.getDeclaredConstructor(cArg).newInstance(x, y, this);
-                entityList.add(monster);
-                monsterList.add(monster);
+
+                // Try to find a stop where the monster doesn't get stuck on spawn
+                int tick = 0;
+                int stop = 200;
+                while (CollisionChecker.checkSpawn (monster, this) == false && tick < stop) {
+                    if (y > GamePanel.screenHeight/2) monster.y--;
+                    else monster.y++;
+                    if (x > GamePanel.screenWidth/2) monster.x--;
+                    else monster.x++;
+
+                    tick++;
+                }
+                if (tick == stop) {
+                    // Don't "spawn"
+                }
+                else {
+                    entityList.add(monster);
+                    monsterList.add(monster);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

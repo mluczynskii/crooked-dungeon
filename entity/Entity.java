@@ -28,7 +28,11 @@ public abstract class Entity implements Drawable {
 
     static final int spriteChangeRate = 14;
     public void takeDamage (Entity entity) {
-        currentHealth = currentHealth - entity.dmg;
+        if (invulnerable == false) {
+            currentHealth = currentHealth - entity.dmg;
+            invulnerable = true;
+            invulnerable_tick = 0;
+        }
     }
     void setSolidArea (int x, int y, int width, int height) {
         solidArea = new Area (new Rectangle(x * GamePanel.scale, y * GamePanel.scale, width * GamePanel.scale, height * GamePanel.scale));

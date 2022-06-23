@@ -8,6 +8,7 @@ import java.awt.geom.AffineTransform;
 import world.TileManager;
 import entity.*;
 import pickup.*;
+import world.Room;
 
 public class CollisionChecker {
     private static class Distance {
@@ -49,6 +50,12 @@ public class CollisionChecker {
         a.intersect(b); // Sets [a] to intersection of [a] and [b]
         return a.isEmpty() ? false : true; // If intersection is empty then that means there is no collision
     }
+    public static boolean checkSpawn (Monster monster, Room room) {
+        checkEntity(monster, room);
+        if (monster.collisionOn == true)
+            return false;
+        return true;
+    }
     static Distance calculateDistance (Entity origin, int x, int y) {
         int dx = 0, dy = 0;
         switch (origin.direction) {
@@ -73,15 +80,15 @@ public class CollisionChecker {
         }
         return new Distance (dx, dy);
     }
-    public static void checkPickup (Player player) {
-        for (Pickup pickup : TileManager.currentRoom.pickupList) {
+    public static void checkPickup (Player player, Room room) {
+        for (Pickup pickup : room.pickupList) {
             if (detectCollision(player.solidArea, pickup.solidArea, new Distance (player.x - pickup.x, player.y - pickup.y)))
                 pickup.getPickedUp(player);
         }
     }
-    public static void checkMonster (Monster monster) {
-        checkEntity(monster);
-        Player player = TileManager.currentRoom.player;
+    public static void checkMonster (Monster monster, Room room) {
+        checkEntity(monster, room);
+        Player player = room.player;
         boolean flag;
         if (player.attackArea != null) {
             flag = detectCollision(player.attackArea, monster.solidArea, new Distance (monster.x - player.x, monster.y - player.y));
@@ -92,10 +99,10 @@ public class CollisionChecker {
         if (flag && player.invulnerable == false)
             player.takeDamage(monster);
     }
-    public static void checkPlayer (Player player) {
-        checkEntity (player);
-        checkPickup(player);
-        for (Monster monster : TileManager.currentRoom.monsterList) {
+    public static void checkPlayer (Player player, Room room) {
+        checkEntity (player, room);
+        checkPickup(player, room);
+        for (Monster monster : room.monsterList) {
             boolean flag;
             if (player.attackArea != null) {
                 flag = detectCollision(player.attackArea, monster.solidArea, new Distance (player.x - monster.x, player.y - monster.y));
@@ -107,13 +114,13 @@ public class CollisionChecker {
                 player.takeDamage(monster);
         }
     }
-    public static void findInteraction (Player player) {
-        for (NPC npc : TileManager.currentRoom.npcList) {
+    public static void findInteraction (Player player, Room room) {
+        for (NPC npc : room.npcList) {
             if (detectCollision(player.solidArea, npc.solidArea, calculateDistance(player, npc.x, npc.y)))
                 player.interactionNPC = npc;
         }
     }
-    static void checkEntity (Entity entity) {
+    static void checkEntity (Entity entity, Room room) {
         Rectangle bounds = entity.solidArea.getBounds();
 
         // Positions of each side of the bounding rectangle
@@ -152,10 +159,10 @@ public class CollisionChecker {
         }
 
         // Save adjacent tiles
-        Tile NW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityLeftCol]];
-        Tile NE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityTopRow][entityRightCol]];
-        Tile SW = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityLeftCol]];
-        Tile SE = TileManager.tiles[TileManager.currentRoom.roomTileNum[entityBotRow][entityRightCol]];
+        Tile NW = TileManager.tiles[room.roomTileNum[entityTopRow][entityLeftCol]];
+        Tile NE = TileManager.tiles[room.roomTileNum[entityTopRow][entityRightCol]];
+        Tile SW = TileManager.tiles[room.roomTileNum[entityBotRow][entityLeftCol]];
+        Tile SE = TileManager.tiles[room.roomTileNum[entityBotRow][entityRightCol]];
 
         // Get adjacent tiles (x, y) positions
         int top = entityTopRow * GamePanel.tileSize;
@@ -171,7 +178,7 @@ public class CollisionChecker {
         }
 
         // Check collision with other entities
-        for (Entity e : TileManager.currentRoom.entityList) {
+        for (Entity e : room.entityList) {
             if (entity.equals(e))
                 continue;
             if (detectCollision(entity.solidArea, e.solidArea, calculateDistance(entity, e.x, e.y))) 

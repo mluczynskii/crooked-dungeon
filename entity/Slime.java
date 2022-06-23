@@ -12,6 +12,7 @@ public class Slime extends Monster {
     int interval = 0;
     boolean dead = false;
     int[] possibleDrops = {0, 1};
+    final int invulnerable_cd = 25;
 
     public Slime (int x, int y, Room room) {
         this.room = room;
@@ -45,7 +46,7 @@ public class Slime extends Monster {
         }
 
         collisionOn = false;
-        CollisionChecker.checkMonster(this);
+        CollisionChecker.checkMonster(this, TileManager.currentRoom);
         
         if (collisionOn != true) {
             switch (direction) {
@@ -57,6 +58,10 @@ public class Slime extends Monster {
         }
         else
             interval = 120;
+
+        if (invulnerable_tick < invulnerable_cd)
+            invulnerable_tick++;
+        else invulnerable = false;
 
         if (currentHealth == 0) 
             dead = true;

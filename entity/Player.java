@@ -54,12 +54,6 @@ public class Player extends Entity {
             case "right": attackArea = (attacking ? solid_at_right : null); break;
         }
     }
-    @Override
-    public void takeDamage (Entity monster) {
-        super.takeDamage(monster);
-        invulnerable = true;
-        invulnerable_tick = 0;
-    }
     public void update () {
         // System.out.println(currentHealth); // Debug
 
@@ -78,7 +72,7 @@ public class Player extends Entity {
             else if (keyC.left == true){ direction = "left"; }
 
             collisionOn = false;
-            CollisionChecker.checkPlayer(this);
+            CollisionChecker.checkPlayer(this, TileManager.currentRoom);
 
             if(collisionOn == false){
                 switch(direction){
@@ -151,7 +145,7 @@ public class Player extends Entity {
         x = 100;
         y = 100;
         speed = 4;
-        dmg = 2;
+        dmg = 20;
         direction = "down";
     }
     @Override
@@ -213,7 +207,7 @@ public class Player extends Entity {
         }
     }
     public void interactNPC(NPC interactionEntity){
-        CollisionChecker.findInteraction(this);
+        CollisionChecker.findInteraction(this, TileManager.currentRoom);
         if(interactionEntity != null){
             gp.gameState = State.DIALOGUE;
         }
