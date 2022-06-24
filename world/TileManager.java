@@ -4,7 +4,6 @@ import java.io.*;
 import javax.imageio.ImageIO;
 import main.GamePanel;
 import java.awt.*;
-import java.awt.geom.Area;
 
 public class TileManager {
     public static Tile[] tiles;
@@ -16,50 +15,22 @@ public class TileManager {
 
     static String tilePath = "/graphic_assets/tiles/";
 
-    // use '_' prefix for "tall" tiles
-    static String[] tileNames = {"grass.png", "stone_path1.png", "stone_path2.png", // [0] [1] [2]
-                                 "stone1.png", "stone2.png", "stone3.png", // [3] [4] [5]
-                                 "stone4.png", "stone5.png", "stone_path3.png", // [6] [7] [8]
-                                 "_tree_upperleft.png", "_tree_upperright.png", "tree_botleft.png", // [9] [10] [11]
-                                 "tree_botright.png", "middle_fence1.png", "water.png", // [12] [13] [14]
-                                 "water_right.png", "water_botright.png", "water_bot.png", // [15] [16] [17]
-                                 "water_botleft.png", "water_left.png", "water_topright.png", // [18] [19] [20]
-                                 "water_topleft.png", "water_top.png", "wall_top1.png", // [21] [22] [23]
-                                 "wall_top2.png", "wall_top_left.png", "wall_left.png", // [24] [25] [26]
-                                 "wall_right.png", "wall_bot2.png", "wall_bot1.png", // [27] [28] [29]
-                                 "wall_bot_left.png", "wall_bot_right.png", "wall_top_right.png", // [30] [31] [32]
-                                 "wall_left_up_entry.png", "wall_left_down_entry.png", "wall_right_up_entry.png", // [33] [34] [35]
-                                 "wall_right_down_entry.png", "wall_bot_left_entry.png", "wall_bot_right_entry.png", // [36] [37] [38]
-                                 "wall_top_left_entry.png", "wall_top_right_entry.png", "wooden_floor.png"}; // [39] [40] [41]
-
-    private void initSolidBounds () {
-        Area defaultSolid = new Area(new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize));
-        tiles[11].solidArea = new Area(new Rectangle(24 * GamePanel.scale, 16 * GamePanel.scale, 8 * GamePanel.scale, 16 * GamePanel.scale)); // "_tree_botleft.png"
-        tiles[12].solidArea = new Area(new Rectangle(0, 16 * GamePanel.scale, 9 * GamePanel.scale, 16 * GamePanel.scale)); // "_tree_botright.png"
-        tiles[13].solidArea = new Area(new Rectangle(0, 5 * GamePanel.scale, GamePanel.tileSize, 26 * GamePanel.scale)); // "_middle_fence1.png"
-        tiles[14].solidArea = new Area(defaultSolid); // "_water.png"
-        tiles[15].solidArea = new Area(new Rectangle(0, 0, 24 * GamePanel.scale, GamePanel.tileSize)); // "_water_right.png"
-        tiles[16].solidArea = new Area(new Rectangle(0, 0, 24 * GamePanel.scale, 25 * GamePanel.scale)); // "_water_botright.png"
-        tiles[17].solidArea = new Area(new Rectangle(0, 0, GamePanel.tileSize, 25 * GamePanel.scale)); // "_water_bot.png"
-        tiles[18].solidArea = new Area(new Rectangle(8 * GamePanel.scale, 0, 24 * GamePanel.scale, 25 * GamePanel.scale)); // "water_botleft.png"
-        tiles[19].solidArea = new Area(new Rectangle(8 * GamePanel.scale, 0, 24 * GamePanel.scale, GamePanel.tileSize)); // "water_left.png"
-        tiles[20].solidArea = new Area(new Rectangle(0, 7 * GamePanel.scale, 24 * GamePanel.scale, 25 * GamePanel.scale)); // "water_topright.png"
-        tiles[21].solidArea = new Area(new Rectangle(8 * GamePanel.scale, 7 * GamePanel.scale, 24 * GamePanel.scale, 25 * GamePanel.scale)); // "water_topleft.png"
-        tiles[22].solidArea = new Area(new Rectangle(0, 7 * GamePanel.scale, GamePanel.tileSize, 25 * GamePanel.scale)); // "water_top.png"
-        tiles[23].solidArea = new Area(defaultSolid); // "wall_top1.png"
-        tiles[24].solidArea = new Area(defaultSolid); // "wall_top2.png"
-
-        tiles[25].solidArea = new Area(new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize-2));
-        tiles[25].solidArea.add(new Area(new Rectangle(0, GamePanel.tileSize-2, GamePanel.tileSize-4, 2))); // "wall_top_left.png"
-
-        tiles[26].solidArea = new Area(new Rectangle(0, 0, GamePanel.tileSize-4, GamePanel.tileSize)); // "wall_left.png"
-        tiles[27].solidArea = new Area(new Rectangle(4, 0, GamePanel.tileSize-4, GamePanel.tileSize)); // "wall_right.png"
-        tiles[28].solidArea = new Area(defaultSolid); // "wall_bot2.png"
-        tiles[29].solidArea = new Area(defaultSolid); // "wall_bot1.png"
-
-        tiles[30].solidArea = new Area(new Rectangle(0, 0, GamePanel.tileSize-4, GamePanel.tileSize));
-        tiles[30].solidArea.add(new Area(new Rectangle(GamePanel.tileSize-4, 2, 4, GamePanel.tileSize-2))); // "wall_bot_left.png"
-    }
+    static String[] tileNames = {// Stone wall tiles
+                                 "wall_left_up_entry.png", "wall_left.png", "wall_top_left.png", // [0] [1] [2]
+                                 "wall_top1.png", "wall_top2.png", "wall_top_left_entry.png", // [3] [4] [5]
+                                 "wall_top_right_entry.png", "wall_top_right.png", "wall_right.png", // [6] [7] [8]
+                                 "wall_right_up_entry.png", "wall_right_down_entry.png", "wall_bot_right.png", // [9] [10] [11]
+                                 "wall_bot1.png", "wall_bot2.png", "wall_bot_right_entry.png", // [12] [13] [14]
+                                 "wall_bot_left_entry.png", "wall_bot_left.png", "wall_left_down_entry.png", // [15] [16] [17]
+                                 "grass.png", // [18]
+                                 
+                                 // Floor tiles
+                                 "stone_path1.png", "stone_path2.png", "stone_path3.png", // [19] [20] [21]
+                                 
+                                 // Water tiles
+                                 "water_bot.png", "water_botright.png", "water_right.png", "water_topright.png", // [22] [23] [24] [25]
+                                 "water_top.png", "water_topleft.png", "water_left.png", "water_botleft.png", // [26] [27] [28] [29]
+                                 "water.png"}; // [30] 
 
     public TileManager (GamePanel gp) {
         tiles = new Tile[tileNames.length];
@@ -75,7 +46,12 @@ public class TileManager {
             int i = 0;
             while (i < tileNames.length) { 
                 tiles[i] = new Tile();
-                tiles[i].image = ImageIO.read(getClass().getResourceAsStream(tilePath + tileNames[i]));
+                try {
+                    tiles[i].image = ImageIO.read(getClass().getResourceAsStream(tilePath + tileNames[i]));
+                } catch (Exception e) {
+                    System.out.println("Cannot read: " + tileNames[i]);
+                    throw e;
+                }
                 i++;
             }
         } catch (IOException e) {
@@ -86,4 +62,52 @@ public class TileManager {
         currentRoom = currentLevel.roomGrid[roomY][roomX];
         currentRoom.drawRoom(g);
     }
+    
+    private void initSolidBounds () {
+        int full = GamePanel.tileSize;
+
+        // Water tiles
+        tiles[30].addSolidArea(0, 0, full, full);
+        tiles[29].addSolidArea(8, 0, full - 8, full - 6);
+        tiles[28].addSolidArea(8, 0, full - 8, full);
+        tiles[27].addSolidArea(8, 6, full - 8, full - 6);
+        tiles[26].addSolidArea(0, 6, full, full - 6);
+        tiles[25].addSolidArea(0, 6, full - 8, full - 6);
+        tiles[24].addSolidArea(0, 0, full - 8, full);
+        tiles[23].addSolidArea(0, 0, full - 8, full-6);
+        tiles[22].addSolidArea(0, 0, full, full - 6);
+
+        // Stone wall tiles
+        tiles[0].addSolidArea(0, 0, full - 5, full - 2);
+        tiles[1].addSolidArea(0, 0, full - 5, full);
+
+        tiles[2].addSolidArea(0, 0, full, full - 2);
+        tiles[2].addSolidArea(0, 0, full - 5, full);
+
+        tiles[3].addSolidArea(0, 0, full, full - 2);
+        tiles[4].addSolidArea(0, 0, full, full - 2);
+        tiles[5].addSolidArea(0, 0, full - 2, full - 2);
+        tiles[6].addSolidArea(2, 0, full - 2, full - 2);
+
+        tiles[7].addSolidArea(0, 0, full, full - 2);
+        tiles[7].addSolidArea(5, 0, full - 5, full);
+
+        tiles[8].addSolidArea(5, 0, full - 5, full);
+        tiles[9].addSolidArea(5, 0, full - 5, full - 2);
+        tiles[10].addSolidArea(5, 2, full - 5, full - 2);
+
+        tiles[11].addSolidArea(5, 0, full - 5, full);
+        tiles[11].addSolidArea(0, 2, full, full - 2);
+
+        tiles[12].addSolidArea(0, 2, full, full - 2);
+        tiles[13].addSolidArea(0, 2, full, full - 2);
+        tiles[14].addSolidArea(2, 2, full - 2, full - 2);
+        tiles[15].addSolidArea(0, 2, full - 2, full - 2);
+
+        tiles[16].addSolidArea(0, 0, full - 5, full);
+        tiles[16].addSolidArea(0, 2, full, full - 2);
+
+        tiles[17].addSolidArea(0, 2, full - 5, full - 2);
+    }
+
 }
