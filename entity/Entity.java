@@ -55,7 +55,11 @@ public abstract class Entity implements Drawable {
         g.setColor(Color.RED);
         g.drawRect(x + bounds.x, y + bounds.y, bounds.width, bounds.height);
     }
-    public int height () { return this.y; }
+    public int height () { 
+        Rectangle rect = this.solidArea.getBounds();
+        Point point = rect.getLocation();
+        return point.y + this.y;
+    }
     public int compareTo (Drawable e) { 
         if (this.height() > e.height())
             return 1;

@@ -9,6 +9,7 @@ import world.TileManager;
 import entity.*;
 import pickup.*;
 import world.Room;
+import world.Prop;
 
 public class CollisionChecker {
     private static class Distance {
@@ -54,6 +55,10 @@ public class CollisionChecker {
         checkEntity(monster, room);
         if (monster.collisionOn == true)
             return false;
+        return true;
+    }
+    public static boolean checkSpawn (Prop prop, Room room) {
+        // TODO: Implement logic
         return true;
     }
     static Distance calculateDistance (Entity origin, int x, int y) {

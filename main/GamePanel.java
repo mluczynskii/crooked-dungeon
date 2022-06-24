@@ -8,6 +8,7 @@ import pickup.*;
 import world.TileManager;
 import java.util.PriorityQueue;
 import entity.*;
+import world.Prop;
 
 public class GamePanel extends JPanel implements Runnable {
     static final int ogTileSize = 32; // 32x32 sprites and tiles
@@ -87,6 +88,8 @@ public class GamePanel extends JPanel implements Runnable {
             q.add(e);
         for (Pickup pickup : TileManager.currentRoom.pickupList)
             q.add(pickup);
+        for (Prop prop : TileManager.currentRoom.propList)
+            q.add(prop);
         while (!q.isEmpty()) {
             q.poll().draw(g2);
         }

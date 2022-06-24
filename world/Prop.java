@@ -12,13 +12,13 @@ import javax.imageio.ImageIO;
 
 public class Prop implements Drawable {
     static String path = "/graphic_assets/props/";
-    static String[] propNames = {"tree", "stone_wall"};
+    public static String[] propNames = {"tree"}; // TODO: Add stone_wall
     private class Params {
         int width, height;
         Area solidArea;
         Params (int width, int height, Rectangle rect) { 
             Area rhs = new Area (rect);
-            this.width = width; this.height = height;
+            this.width = width * GamePanel.scale; this.height = height * GamePanel.scale;
             this.solidArea = rhs;
         }
     }
@@ -29,7 +29,7 @@ public class Prop implements Drawable {
 
     void initDimensions () {
         paramsDict = new HashMap<>();
-        paramsDict.put("tree", new Params(64, 64, createRect (0, 0, 0, 0)));
+        paramsDict.put("tree", new Params(64, 64, createRect (24, 48, 18, 16)));
         paramsDict.put("stone_wall", new Params(64, 32, createRect (0, 0, 0, 0)));
     }
     static Rectangle createRect (int x, int y, int width, int height) {
@@ -46,7 +46,7 @@ public class Prop implements Drawable {
     public int height () { 
         Rectangle rect = this.params.solidArea.getBounds();
         Point point = rect.getLocation();
-        return point.y; 
+        return point.y + this.y; 
     }
     public void draw (Graphics2D g) {
         g.drawImage(img, x, y, params.width, params.height, null);

@@ -26,8 +26,8 @@ public class Room {
 
     static String[] enemyNames = {"entity.Slime"};
     static int enemyCap = 5;
-    static int propCap = 5;
-    
+    static int propCap = 4;
+
     Random rand = new Random();
 
     public Room (String filepath, GamePanel gp) {
@@ -62,6 +62,31 @@ public class Room {
             generateEnemy(name);
             it--;
         }
+        it = rand.nextInt(propCap) + 1;
+        while (it > 0) {
+            initializeProp();
+            it--;
+        }
+
+    }
+    void initializeProp () {
+        String name = Prop.propNames[rand.nextInt(Prop.propNames.length)];
+        Prop prop = new Prop (name, rand.nextInt(GamePanel.screenWidth), rand.nextInt(GamePanel.screenHeight));
+        // Try to find a place where the prop can stand
+        int tick = 0;
+        int stop = 200;
+        while (CollisionChecker.checkSpawn(prop, this) == false && tick < stop) {
+            if (prop.y > GamePanel.screenHeight/2) prop.y--;
+            else prop.y++;
+            if (prop.x > GamePanel.screenWidth/2) prop.x--;
+            else prop.x++;
+
+            tick++;
+        }
+        if (tick == stop) {
+            // Don't "spawn"
+        }
+        else propList.add(prop);
     }
     void drawRoom (Graphics2D g) {
         for (int row = 0, y = 0; row < GamePanel.rowNum; row++, y += GamePanel.tileSize) {
@@ -80,7 +105,7 @@ public class Room {
                 Class<?>[] cArg = {Integer.TYPE, Integer.TYPE, Room.class};
                 monster = (Monster) classDef.getDeclaredConstructor(cArg).newInstance(x, y, this);
 
-                // Try to find a stop where the monster doesn't get stuck on spawn
+                // Try to find a spot where the monster doesn't get stuck on spawn
                 int tick = 0;
                 int stop = 200;
                 while (CollisionChecker.checkSpawn (monster, this) == false && tick < stop) {
