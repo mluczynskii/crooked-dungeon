@@ -56,7 +56,7 @@ public abstract class Entity implements Drawable {
         g.drawRect(x + bounds.x, y + bounds.y, bounds.width, bounds.height);
     }
     public int height () { return this.y; }
-    public int compareTo (Drawable e) { // Checks which entity is higher
+    public int compareTo (Drawable e) { 
         if (this.height() > e.height())
             return 1;
         else if (this.height() == e.height())

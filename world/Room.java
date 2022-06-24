@@ -16,16 +16,18 @@ import pickup.*;
 public class Room {
     public int[][] roomTileNum;
 
-
     GamePanel gp;
     public ConcurrentLinkedQueue<Entity> entityList = new ConcurrentLinkedQueue<>();
     public ConcurrentLinkedQueue<NPC> npcList = new ConcurrentLinkedQueue<>();
     public ConcurrentLinkedQueue<Monster> monsterList = new ConcurrentLinkedQueue<>();
     public ConcurrentLinkedQueue<Pickup> pickupList = new ConcurrentLinkedQueue<>();
+    public ConcurrentLinkedQueue<Prop> propList = new ConcurrentLinkedQueue<>();
     public Player player;
 
     static String[] enemyNames = {"entity.Slime"};
     static int enemyCap = 5;
+    static int propCap = 5;
+    
     Random rand = new Random();
 
     public Room (String filepath, GamePanel gp) {
