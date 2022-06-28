@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.Rectangle;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import world.*;
@@ -12,10 +13,10 @@ public class Slime extends Monster {
     int interval = 0;
     boolean dead = false;
     int[] possibleDrops = {0, 1};
-    final int invulnerable_cd = 25;
+    final int invulnerable_cd = 50;
 
     public Slime (int x, int y, Room room) {
-        this.room = room;
+        super (room);
         try {
             this.idle = ImageIO.read(getClass().getResourceAsStream(path + "slime.png"));
         } catch (Exception e) {
@@ -46,14 +47,15 @@ public class Slime extends Monster {
         }
 
         collisionOn = false;
-        CollisionChecker.checkMonster(this, TileManager.currentRoom);
+        CollisionChecker.checkMonster(this, room);
         
         if (collisionOn != true) {
+            Rectangle rect = room.player.solidArea.getBounds(); // This is used to prevent getting stuck inside a monster after entering the room
             switch (direction) {
-                case "up": y = Math.max(GamePanel.tileSize, y - speed); break;
-                case "down": y = Math.min(GamePanel.screenHeight - GamePanel.tileSize, y + speed); break;
-                case "right": x = Math.min(GamePanel.screenWidth - GamePanel.tileSize, x + speed); break;
-                case "left": x = Math.max(GamePanel.tileSize, x - speed); break;
+                case "up": y = Math.max(rect.y + rect.height, y - speed); break;
+                case "down": y = Math.min(GamePanel.screenHeight - (rect.y + rect.height), y + speed); break;
+                case "right": x = Math.min(GamePanel.screenWidth - (rect.x + rect.width), x + speed); break;
+                case "left": x = Math.max(rect.x + rect.width, x - speed); break;
             }
         }
         else

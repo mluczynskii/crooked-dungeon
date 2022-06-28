@@ -64,7 +64,7 @@ public class TileManager {
     }
     
     private void initSolidBounds () {
-        int full = GamePanel.tileSize;
+        int full = GamePanel.ogTileSize;
 
         // Water tiles
         tiles[30].addSolidArea(0, 0, full, full);
