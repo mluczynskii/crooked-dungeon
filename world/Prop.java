@@ -13,9 +13,9 @@ import javax.imageio.ImageIO;
 public class Prop implements Drawable {
     static String path = "/graphic_assets/props/";
     public static String[] propNames = {"tree"}; // TODO: Add stone_wall
-    private class Params {
+    public class Params {
         int width, height;
-        Area solidArea;
+        public Area solidArea;
         Params (int width, int height, Rectangle rect) { 
             Area rhs = new Area (rect);
             this.width = width * GamePanel.scale; this.height = height * GamePanel.scale;
@@ -23,7 +23,7 @@ public class Prop implements Drawable {
         }
     }
     public int x, y;
-    Params params;
+    public Params params;
     BufferedImage img;
     static HashMap<String, Params> paramsDict = null;
 

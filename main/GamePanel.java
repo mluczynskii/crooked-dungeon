@@ -11,7 +11,7 @@ import entity.*;
 import world.Prop;
 
 public class GamePanel extends JPanel implements Runnable {
-    static final int ogTileSize = 32; // 32x32 sprites and tiles
+    public static final int ogTileSize = 32; // 32x32 sprites and tiles
     public static final int scale = 2;
 
     public static final int tileSize = ogTileSize * scale; // 64x64 after scaling
@@ -31,7 +31,6 @@ public class GamePanel extends JPanel implements Runnable {
     KeyController keyC = new KeyController(this);
     public Player player = new Player (this, this.keyC);
     TileManager tM = new TileManager(this);
-    CollisionChecker checker = new CollisionChecker();
     PriorityQueue<Drawable> q = new PriorityQueue<>();
     UI ui = new UI(this);
 

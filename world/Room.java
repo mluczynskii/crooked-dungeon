@@ -9,9 +9,13 @@ import entity.NPC;
 import entity.Entity;
 import main.CollisionChecker;
 import main.GamePanel;
+
+import java.awt.Color;
 import java.awt.Graphics2D;
 import entity.*;
 import pickup.*;
+import java.awt.geom.Area;
+import java.awt.geom.AffineTransform;
 
 public class Room {
     public int[][] roomTileNum;
@@ -28,6 +32,20 @@ public class Room {
     static int enemyCap = 5;
     static int propCap = 4;
 
+    public Area solidAreaMap = new Area();
+    void initMap () {
+        // Create a map of all tile solidAreas
+        for (int row = 0; row < GamePanel.rowNum; row++) {
+            for (int col = 0; col < GamePanel.colNum; col++) {
+                int x = col * GamePanel.tileSize; int y = row * GamePanel.tileSize; // Get tile position
+                AffineTransform matrix = new AffineTransform();
+                matrix.translate(x, y);
+                Area clone = new Area(TileManager.tiles[roomTileNum[row][col]].solidArea);
+                clone.transform(matrix);
+                this.solidAreaMap.add(clone);
+            }
+        }
+    }
     Random rand = new Random();
 
     public Room (String filepath, GamePanel gp) {
@@ -56,26 +74,27 @@ public class Room {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        int it = rand.nextInt(enemyCap) + 1;
+        initMap();
+        int it = rand.nextInt(propCap) + 1;
+        while (it > 0) {
+            initializeProp();
+            it--;
+        }
+        it = rand.nextInt(enemyCap) + 1;
         while (it > 0) {
             String name = enemyNames[rand.nextInt(enemyNames.length)];
             generateEnemy(name);
             it--;
         }
-        it = rand.nextInt(propCap) + 1;
-        while (it > 0) {
-            initializeProp();
-            it--;
-        }
-
     }
     void initializeProp () {
         String name = Prop.propNames[rand.nextInt(Prop.propNames.length)];
-        Prop prop = new Prop (name, rand.nextInt(GamePanel.screenWidth), rand.nextInt(GamePanel.screenHeight));
+        Prop prop = new Prop (name, rand.nextInt(GamePanel.screenWidth - 2 * GamePanel.tileSize), rand.nextInt(GamePanel.screenHeight - 2 * GamePanel.tileSize));
         // Try to find a place where the prop can stand
         int tick = 0;
         int stop = 200;
-        while (CollisionChecker.checkSpawn(prop, this) == false && tick < stop) {
+        while (CollisionChecker.checkPropSpawn(prop, this) == false && tick < stop) {
+            // Try to move it more to the center of the screen
             if (prop.y > GamePanel.screenHeight/2) prop.y--;
             else prop.y++;
             if (prop.x > GamePanel.screenWidth/2) prop.x--;
@@ -95,6 +114,10 @@ public class Room {
                 g.drawImage(TileManager.tiles[tileNum].image, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
             }
         }
+
+        // Debug
+        g.setColor(Color.RED);
+        g.draw(solidAreaMap);
     }
     void generateEnemy (String enemyName) {
             Monster monster = null;
@@ -109,6 +132,7 @@ public class Room {
                 int tick = 0;
                 int stop = 200;
                 while (CollisionChecker.checkSpawn (monster, this) == false && tick < stop) {
+                    // Again, try to move it more to the center
                     if (y > GamePanel.screenHeight/2) monster.y--;
                     else monster.y++;
                     if (x > GamePanel.screenWidth/2) monster.x--;

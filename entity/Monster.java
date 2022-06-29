@@ -3,15 +3,23 @@ package entity;
 import world.*;
 import main.GamePanel;
 import pickup.*;
+import ai.PathFinder;
 
 public abstract class Monster extends Entity {
     Room room;
+    PathFinder ai;
     static String[] allDrops = {"pickup.Coin", "pickup.Heart"};
     public abstract void update ();
+    Monster (Room room) {
+        this.room = room;
+
+        // TODO: Set solidArea before initializing AI
+        //this.ai = new PathFinder(room, this);
+    }
     void die () {
         room.monsterList.remove(this);
         room.entityList.remove(this);
-        drop ();
+        drop();
     }
     void generateDrop (int index) {
         Pickup pickup = null;

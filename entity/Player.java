@@ -21,6 +21,7 @@ public class Player extends Entity {
     public int money = 0;
     public NPC interactionNPC = null;
     public boolean attacking = false;
+    boolean canAttack = true;
     Sound soundEffects = new Sound();
     
     
@@ -31,6 +32,11 @@ public class Player extends Entity {
     Boolean dialogue_ok = true;
     
 
+    final int attack_first_frame = 20;
+    final int attack_second_frame = 50;
+    final int attack_cd = attack_first_frame + attack_second_frame + 15;
+    
+    int attack_tick = attack_cd;
     public Area attackArea = null;
 
     final Area solid_at_up = new Area(new Rectangle(0, -GamePanel.tileSize, GamePanel.tileSize, GamePanel.tileSize * 2));
@@ -53,6 +59,7 @@ public class Player extends Entity {
         solidArea = solid_default;
     }
     void changeHitbox () {
+        if (attackArea != null) return;
         switch (direction) {
             case "up": attackArea = (attacking ? solid_at_up : null); break;
             case "down": attackArea = (attacking ? solid_at_down : null); break;
@@ -61,15 +68,15 @@ public class Player extends Entity {
         }
     }
     public void update () {
-        // System.out.println(currentHealth); // Debug
-
-        changeHitbox();
         if (attacking == true) {
             attack();
         }
-        else if (keyC.attack == true) { 
+        else if (keyC.attack == true && canAttack == true) { 
+            spriteNum = 0;
             spriteCounter = 0;
             attacking = true; 
+            canAttack = false;
+            attack_tick = 0;
         }
         else if(keyC.up == true || keyC.down == true || keyC.right == true || keyC.left == true){
             if (this.keyC.up == true){ direction = "up"; }
@@ -113,10 +120,18 @@ public class Player extends Entity {
 
         if(keyC.z == true && dialogue_ok == true) {
             dialogue_tick = 0;
+        }
+        if (attack_tick < attack_cd)
+            attack_tick++;
+        else canAttack = true;
+
+        if(keyC.z == true) {
             interactNPC(interactionNPC);
         }
  
         checkRoomTransition();
+    
+        
     }
 
     public void dialogue(){
@@ -144,12 +159,16 @@ public class Player extends Entity {
     }
     void attack () {
         spriteCounter++;
-        if (spriteCounter <= 5) spriteNum = 0;
-        else if (spriteCounter > 5 && spriteCounter <= 25) spriteNum = 1;
+        if (spriteCounter <= attack_first_frame) spriteNum = 0;
+        else if (spriteCounter > attack_first_frame && spriteCounter <= attack_second_frame) {
+            changeHitbox();
+            spriteNum = 1;
+        }
         else {
             spriteNum = 0;
             spriteCounter = 0;
             attacking = false;
+            attackArea = null;
         }
     }
 
