@@ -13,7 +13,7 @@ public class Sound {
 
     // Most of sound effects come from freesound.org but some of them are recorded by us
     static String[] fileNames = {"stupid.wav", "slime-death.wav", "crooked-death.wav", "sword-sound.wav", "player-hit.wav",
-                                 "slime-hit.wav", "coin-pickup.wav"};
+                                 "slime-hit.wav", "coin-pickup.wav", "health-pickup.wav"};
 
     static String filePath = "/audio/";
     static HashMap<String, Clip> files;

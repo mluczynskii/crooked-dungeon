@@ -13,6 +13,7 @@ public class Heart extends Pickup {
         setSolidArea(0, 0, pickupSize, pickupSize);
     }
     void playSoundEffect () {
-        // TODO: Find good heart-pickup sound
+        soundEffects.setFile("health-pickup.wav");
+        soundEffects.play(0.1f);
     }
 }
