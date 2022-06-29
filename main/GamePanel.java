@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int screenHeight = rowNum * tileSize; // 640px
 
     public enum State {
-        PLAY, PAUSE, DIALOGUE
+        PLAY, PAUSE, DIALOGUE, GAMEOVER
     }
     public State gameState = State.PLAY;
 
@@ -71,7 +71,7 @@ public class GamePanel extends JPanel implements Runnable {
             player.dialogue();
             return;
         }
-        if (gameState != State.PAUSE) {
+        if (gameState == State.PLAY) {
             player.update();
             for (Monster m : TileManager.currentRoom.monsterList) {
                 if (m != null)

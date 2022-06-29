@@ -1,6 +1,8 @@
 package main;
 
 import java.net.URL;
+import java.util.HashMap;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -8,18 +10,21 @@ import javax.sound.sampled.FloatControl;
 
 public class Sound {
     Clip clip; // Must be in .wav format
-    static String[] fileNames = {"stupid.wav"};
+    static String[] fileNames = {"stupid.wav", "slime-death.wav", "crooked-death.wav"};
     static String filePath = "/audio/";
-    URL[] files = new URL[fileNames.length];
+    static HashMap<String, URL> files;
     
     public Sound () {
-        for (int i = 0; i < fileNames.length; i++) {
-            files[i] = getClass().getResource(filePath + fileNames[i]);
+        if (files == null) {
+            files = new HashMap<>();
+            for (int i = 0; i < fileNames.length; i++) {
+                files.put(fileNames[i], getClass().getResource(filePath + fileNames[i]));
+            }
         }
     }
-    public void setFile (int i) {
+    public void setFile (String name) {
         try {
-            AudioInputStream a = AudioSystem.getAudioInputStream(files[i]);
+            AudioInputStream a = AudioSystem.getAudioInputStream(files.get(name));
             clip = AudioSystem.getClip();
             clip.open(a);
         } catch (Exception e) {

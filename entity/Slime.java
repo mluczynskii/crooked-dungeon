@@ -2,7 +2,6 @@ package entity;
 
 import java.awt.Rectangle;
 import java.util.Random;
-import javax.imageio.ImageIO;
 
 //import ai.PathFinder;
 import world.*;
@@ -11,27 +10,24 @@ import main.GamePanel;
 
 public class Slime extends Monster {
     Random rand = new Random();
-    static String path = "/graphic_assets/characters/slime/";
     int interval = 0;
-    boolean dead = false;
     int[] possibleDrops = {0, 1};
     final int invulnerable_cd = 50;
 
     public Slime (int x, int y, Room room) {
         super (room);
         //this.ai = new PathFinder(room, this);
-        try {
-            this.idle = ImageIO.read(getClass().getResourceAsStream(path + "slime.png"));
-        } catch (Exception e) {
-            System.out.println("Missing sprites");
-        }
-        setStats(100, 2, 2);
+        loadIdle("slime");
+        setStats(100, 2, 10);
         setPosition(x, y);
         setSolidArea(2, 2, 28, 28);
     }
     void drop () {
+        soundEffects.setFile("slime-death.wav");
+        soundEffects.play(0.1f);
         int index = rand.nextInt(possibleDrops.length);
         generateDrop(possibleDrops[index]);
+
     }
     public void update () {
         if (dead)

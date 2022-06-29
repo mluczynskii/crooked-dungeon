@@ -55,7 +55,15 @@ public class UI {
             case DIALOGUE:
                 drawDialogueScreen(g);
                 break;
+            case GAMEOVER:
+                drawGameOver(g);
+                break;
         }
+    }
+    void drawGameOver (Graphics2D g) {
+        String text = "Game Over";
+        Rectangle container = new Rectangle (0, 0, GamePanel.screenWidth, GamePanel.screenHeight);
+        drawCenteredText(container, text, g, textFont);
     }
     void drawMonsterHP (Graphics2D g) {
         for (Monster m : TileManager.currentRoom.monsterList) {

@@ -12,6 +12,7 @@ public abstract class Entity implements Drawable {
     public int speed, x, y;
     public double maxHealth, currentHealth;
     public double dmg;
+    boolean dead = false;
 
     public BufferedImage idle;
     public ArrayList<BufferedImage> up, down, left, right; // walking animation frames
@@ -33,6 +34,8 @@ public abstract class Entity implements Drawable {
             currentHealth = currentHealth - entity.dmg;
             invulnerable = true;
             invulnerable_tick = 0;
+            if (currentHealth <= 0)
+                dead = true;
         }
     }
     void setSolidArea (int x, int y, int width, int height) {

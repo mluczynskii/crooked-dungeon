@@ -1,14 +1,20 @@
 package entity;
 
 import world.*;
+
+import javax.imageio.ImageIO;
+
 import main.GamePanel;
+import main.Sound;
 import pickup.*;
 //import ai.PathFinder;
 
 public abstract class Monster extends Entity {
+    static String path = "/graphic_assets/characters/";
     Room room;
     //PathFinder ai;
     static String[] allDrops = {"pickup.Coin", "pickup.Heart"};
+    Sound soundEffects = new Sound();
     public abstract void update ();
     Monster (Room room) {
         this.room = room;
@@ -17,6 +23,13 @@ public abstract class Monster extends Entity {
         room.monsterList.remove(this);
         room.entityList.remove(this);
         drop();
+    }
+    void loadIdle (String name) {
+        try {
+            this.idle = ImageIO.read(getClass().getResourceAsStream(path + name + "/" + name + ".png"));
+        } catch (Exception e) {
+            System.out.println("Missing sprites: " + name);
+        }
     }
     void generateDrop (int index) {
         Pickup pickup = null;

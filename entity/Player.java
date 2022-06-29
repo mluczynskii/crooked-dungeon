@@ -68,6 +68,10 @@ public class Player extends Entity {
         }
     }
     public void update () {
+        if (dead) {
+            gp.gameState = State.GAMEOVER;
+            return;
+        }
         if (attacking == true) {
             attack();
         }
