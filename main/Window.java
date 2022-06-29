@@ -5,8 +5,10 @@ import java.awt.*;
 import java.io.InputStream;
 
 public class Window {
+
+    public static JFrame window;
     public static void main (String[] args) {
-        JFrame window = new JFrame();
+        window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.setTitle("Crooked Dungeon");

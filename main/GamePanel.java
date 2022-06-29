@@ -22,9 +22,9 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int screenHeight = rowNum * tileSize; // 640px
 
     public enum State {
-        PLAY, PAUSE, DIALOGUE
+        PLAY, PAUSE, DIALOGUE, TITLE
     }
-    public State gameState = State.PLAY;
+    public State gameState = State.TITLE;
 
 
     Thread gameLoop;
@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player (this, this.keyC);
     TileManager tM = new TileManager(this);
     PriorityQueue<Drawable> q = new PriorityQueue<>();
-    UI ui = new UI(this);
+    public UI ui = new UI(this);
 
     final int fps = 60;
 
@@ -71,7 +71,10 @@ public class GamePanel extends JPanel implements Runnable {
             player.dialogue();
             return;
         }
-        if (gameState != State.PAUSE) {
+        if (gameState == State.TITLE){
+            return;
+        }
+        if (gameState == State.PLAY) {
             player.update();
             for (Monster m : TileManager.currentRoom.monsterList) {
                 if (m != null)
@@ -84,6 +87,13 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent (Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
+
+        //title state
+        if(gameState == State.TITLE){
+            ui.drawUI(g2);
+            return;
+        }
+
 
         tM.drawRoom(g2);
 

@@ -19,7 +19,14 @@ public class UI {
     static Font infoFont = new Font("Impact", Font.PLAIN, 25);
     static Font pauseFont = new Font("Impact", Font.PLAIN, 60);
     static Font textFont = new Font ("haxorville Nerd Font", Font.PLAIN, 30);
+    static Font titleFont1 = new Font("haxorville Nerd Font", Font.PLAIN, 35);
     
+    //Commands
+    public enum Command {
+        NEW, LOAD, QUIT;
+    }
+    public Command currentCommand = Command.NEW;
+
     // Colors
     static Color textColor = Color.WHITE;
     static Color hpBarColor = Color.RED;
@@ -55,7 +62,37 @@ public class UI {
             case DIALOGUE:
                 drawDialogueScreen(g);
                 break;
+            case TITLE:
+                drawTitleScreen(g);
+                break;
         }
+    }
+
+    void drawTitleScreen(Graphics2D g){
+
+
+        String text = "NEW GAME";
+        int x = 415;
+        int y = 480;
+        drawText(text, x, y, g, titleFont1);
+        if(currentCommand == Command.NEW){
+            drawText(">", x - 30, y, g, titleFont1);
+        }
+
+        text = "LOAD GAME";
+        y = 540;
+        drawText(text, x, y, g, titleFont1);
+        if(currentCommand == Command.LOAD){
+            drawText(">", x - 30, y, g, titleFont1);
+        }
+
+        text = "QUIT";
+        y = 600;
+        drawText(text, x, y, g, titleFont1);
+        if(currentCommand == Command.QUIT){
+            drawText(">", x - 30, y, g, titleFont1);
+        }
+
     }
     void drawMonsterHP (Graphics2D g) {
         for (Monster m : TileManager.currentRoom.monsterList) {
@@ -160,7 +197,7 @@ public class UI {
         g.drawRect(x+5, y+5, width-10, height-10);
     }
 
-    public void drawDialogueText(Graphics2D g,String text, int x, int y, int width, int height, Stroke st){     
+    public void drawDialogueText(Graphics2D g, String text, int x, int y, int width, int height, Stroke st){     
         g.setColor(textColor);
         g.setStroke(st);
         drawText(text, x+30, y+50, g, textFont);
