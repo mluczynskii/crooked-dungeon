@@ -1,13 +1,15 @@
 package ai;
 
 import java.util.ArrayList;
-import main.GamePanel;
+import java.util.HashMap;
 import world.Room;
 import java.awt.geom.Area;
 import java.awt.geom.AffineTransform;
 import world.Prop;
 import entity.Entity;
+import main.GamePanel;
 
+// Work in progress
 public class PathFinder { // A* pathfinding algorithm
     public class Node {
         Node parent;
@@ -19,9 +21,24 @@ public class PathFinder { // A* pathfinding algorithm
             this.y = y;
         }
     }
+    /*private class Info { // This class is used as a key for nodeDict
+        Class<?> c;
+        Room room;
+        public Info (Class<?> c, Room room) {
+            this.c = c;
+            this.room = room;
+        }
+    }*/
     Room room; // Current room
-    Area map = new Area (); // Map of all solid areas in current room
+
+    // Attempt at optimization...?
+    Area map; // Map of all solid areas in current room
+    static HashMap<Room, Area> mapDict = new HashMap<>(); // This is used so the area can get calculated only once
+
     Node[][] nodes; // Two dimensional Node grid
+    static int width = (int)(GamePanel.screenWidth/10), height = (int)(GamePanel.screenHeight/10);
+    //static HashMap<Info, Node[][]> nodeDict = new HashMap<>(); // Same as mapDict, calculating blocked nodes probably takes very long (guess)
+
     ArrayList<Node> openList = new ArrayList<>();
     public ArrayList<Node> path = new ArrayList<>();
     Node start, goal, current;
@@ -32,10 +49,20 @@ public class PathFinder { // A* pathfinding algorithm
     public PathFinder (Room room, Entity entity) {
         this.room = room;
         this.entity = entity;
-        initMap();
+
+        // Setup map solidAreas
+        Area a = mapDict.get(room);
+        if (a != null) {
+            //System.out.println("Found map for: " + room); // Debug
+            map = a;
+        }
+        else initMap();
+
+        //Node[][] b = nodeDict.get(key)
         initNodes();
     }
     void initMap () {
+        this.map = new Area();
         // First, get solidAreas of all tiles
         this.map.add(room.solidAreaMap);
         // Then, solidAreas of all props
@@ -46,20 +73,22 @@ public class PathFinder { // A* pathfinding algorithm
             clone.transform(matrix);
             this.map.add(clone);
         }
+        // Save the result
+        mapDict.put(room, this.map);
     }
     void initNodes () {
-        nodes = new Node[GamePanel.screenHeight][GamePanel.screenWidth];
-        for (int row = 0; row < GamePanel.screenHeight; row++) {
-            for (int col = 0; col < GamePanel.screenWidth; col++) {
+        nodes = new Node[height][width];
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
                 nodes[row][col] = new Node (col, row);
+                checkBlocked(row, col);
             }
         }
     }
     void resetNodes () {
-        for (int row = 0; row < GamePanel.screenHeight; row++) {
-            for (int col = 0; col < GamePanel.screenWidth; col++) {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
                 nodes[row][col].open = false;
-                nodes[row][col].blocked = false;
                 nodes[row][col].checked = false;
             }
         }
@@ -68,24 +97,23 @@ public class PathFinder { // A* pathfinding algorithm
         reachedGoal = false;
         step = 0;
     }
+    void checkBlocked (int row, int col) { // Check if node is reachable by an entity
+        Area clone = new Area (entity.solidArea);
+        AffineTransform matrix = new AffineTransform ();
+        matrix.translate(entity.x, entity.y);
+        clone.transform(matrix);
+        clone.intersect(this.map);
+        if (clone.isEmpty() == false)
+            nodes[row][col].blocked = true;
+    }
     public void setNodes (int startRow, int startCol, int goalRow, int goalCol) {
         resetNodes();
         start = nodes[startRow][startCol];
         goal = nodes[goalRow][goalCol];
         current = start;
         openList.add(current);
-        for (int row = 0; row < GamePanel.screenHeight; row++) {
-            for (int col = 0; col < GamePanel.screenWidth; col++) {
-                // Find unreachable nodes [really slow]
-                Area clone = new Area (entity.solidArea);
-                AffineTransform matrix = new AffineTransform ();
-                matrix.translate(entity.x, entity.y);
-                clone.transform(matrix);
-                clone.intersect(this.map);
-                if (clone.isEmpty() == false)
-                    nodes[row][col].blocked = true;
-
-                // Get costs of each node
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
                 getCost(nodes[row][col]);
             }
         }
