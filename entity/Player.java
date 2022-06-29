@@ -203,7 +203,7 @@ public class Player extends Entity {
         x = 100;
         y = 100;
         speed = 4;
-        dmg = 30;
+        dmg = 50;
         direction = "down";
     }
     @Override
@@ -236,7 +236,7 @@ public class Player extends Entity {
       }
       g.drawImage(image, x, y, width, height, null);
 
-      // debug
+      /*// debug
       Rectangle bounds = solidArea.getBounds();
       g.setColor(Color.BLACK);
       g.drawRect(this.x + bounds.x, this.y + bounds.y, bounds.width, bounds.height);
@@ -244,7 +244,7 @@ public class Player extends Entity {
             Rectangle bounds2 = attackArea.getBounds();
             g.setColor(Color.RED);
             g.drawRect(this.x + bounds2.x, this.y + bounds2.y, bounds2.width, bounds2.height);
-      }
+      }*/
     }
 
     public void getPlayerImage() {
