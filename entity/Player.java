@@ -134,8 +134,6 @@ public class Player extends Entity {
         }
  
         checkRoomTransition();
-    
-        
     }
 
     public void dialogue(){
@@ -163,8 +161,12 @@ public class Player extends Entity {
     }
     void attack () {
         spriteCounter++;
-        if (spriteCounter <= attack_first_frame) spriteNum = 0;
-        else if (spriteCounter > attack_first_frame && spriteCounter <= attack_second_frame) {
+        if (spriteCounter < attack_first_frame) spriteNum = 0;
+        else if (spriteCounter >= attack_first_frame && spriteCounter <= attack_second_frame) {
+            if (spriteCounter == attack_first_frame) {
+                soundEffects.setFile("sword-sound.wav");
+                soundEffects.play(0.1f);
+            }
             changeHitbox();
             spriteNum = 1;
         }
@@ -201,8 +203,13 @@ public class Player extends Entity {
         x = 100;
         y = 100;
         speed = 4;
-        dmg = 20;
+        dmg = 30;
         direction = "down";
+    }
+    @Override
+    void playDamageSound() {
+        soundEffects.setFile("player-hit.wav");
+        soundEffects.play(0.1f);
     }
     @Override
     public void draw (Graphics2D g) {

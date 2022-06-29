@@ -20,7 +20,11 @@ public class Crooked extends Monster {
     public void update() {
         // TODO Auto-generated method stub    
     }
-
+    @Override
+    void playDamageSound() {
+        soundEffects.setFile("crooked-hit.wav");
+        soundEffects.play(0.1f);
+    }
     @Override
     void playDeathSound () {
         soundEffects.setFile("crooked-death.wav");

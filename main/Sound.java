@@ -10,11 +10,14 @@ import javax.sound.sampled.FloatControl;
 
 public class Sound {
     Clip clip; // Must be in .wav format
-    static String[] fileNames = {"stupid.wav", "slime-death.wav", "crooked-death.wav"};
+
+    // Most of sound effects come from freesound.org but some of them are recorded by us
+    static String[] fileNames = {"stupid.wav", "slime-death.wav", "crooked-death.wav", "sword-sound.wav", "player-hit.wav",
+                                 "slime-hit.wav", "coin-pickup.wav"};
+
     static String filePath = "/audio/";
     static HashMap<String, Clip> files;
     
-    // TODO: Fix lag...
     public Sound () {
         if (files == null) {
             files = new HashMap<>();
@@ -24,6 +27,12 @@ public class Sound {
                     AudioInputStream a = AudioSystem.getAudioInputStream(url);
                     Clip c = AudioSystem.getClip();
                     c.open(a);
+
+                    // Play muted once to fix lag
+                    clip = c;
+                    play(0f);
+                    clip = null;
+
                     files.put(fileNames[i], c);
                 } catch (Exception e) {
                     System.out.println("Something's wrong with: " + fileNames[i]);
@@ -33,6 +42,8 @@ public class Sound {
         }
     }
     public void setFile (String name) {
+        if (clip != null)
+            stop();
         clip = files.get(name);
     }
     // https://stackoverflow.com/questions/40514910/set-volume-of-java-clip

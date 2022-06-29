@@ -29,11 +29,19 @@ public class CollisionChecker {
         checkEntity(monster, room);
         if (monster.collisionOn == true)
             return false;
-        return true;
+        else return true;
     }
     public static boolean checkPropSpawn (Prop prop, Room room) {
         if (detectCollision(prop.params.solidArea, room.solidAreaMap, new Distance(prop.x, prop.y)))
             return false;
+        for (NPC npc : room.npcList) {
+            if (detectCollision(prop.params.solidArea, npc.solidArea, new Distance(prop.x - npc.x, prop.y - npc.y)))
+                return false;
+        }
+        for (Prop other : room.propList) {
+            if (detectCollision(prop.params.solidArea, other.params.solidArea, new Distance(prop.x - other.x, prop.y - other.y)))
+                return false;
+        }
         return true;
     }
     static Distance calculateDistance (Entity origin, int x, int y) {

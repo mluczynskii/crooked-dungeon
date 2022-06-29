@@ -12,4 +12,8 @@ public class Coin extends Pickup {
         loadImage("coin.png");
         setSolidArea(0, 0, pickupSize, pickupSize);
     }
+    void playSoundEffect () {
+        soundEffects.setFile("coin-pickup.wav");
+        soundEffects.play(0.1f);
+    }
 }

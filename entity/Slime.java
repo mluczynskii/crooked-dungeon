@@ -23,6 +23,11 @@ public class Slime extends Monster {
         setSolidArea(2, 2, 28, 28);
     }
     @Override
+    void playDamageSound() {
+        soundEffects.setFile("slime-hit.wav");
+        soundEffects.play(0.2f);
+    }
+    @Override
     void playDeathSound() {
         soundEffects.setFile("slime-death.wav");
         soundEffects.play(0.1f);
@@ -55,8 +60,8 @@ public class Slime extends Monster {
             Rectangle rect = room.player.solidArea.getBounds(); // This is used to prevent getting stuck inside a monster after entering the room
             switch (direction) {
                 case "up": y = Math.max(rect.y + rect.height, y - speed); break;
-                case "down": y = Math.min(GamePanel.screenHeight - (rect.y + rect.height), y + speed); break;
-                case "right": x = Math.min(GamePanel.screenWidth - (rect.x + rect.width), x + speed); break;
+                case "down": y = Math.min(GamePanel.screenHeight - (rect.y + rect.height) - GamePanel.tileSize, y + speed); break;
+                case "right": x = Math.min(GamePanel.screenWidth - (rect.x + rect.width) - GamePanel.tileSize, x + speed); break;
                 case "left": x = Math.max(rect.x + rect.width, x - speed); break;
             }
         }

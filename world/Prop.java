@@ -50,6 +50,11 @@ public class Prop implements Drawable {
     }
     public void draw (Graphics2D g) {
         g.drawImage(img, x, y, params.width, params.height, null);
+
+        // Debug
+        g.setColor(Color.RED);
+        Rectangle bounds = params.solidArea.getBounds();
+        g.drawRect(bounds.x + x, bounds.y + y, bounds.width, bounds.height);
     }
     void loadImage (String name) {
         try {

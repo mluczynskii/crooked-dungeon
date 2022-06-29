@@ -12,4 +12,7 @@ public class Heart extends Pickup {
         loadImage("heart.png");
         setSolidArea(0, 0, pickupSize, pickupSize);
     }
+    void playSoundEffect () {
+        // TODO: Find good heart-pickup sound
+    }
 }
