@@ -56,13 +56,13 @@ public abstract class Entity implements Drawable {
     public void draw (Graphics2D g) {
         g.drawImage(idle, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
 
-        // Debug
+        /*// Debug
         Rectangle bounds = solidArea.getBounds();
         g.setColor(Color.RED);
         g.drawRect(x + bounds.x, y + bounds.y, bounds.width, bounds.height);
 
         g.setColor(Color.BLUE);
-        g.drawRect(x, y, GamePanel.tileSize, GamePanel.tileSize);
+        g.drawRect(x, y, GamePanel.tileSize, GamePanel.tileSize);*/
     }
     public int height () { 
         Rectangle rect = this.solidArea.getBounds();

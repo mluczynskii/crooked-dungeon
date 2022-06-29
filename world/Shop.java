@@ -21,7 +21,7 @@ public class Shop extends Room {
     static Random rand = new Random ();
 
     public Shop (GamePanel gp) {
-        super(path + shop_layouts[rand.nextInt(shop_layouts.length)], gp);
+        super(path + shop_layouts[rand.nextInt(shop_layouts.length)], gp, true);
         this.shopkeeper = new NPC_Shopkeeper(this);
         generateStock();
         entityList.add(shopkeeper);
