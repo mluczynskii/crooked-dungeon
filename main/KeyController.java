@@ -33,7 +33,6 @@ public class KeyController implements KeyListener {
                 break;
             case KeyEvent.VK_Z:
                 z = true;
-                zs = false;
                 break;
             case KeyEvent.VK_P:
                 if (gp.gameState == State.PLAY)
@@ -63,8 +62,7 @@ public class KeyController implements KeyListener {
                 right = false;
                 break;
             case KeyEvent.VK_Z:
-                z = false;
-                zs= true;
+                z= false;
                 break;
             case KeyEvent.VK_X:
                 attack = false;

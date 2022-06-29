@@ -68,6 +68,10 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     public void update () {
+        if (gameState == State.DIALOGUE){
+            player.dialogue();
+            return;
+        }
         if (gameState != State.PAUSE) {
             player.update();
             for (Monster m : TileManager.currentRoom.monsterList) {
@@ -76,6 +80,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
     }
+    
     @Override 
     public void paintComponent (Graphics g) {
         super.paintComponent(g);

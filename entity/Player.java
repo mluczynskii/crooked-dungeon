@@ -22,8 +22,14 @@ public class Player extends Entity {
     public NPC interactionNPC = null;
     public boolean attacking = false;
     Sound soundEffects = new Sound();
-
+    
+    
     final int invulnerable_cd = 60;
+
+    final int dialogue_cd = 20;
+    int dialogue_tick = 0;
+    Boolean dialogue_ok = true;
+    
 
     public Area attackArea = null;
 
@@ -96,19 +102,45 @@ public class Player extends Entity {
 
         }
 
+
         if (invulnerable_tick < invulnerable_cd) 
             invulnerable_tick++;
         else invulnerable = false;
 
-        if(keyC.z == true) {
+        if(dialogue_tick < dialogue_cd)
+            dialogue_tick++;
+        else dialogue_ok = true;
+
+        if(keyC.z == true && dialogue_ok == true) {
+            dialogue_tick = 0;
             interactNPC(interactionNPC);
-        }
-        else if(keyC.zs == true){
-            increaseDialogue(interactionNPC);
-            keyC.zs = false;
         }
  
         checkRoomTransition();
+    }
+
+    public void dialogue(){
+        
+        if (dialogue_tick < dialogue_cd) {
+            dialogue_tick++;
+            return;
+        }
+        else dialogue_ok = true;
+        
+        Boolean finished = interactionNPC.checkDialogue();
+       
+        if(keyC.z == true && dialogue_ok && !finished) {
+            interactionNPC.updateDialogue();
+            dialogue_tick = 0;
+            dialogue_ok = false;
+        }
+        
+        if(finished  && dialogue_ok && keyC.z) {
+            dialogue_ok = false;
+            dialogue_tick = 0;
+
+            gp.gameState = State.PLAY;
+        }
     }
     void attack () {
         spriteCounter++;
@@ -120,6 +152,7 @@ public class Player extends Entity {
             attacking = false;
         }
     }
+
     void checkRoomTransition () {
         Rectangle bounds = solidArea.getBounds();
         if (x + bounds.x + bounds.width > GamePanel.screenWidth) {
@@ -201,14 +234,10 @@ public class Player extends Entity {
             e.printStackTrace();
         }
     }
-    public void increaseDialogue (NPC interactionEntity) {
-        if (interactionEntity != null){
-            interactionEntity.currentDialogue +=1;
-        }
-    }
-    public void interactNPC(NPC interactionEntity){
+
+    public void interactNPC(NPC interactionN){
         CollisionChecker.findInteraction(this, TileManager.currentRoom);
-        if(interactionEntity != null){
+        if(interactionN != null){
             gp.gameState = State.DIALOGUE;
         }
     }

@@ -26,6 +26,7 @@ public abstract class Entity implements Drawable {
     public boolean invulnerable = false;
     public int invulnerable_tick = 0;
 
+
     static final int spriteChangeRate = 14;
     public void takeDamage (Entity entity) {
         if (invulnerable == false) {
