@@ -35,6 +35,7 @@ public class UI {
     // Icons
     static int iconSize = GamePanel.tileSize * 2/3;
     BufferedImage dmgIcon, speedIcon, coinIcon;
+    BufferedImage w, a, s, d, z, x, p;
 
     Rectangle hpContainer = new Rectangle(0, 0, GamePanel.screenWidth/3, 30);
 
@@ -44,6 +45,13 @@ public class UI {
             this.dmgIcon = ImageIO.read(getClass().getResourceAsStream(path + "dmg.png"));
             this.speedIcon = ImageIO.read(getClass().getResourceAsStream(path + "speed.png"));
             this.coinIcon = ImageIO.read(getClass().getResourceAsStream(path + "coin.png"));
+            this.w= ImageIO.read(getClass().getResourceAsStream(path + "w-key.png"));
+            this.a = ImageIO.read(getClass().getResourceAsStream(path + "a-key.png"));
+            this.s = ImageIO.read(getClass().getResourceAsStream(path + "s-key.png")); 
+            this.d = ImageIO.read(getClass().getResourceAsStream(path + "d-key.png"));
+            this.z = ImageIO.read(getClass().getResourceAsStream(path + "z-key.png"));
+            this.x = ImageIO.read(getClass().getResourceAsStream(path + "x-key.png"));
+            this.p = ImageIO.read(getClass().getResourceAsStream(path + "p-key.png"));
         } catch (Exception e) {
             System.out.println("Missing sprites");
         }
@@ -73,8 +81,6 @@ public class UI {
     
 
     void drawTitleScreen(Graphics2D g){
-
-
         String text = "NEW GAME";
         int x = 415;
         int y = 480;
@@ -135,6 +141,22 @@ public class UI {
         g.drawImage(coinIcon, 4 * iconSize, 30, iconSize, iconSize, null);
         Info.x = 5 * iconSize;
         drawCenteredText(Info, Integer.toString(gp.player.money), g, infoFont);
+
+        // Draw only on first screen
+        if (TileManager.roomX == 0 && TileManager.roomY == 0) {
+            Info.y = 60 + iconSize;
+            Info.x = 10;
+            Info.width = Info.width * 3;
+            BufferedImage[] help = {w, a, s, d, z, x, p};
+            String[] text = {"up", "left", "down", "right", "action", "attack", "pause"};
+            for (int i = 0; i < help.length; i++) {
+                g.drawImage(help[i], Info.x, Info.y, iconSize, iconSize, null);
+                Info.x = Info.x + iconSize;
+                drawCenteredText(Info, text[i], g, infoFont);
+                Info.x = 10;
+                Info.y = Info.y + iconSize + 10;
+            }
+        }
     }
     void drawHP (Graphics2D g) {
         g.setColor(Color.BLACK);
