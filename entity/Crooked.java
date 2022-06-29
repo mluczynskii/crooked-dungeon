@@ -22,9 +22,12 @@ public class Crooked extends Monster {
     }
 
     @Override
-    void drop() {
+    void playDeathSound () {
         soundEffects.setFile("crooked-death.wav");
         soundEffects.play(0.1f);
+    }
+    @Override
+    void drop() {
         int index = possibleDrops[rand.nextInt(possibleDrops.length)];
         generateDrop(index); 
     }

@@ -20,6 +20,7 @@ public abstract class Monster extends Entity {
         this.room = room;
     }
     void die () {
+        playDeathSound();
         room.monsterList.remove(this);
         room.entityList.remove(this);
         drop();
@@ -45,4 +46,5 @@ public abstract class Monster extends Entity {
         }
     }
     abstract void drop ();
+    abstract void playDeathSound();
 }

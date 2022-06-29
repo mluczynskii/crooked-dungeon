@@ -22,12 +22,15 @@ public class Slime extends Monster {
         setPosition(x, y);
         setSolidArea(2, 2, 28, 28);
     }
-    void drop () {
+    @Override
+    void playDeathSound() {
         soundEffects.setFile("slime-death.wav");
         soundEffects.play(0.1f);
+    }
+    @Override
+    void drop () {
         int index = rand.nextInt(possibleDrops.length);
         generateDrop(possibleDrops[index]);
-
     }
     public void update () {
         if (dead)
