@@ -16,8 +16,8 @@ public class UI {
     static String path = "/graphic_assets/sprites/icons/";
 
     // Fonts
-    static Font infoFont = new Font("Impact", Font.PLAIN, 25);
-    static Font pauseFont = new Font("Impact", Font.PLAIN, 60);
+    static Font infoFont = new Font("haxorville Nerd Font", Font.PLAIN, 25);
+    static Font pauseFont = new Font("haxorville Nerd Font", Font.PLAIN, 60);
     static Font textFont = new Font ("haxorville Nerd Font", Font.PLAIN, 30);
     static Font titleFont1 = new Font("haxorville Nerd Font", Font.PLAIN, 35);
     
@@ -126,7 +126,7 @@ public class UI {
     void drawIcons (Graphics2D g) {
         Rectangle Info = new Rectangle(iconSize, 30, iconSize, iconSize);
         g.drawImage(dmgIcon, 0, 30, iconSize, iconSize, null);
-        drawCenteredText(Info, Double.toString(gp.player.dmg), g, infoFont);
+        drawCenteredText(Info, Integer.toString((int)gp.player.dmg), g, infoFont);
 
         g.drawImage(speedIcon, 2 * iconSize, 30, iconSize, iconSize, null);
         Info.x = 3 * iconSize;
@@ -150,7 +150,7 @@ public class UI {
         g.setColor(hpBarColor);
         g.fill(hpBar);
 
-        String msg = "HP: " + gp.player.currentHealth + "/" + gp.player.maxHealth;
+        String msg = (int)gp.player.currentHealth + "/" + (int)gp.player.maxHealth;
         drawCenteredText(hpContainer, msg, g, infoFont);
     }
     void drawCenteredText (Rectangle container, String str, Graphics2D g, Font font) {
