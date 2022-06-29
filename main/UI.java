@@ -214,8 +214,11 @@ public class UI {
             return;
         }
         drawSubWindow(g,x,y,width,height);
-        drawDialogueText(g,currentDialogue,x,y,width,height,defaultStroke);
 
+        for (String line : currentDialogue.split("\n")) {
+            drawDialogueText(g,line,x,y,width,height,defaultStroke);
+            y = y + 40;
+        }   
     }
 
     public void drawSubWindow(Graphics2D g, int x, int y, int width, int height){
