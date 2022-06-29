@@ -8,7 +8,10 @@ import main.GamePanel;
 public class NPC_Shopkeeper extends NPC {
     Shop shop;
     static String path = "/graphic_assets/characters/shopkeeper/";
-    
+    @Override
+    void playDamageSound() {
+        // Nothing
+    }
 
     public NPC_Shopkeeper (Shop shop) {
         this.shop = shop;

@@ -31,8 +31,7 @@ public class Window {
             InputStream is = Window.class.getResourceAsStream("/graphic_assets/fonts/haxorville.ttf");
             Font font = Font.createFont(Font.TRUETYPE_FONT, is);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            if (ge.registerFont(font))
-                System.out.println("Success");
+            ge.registerFont(font);
         } catch (Exception e) {
             e.printStackTrace();
         }

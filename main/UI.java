@@ -65,8 +65,12 @@ public class UI {
             case TITLE:
                 drawTitleScreen(g);
                 break;
+            case GAMEOVER:
+                drawGameOver(g);
+                break;
         }
     }
+    
 
     void drawTitleScreen(Graphics2D g){
 
@@ -92,7 +96,11 @@ public class UI {
         if(currentCommand == Command.QUIT){
             drawText(">", x - 30, y, g, titleFont1);
         }
-
+    }
+    void drawGameOver (Graphics2D g) {
+        String text = "Game Over";
+        Rectangle container = new Rectangle (0, 0, GamePanel.screenWidth, GamePanel.screenHeight);
+        drawCenteredText(container, text, g, textFont);
     }
     void drawMonsterHP (Graphics2D g) {
         for (Monster m : TileManager.currentRoom.monsterList) {

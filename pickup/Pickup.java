@@ -5,6 +5,8 @@ import javax.imageio.ImageIO;
 import entity.Player;
 import main.Drawable;
 import main.GamePanel;
+import main.Sound;
+
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
 import world.*;
@@ -17,9 +19,12 @@ public abstract class Pickup implements Drawable {
     public int x, y;
     public Area solidArea;
     Room room;
+    Sound soundEffects = new Sound();
     
     abstract void action (Player player);
+    abstract void playSoundEffect();
     public void getPickedUp (Player player) {
+        playSoundEffect();
         room.pickupList.remove(this);
         action(player);
     }

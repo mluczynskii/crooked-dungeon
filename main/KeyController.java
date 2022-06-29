@@ -60,7 +60,7 @@ public class KeyController implements KeyListener {
                              break;
                         case QUIT:
                             System.exit(0);
-                            break;
+                            break; 
                     }
                     break;
 

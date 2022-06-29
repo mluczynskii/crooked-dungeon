@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int screenHeight = rowNum * tileSize; // 640px
 
     public enum State {
-        PLAY, PAUSE, DIALOGUE, TITLE
+        PLAY, PAUSE, DIALOGUE, TITLE, GAMEOVER
     }
     public State gameState = State.TITLE;
 

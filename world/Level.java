@@ -21,7 +21,7 @@ public class Level {
         roomHeight = rand.nextInt(10) + 2;
         roomGrid = new Room[roomHeight][roomWidth];
         generateRooms();
-        //playMusic(0);
+        //playMusic("stupid.wav");
     }
     private void generateRooms () {
         roomGrid[0][0] = new Shop(gp);
@@ -46,8 +46,8 @@ public class Level {
             }
         }
     }
-    public void playMusic (int i) {
-        backgroundMusic.setFile(i);
+    public void playMusic (String name) {
+        backgroundMusic.setFile(name);
         backgroundMusic.play(0.01f);
         backgroundMusic.loop();
     }

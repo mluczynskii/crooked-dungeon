@@ -89,21 +89,23 @@ public class Room {
     }
     void initializeProp () {
         String name = Prop.propNames[rand.nextInt(Prop.propNames.length)];
-        Prop prop = new Prop (name, rand.nextInt(GamePanel.screenWidth - 2 * GamePanel.tileSize), rand.nextInt(GamePanel.screenHeight - 2 * GamePanel.tileSize));
+        Prop prop = new Prop (name, 0, 0);
+        prop.x = Math.max(GamePanel.tileSize, rand.nextInt(GamePanel.screenWidth - 2 * prop.params.width));
+        prop.y = Math.max(GamePanel.tileSize, rand.nextInt(GamePanel.screenHeight - 2 * prop.params.height));
         // Try to find a place where the prop can stand
         int tick = 0;
         int stop = 200;
         while (CollisionChecker.checkPropSpawn(prop, this) == false && tick < stop) {
             // Try to move it more to the center of the screen
-            if (prop.y > GamePanel.screenHeight/2) prop.y--;
-            else prop.y++;
-            if (prop.x > GamePanel.screenWidth/2) prop.x--;
-            else prop.x++;
+            if (prop.y > GamePanel.screenHeight/2) prop.y = prop.y - 10;
+            else prop.y = prop.y + 10;
+            if (prop.x > GamePanel.screenWidth/2) prop.x = prop.x - 10;
+            else prop.x = prop.x + 10;
 
             tick++;
         }
         if (tick == stop) {
-            // Don't "spawn"
+            // Don't spawn
         }
         else propList.add(prop);
     }

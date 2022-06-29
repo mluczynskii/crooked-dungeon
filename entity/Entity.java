@@ -12,6 +12,7 @@ public abstract class Entity implements Drawable {
     public int speed, x, y;
     public double maxHealth, currentHealth;
     public double dmg;
+    boolean dead = false;
 
     public BufferedImage idle;
     public ArrayList<BufferedImage> up, down, left, right; // walking animation frames
@@ -30,11 +31,15 @@ public abstract class Entity implements Drawable {
     static final int spriteChangeRate = 14;
     public void takeDamage (Entity entity) {
         if (invulnerable == false) {
+            playDamageSound();
             currentHealth = currentHealth - entity.dmg;
             invulnerable = true;
             invulnerable_tick = 0;
+            if (currentHealth <= 0)
+                dead = true;
         }
     }
+    abstract void playDamageSound();
     void setSolidArea (int x, int y, int width, int height) {
         solidArea = new Area (new Rectangle(x * GamePanel.scale, y * GamePanel.scale, width * GamePanel.scale, height * GamePanel.scale));
     }
