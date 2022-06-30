@@ -71,10 +71,10 @@ public class GamePanel extends JPanel implements Runnable {
             player.dialogue();
             return;
         }
-        if (gameState == State.TITLE){
+        else if (gameState == State.TITLE){
             return;
         }
-        if (gameState == State.PLAY) {
+        else if (gameState == State.PLAY) {
             player.update();
             for (Monster m : TileManager.currentRoom.monsterList) {
                 if (m != null)

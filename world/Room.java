@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.Random;
 import entity.NPC;
+import items.Item;
 import entity.Entity;
 import main.CollisionChecker;
 import main.GamePanel;
@@ -31,6 +32,8 @@ public class Room {
     static String[] enemyNames = {"entity.Slime"};
     static int enemyCap = 5;
     static int propCap = 4;
+
+    public Item[] stock = null;
 
     public Area solidAreaMap = new Area();
     void initMap () {

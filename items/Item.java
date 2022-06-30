@@ -6,12 +6,16 @@ import java.io.IOException;
 import java.awt.Graphics2D;
 import main.GamePanel;
 import entity.Player;
+import java.awt.geom.Area;
+import java.awt.Rectangle;
 
 public abstract class Item {
     static String path = "/graphic_assets/sprites/items/";
     public String name, description;
     BufferedImage sprite;
-    int cost;
+    public int cost;
+    public boolean lookup = false;
+    public Area buyArea = new Area (new Rectangle (0, 0, GamePanel.tileSize * GamePanel.scale, GamePanel.tileSize * GamePanel.scale));
     public Item (String name, String description, int cost) {
         this.name = name;
         this.description = description;

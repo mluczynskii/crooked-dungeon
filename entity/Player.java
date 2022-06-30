@@ -7,6 +7,9 @@ import main.GamePanel;
 import main.KeyController;
 import java.awt.*;
 import javax.imageio.ImageIO;
+
+import items.Item;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
@@ -17,12 +20,13 @@ public class Player extends Entity {
     static String path = "/graphic_assets/characters/ax/";
 
     GamePanel gp;
-    KeyController keyC;
-    public int money = 0;
+    public KeyController keyC;
+    public int money = 100;
     public NPC interactionNPC = null;
     public boolean attacking = false;
     boolean canAttack = true;
     Sound soundEffects = new Sound();
+    public Item item = null;
     
     
     final int invulnerable_cd = 60;
@@ -31,6 +35,9 @@ public class Player extends Entity {
     int dialogue_tick = 0;
     Boolean dialogue_ok = true;
     
+    final int buy_cd = 20;
+    int buy_tick = 0;
+    Boolean buy_ok = true;
 
     final int attack_first_frame = 20;
     final int attack_second_frame = 50;
@@ -112,11 +119,23 @@ public class Player extends Entity {
             }
 
         }
-
+        else if (keyC.z == true && item != null && item.cost <= money && buy_ok) {
+            buy_ok = false;
+            buy_tick = 0;
+            item.action(this);
+            money -= item.cost;
+        }
+        else if(keyC.z == true && dialogue_ok) {
+            interactNPC();
+        }
 
         if (invulnerable_tick < invulnerable_cd) 
             invulnerable_tick++;
         else invulnerable = false;
+
+        if (buy_tick < buy_cd) 
+            buy_tick++;
+        else buy_ok = true;
 
         if(dialogue_tick < dialogue_cd)
             dialogue_tick++;
@@ -129,10 +148,6 @@ public class Player extends Entity {
             attack_tick++;
         else canAttack = true;
 
-        if(keyC.z == true) {
-            interactNPC(interactionNPC);
-        }
- 
         checkRoomTransition();
     }
 
@@ -265,9 +280,9 @@ public class Player extends Entity {
         }
     }
 
-    public void interactNPC(NPC interactionN){
+    public void interactNPC(){
         CollisionChecker.findInteraction(this, TileManager.currentRoom);
-        if(interactionN != null){
+        if(interactionNPC != null){
             gp.gameState = State.DIALOGUE;
         }
     }

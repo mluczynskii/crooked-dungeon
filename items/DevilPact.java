@@ -3,7 +3,7 @@ package items;
 import entity.Player;
 
 public class DevilPact extends Item {
-    static String info = "Increases Player's DMG by 25% at the cost of reducing HP by 10%";
+    static String info = "Increases Player's DMG by 25% at\nthe cost of reducing HP by 10%";
     public DevilPact () {
         super ("Devil Pact", info, 20);
         super.loadImage("devil_pact.png");

@@ -6,6 +6,8 @@ import javax.imageio.ImageIO;
 
 import world.TileManager;
 import entity.*;
+import items.Item;
+
 import java.awt.image.*;
 import java.awt.font.TextLayout;
 import java.awt.geom.*;
@@ -67,6 +69,10 @@ public class UI {
                 drawHP(g);
                 drawIcons(g);
                 drawMonsterHP(g);
+                if (TileManager.currentRoom.stock != null)
+                    for (Item item : TileManager.currentRoom.stock) {
+                        if (item.lookup == true) drawItemInfo(g, item);
+                    }
                 break;
             case PAUSE:
                 drawPauseScreen(g);
@@ -112,6 +118,22 @@ public class UI {
         String text = "Game Over";
         Rectangle container = new Rectangle (0, 0, GamePanel.screenWidth, GamePanel.screenHeight);
         drawCenteredText(container, text, g, textFont);
+    }
+    void drawItemInfo (Graphics2D g, Item item) {
+        int x = 120;
+        int y = 200;
+        int width = 784;
+        int height = 190;
+        Stroke defaultStroke = g.getStroke();
+        drawSubWindow(g, x, y, width, height);
+        drawDialogueText(g, item.name, x, y, width, height, defaultStroke);
+        for (String line : item.description.split("\n")) {
+            y = y + 40;
+            drawDialogueText(g, line, x, y, width, height, defaultStroke);
+        }
+        y = y + 40;
+        drawDialogueText(g, "Cost: " + item.cost, x, y, width, height, defaultStroke);
+        
     }
     void drawMonsterHP (Graphics2D g) {
         for (Monster m : TileManager.currentRoom.monsterList) {
