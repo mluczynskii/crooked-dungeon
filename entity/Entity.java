@@ -12,7 +12,7 @@ public abstract class Entity implements Drawable {
     public int speed, x, y;
     public double maxHealth, currentHealth;
     public double dmg;
-    boolean dead = false;
+    public boolean dead = false;
 
     public BufferedImage idle;
     public ArrayList<BufferedImage> up, down, left, right; // walking animation frames

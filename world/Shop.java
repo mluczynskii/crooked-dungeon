@@ -13,7 +13,7 @@ public class Shop extends Room {
     static String path = "/graphic_assets/layouts/shops/";
     static String[] shop_layouts = {"shop1.txt", "shop2.txt", "shop3.txt"};
 
-    String[] lowQualityItems = {"items.MagicMushroom"};
+    String[] lowQualityItems = {"items.MagicMushroom", "items.Poison"};
     String[] medQualityItems = {"items.FishTank"};
     String[] highQualityItems = {"items.DevilPact"};
 

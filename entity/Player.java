@@ -47,7 +47,7 @@ public class Player extends Entity {
     public Area attackArea = null;
 
     final Area solid_at_up = new Area(new Rectangle(0, -GamePanel.tileSize, GamePanel.tileSize, GamePanel.tileSize * 2));
-    final Area solid_at_down = new Area(new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize * 2));
+    final Area solid_at_down = new Area(new Rectangle(20, 46, 22, 76));
     final Area solid_at_left = new Area(new Rectangle(-GamePanel.tileSize, 0, GamePanel.tileSize * 2, GamePanel.tileSize));
     final Area solid_at_right = new Area(new Rectangle(0, 0, GamePanel.tileSize * 2, GamePanel.tileSize));
 

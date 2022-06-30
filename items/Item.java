@@ -15,7 +15,7 @@ public abstract class Item {
     BufferedImage sprite;
     public int cost;
     public boolean lookup = false;
-    public Area buyArea = new Area (new Rectangle (0, 0, GamePanel.tileSize * GamePanel.scale, GamePanel.tileSize * GamePanel.scale));
+    public Area buyArea = new Area (new Rectangle (0, 0, GamePanel.tileSize, GamePanel.tileSize));
     public Item (String name, String description, int cost) {
         this.name = name;
         this.description = description;
