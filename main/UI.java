@@ -6,6 +6,8 @@ import javax.imageio.ImageIO;
 
 import world.TileManager;
 import entity.*;
+import items.Item;
+
 import java.awt.image.*;
 import java.awt.font.TextLayout;
 import java.awt.geom.*;
@@ -13,7 +15,8 @@ import java.awt.geom.*;
 public class UI {
     GamePanel gp;
 
-    static String path = "/graphic_assets/sprites/icons/";
+    static String iconPath = "/graphic_assets/sprites/icons/";
+    static String titlePath = "/graphic_assets/single objects/startscreen.png";
 
     // Fonts
     static Font infoFont = new Font("haxorville Nerd Font", Font.PLAIN, 25);
@@ -37,22 +40,24 @@ public class UI {
     BufferedImage dmgIcon, speedIcon, coinIcon, titleSC;
     BufferedImage w, a, s, d, z, x, p;
 
+    BufferedImage titleScreen;
+
     Rectangle hpContainer = new Rectangle(0, 0, GamePanel.screenWidth/3, 30);
 
     public UI (GamePanel gp) {
         this.gp = gp;
         try {
-            this.dmgIcon = ImageIO.read(getClass().getResourceAsStream(path + "dmg.png"));
-            this.speedIcon = ImageIO.read(getClass().getResourceAsStream(path + "speed.png"));
-            this.coinIcon = ImageIO.read(getClass().getResourceAsStream(path + "coin.png"));
+            this.dmgIcon = ImageIO.read(getClass().getResourceAsStream(iconPath + "dmg.png"));
+            this.speedIcon = ImageIO.read(getClass().getResourceAsStream(iconPath + "speed.png"));
+            this.coinIcon = ImageIO.read(getClass().getResourceAsStream(iconPath + "coin.png"));
             this.titleSC = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/single_objects/startscreen.png"));
-            this.w= ImageIO.read(getClass().getResourceAsStream(path + "w-key.png"));
-            this.a = ImageIO.read(getClass().getResourceAsStream(path + "a-key.png"));
-            this.s = ImageIO.read(getClass().getResourceAsStream(path + "s-key.png")); 
-            this.d = ImageIO.read(getClass().getResourceAsStream(path + "d-key.png"));
-            this.z = ImageIO.read(getClass().getResourceAsStream(path + "z-key.png"));
-            this.x = ImageIO.read(getClass().getResourceAsStream(path + "x-key.png"));
-            this.p = ImageIO.read(getClass().getResourceAsStream(path + "p-key.png"));
+            this.w= ImageIO.read(getClass().getResourceAsStream(iconPath + "w-key.png"));
+            this.a = ImageIO.read(getClass().getResourceAsStream(iconPath + "a-key.png"));
+            this.s = ImageIO.read(getClass().getResourceAsStream(iconPath + "s-key.png")); 
+            this.d = ImageIO.read(getClass().getResourceAsStream(iconPath + "d-key.png"));
+            this.z = ImageIO.read(getClass().getResourceAsStream(iconPath + "z-key.png"));
+            this.x = ImageIO.read(getClass().getResourceAsStream(iconPath + "x-key.png"));
+            this.p = ImageIO.read(getClass().getResourceAsStream(iconPath + "p-key.png"));
         } catch (Exception e) {
             System.out.println("Missing sprites");
         }
@@ -64,6 +69,10 @@ public class UI {
                 drawHP(g);
                 drawIcons(g);
                 drawMonsterHP(g);
+                if (TileManager.currentRoom.stock != null)
+                    for (Item item : TileManager.currentRoom.stock) {
+                        if (item.lookup == true) drawItemInfo(g, item);
+                    }
                 break;
             case PAUSE:
                 drawPauseScreen(g);
@@ -83,6 +92,7 @@ public class UI {
 
     void drawTitleScreen(Graphics2D g){
 
+
         g.drawImage(titleSC, 0, 0, 1024,  640,null);
 
         String text = "NEW GAME";
@@ -93,7 +103,7 @@ public class UI {
             drawText(">", x - 30, y, g, titleFont1);
         }
 
-        text = "LOAD GAME";
+        text = "LOAD GAME (WIP)";
         y = 540;
         drawText(text, x, y, g, titleFont1);
         if(currentCommand == Command.LOAD){
@@ -111,6 +121,22 @@ public class UI {
         String text = "Game Over";
         Rectangle container = new Rectangle (0, 0, GamePanel.screenWidth, GamePanel.screenHeight);
         drawCenteredText(container, text, g, textFont);
+    }
+    void drawItemInfo (Graphics2D g, Item item) {
+        int x = 120;
+        int y = 200;
+        int width = 784;
+        int height = 190;
+        Stroke defaultStroke = g.getStroke();
+        drawSubWindow(g, x, y, width, height);
+        drawDialogueText(g, item.name, x, y, width, height, defaultStroke);
+        for (String line : item.description.split("\n")) {
+            y = y + 40;
+            drawDialogueText(g, line, x, y, width, height, defaultStroke);
+        }
+        y = y + 40;
+        drawDialogueText(g, "Cost: " + item.cost, x, y, width, height, defaultStroke);
+        
     }
     void drawMonsterHP (Graphics2D g) {
         for (Monster m : TileManager.currentRoom.monsterList) {

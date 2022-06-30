@@ -1,6 +1,8 @@
 package main;
 
 import entity.Entity;
+import items.Item;
+
 import java.awt.geom.Area;
 import java.awt.geom.AffineTransform;
 import entity.*;
@@ -101,12 +103,32 @@ public class CollisionChecker {
             if (flag && player.invulnerable == false)
                 player.takeDamage(monster);
         }
+        if (room.stock != null) {
+            int x = GamePanel.screenWidth/3 - GamePanel.tileSize/2;
+            int step = GamePanel.screenWidth/6;
+            int y = GamePanel.screenHeight * 2/3;
+            Boolean flag = true; 
+            for (Item item : room.stock) {
+                if (item == null) continue;
+                if (detectCollision(player.solidArea, item.buyArea, new Distance (player.x - x, player.y - y))) {
+                    item.lookup = true;
+                    player.item = item;
+                    flag = false;
+                } else item.lookup = false;
+                x += step;
+                if (flag) player.item = null;
+            }
+        }
     }
     public static void findInteraction (Player player, Room room) {
+        Boolean flag = true;
         for (NPC npc : room.npcList) {
-            if (detectCollision(player.solidArea, npc.solidArea, calculateDistance(player, npc.x, npc.y)))
+            if (detectCollision(player.solidArea, npc.solidArea, calculateDistance(player, npc.x, npc.y))) {
                 player.interactionNPC = npc;
+                flag = false;
+            }
         }
+        if (flag) player.interactionNPC = null;
     }
     static void checkEntity (Entity entity, Room room) {
         // Check collision with tiles

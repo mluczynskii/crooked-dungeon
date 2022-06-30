@@ -13,15 +13,16 @@ public class Shop extends Room {
     static String path = "/graphic_assets/layouts/shops/";
     static String[] shop_layouts = {"shop1.txt", "shop2.txt", "shop3.txt"};
 
-    String[] lowQualityItems = {"items.MagicMushroom"};
-    String[] medQualityItems = {"items.DevilPact"};
-    String[] highQualityItems = {"items.MagicMushroom"};
+    String[] lowQualityItems = {"items.MagicMushroom", "items.Poison"};
+    String[] medQualityItems = {"items.FishTank", "items.Armor"};
+    String[] highQualityItems = {"items.DevilPact", "items.Halo"};
 
-    Item[] stock = new Item[3];
+    
     static Random rand = new Random ();
 
     public Shop (GamePanel gp) {
         super(path + shop_layouts[rand.nextInt(shop_layouts.length)], gp, true);
+        this.stock = new Item[3];
         this.shopkeeper = new NPC_Shopkeeper(this);
         generateStock();
         entityList.add(shopkeeper);
@@ -51,7 +52,7 @@ public class Shop extends Room {
     void drawRoom (Graphics2D g) {
         super.drawRoom(g);
         int x = GamePanel.screenWidth/3 - GamePanel.tileSize/2;
-        int step = (x + GamePanel.tileSize)/3;
+        int step = GamePanel.screenWidth/6;
         int y = GamePanel.screenHeight * 2/3;
         for (Item item : stock) {
             if (item != null)
