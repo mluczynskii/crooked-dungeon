@@ -16,8 +16,8 @@ public class UI {
     static String path = "/graphic_assets/sprites/icons/";
 
     // Fonts
-    static Font infoFont = new Font("Impact", Font.PLAIN, 25);
-    static Font pauseFont = new Font("Impact", Font.PLAIN, 60);
+    static Font infoFont = new Font("haxorville Nerd Font", Font.PLAIN, 25);
+    static Font pauseFont = new Font("haxorville Nerd Font", Font.PLAIN, 60);
     static Font textFont = new Font ("haxorville Nerd Font", Font.PLAIN, 30);
     static Font titleFont1 = new Font("haxorville Nerd Font", Font.PLAIN, 35);
     
@@ -35,6 +35,7 @@ public class UI {
     // Icons
     static int iconSize = GamePanel.tileSize * 2/3;
     BufferedImage dmgIcon, speedIcon, coinIcon;
+    BufferedImage w, a, s, d, z, x, p;
 
     Rectangle hpContainer = new Rectangle(0, 0, GamePanel.screenWidth/3, 30);
 
@@ -44,6 +45,13 @@ public class UI {
             this.dmgIcon = ImageIO.read(getClass().getResourceAsStream(path + "dmg.png"));
             this.speedIcon = ImageIO.read(getClass().getResourceAsStream(path + "speed.png"));
             this.coinIcon = ImageIO.read(getClass().getResourceAsStream(path + "coin.png"));
+            this.w= ImageIO.read(getClass().getResourceAsStream(path + "w-key.png"));
+            this.a = ImageIO.read(getClass().getResourceAsStream(path + "a-key.png"));
+            this.s = ImageIO.read(getClass().getResourceAsStream(path + "s-key.png")); 
+            this.d = ImageIO.read(getClass().getResourceAsStream(path + "d-key.png"));
+            this.z = ImageIO.read(getClass().getResourceAsStream(path + "z-key.png"));
+            this.x = ImageIO.read(getClass().getResourceAsStream(path + "x-key.png"));
+            this.p = ImageIO.read(getClass().getResourceAsStream(path + "p-key.png"));
         } catch (Exception e) {
             System.out.println("Missing sprites");
         }
@@ -73,8 +81,6 @@ public class UI {
     
 
     void drawTitleScreen(Graphics2D g){
-
-
         String text = "NEW GAME";
         int x = 415;
         int y = 480;
@@ -126,7 +132,7 @@ public class UI {
     void drawIcons (Graphics2D g) {
         Rectangle Info = new Rectangle(iconSize, 30, iconSize, iconSize);
         g.drawImage(dmgIcon, 0, 30, iconSize, iconSize, null);
-        drawCenteredText(Info, Double.toString(gp.player.dmg), g, infoFont);
+        drawCenteredText(Info, Integer.toString((int)gp.player.dmg), g, infoFont);
 
         g.drawImage(speedIcon, 2 * iconSize, 30, iconSize, iconSize, null);
         Info.x = 3 * iconSize;
@@ -135,6 +141,22 @@ public class UI {
         g.drawImage(coinIcon, 4 * iconSize, 30, iconSize, iconSize, null);
         Info.x = 5 * iconSize;
         drawCenteredText(Info, Integer.toString(gp.player.money), g, infoFont);
+
+        // Draw only on first screen
+        if (TileManager.roomX == 0 && TileManager.roomY == 0) {
+            Info.y = 60 + iconSize;
+            Info.x = 10;
+            Info.width = Info.width * 3;
+            BufferedImage[] help = {w, a, s, d, z, x, p};
+            String[] text = {"up", "left", "down", "right", "action", "attack", "pause"};
+            for (int i = 0; i < help.length; i++) {
+                g.drawImage(help[i], Info.x, Info.y, iconSize, iconSize, null);
+                Info.x = Info.x + iconSize;
+                drawCenteredText(Info, text[i], g, infoFont);
+                Info.x = 10;
+                Info.y = Info.y + iconSize + 10;
+            }
+        }
     }
     void drawHP (Graphics2D g) {
         g.setColor(Color.BLACK);
@@ -150,7 +172,7 @@ public class UI {
         g.setColor(hpBarColor);
         g.fill(hpBar);
 
-        String msg = "HP: " + gp.player.currentHealth + "/" + gp.player.maxHealth;
+        String msg = (int)gp.player.currentHealth + "/" + (int)gp.player.maxHealth;
         drawCenteredText(hpContainer, msg, g, infoFont);
     }
     void drawCenteredText (Rectangle container, String str, Graphics2D g, Font font) {
@@ -192,8 +214,11 @@ public class UI {
             return;
         }
         drawSubWindow(g,x,y,width,height);
-        drawDialogueText(g,currentDialogue,x,y,width,height,defaultStroke);
 
+        for (String line : currentDialogue.split("\n")) {
+            drawDialogueText(g,line,x,y,width,height,defaultStroke);
+            y = y + 40;
+        }   
     }
 
     public void drawSubWindow(Graphics2D g, int x, int y, int width, int height){

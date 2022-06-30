@@ -19,6 +19,16 @@ public abstract class Monster extends Entity {
     Monster (Room room) {
         this.room = room;
     }
+    @Override
+    public void takeDamage (Entity entity) {
+        super.takeDamage(entity);
+        switch (entity.direction) { // TODO: Fix "knockback"
+            case "up": direction = "down"; break;
+            case "down": direction = "up"; break;
+            case "left": direction = "right"; break;
+            case "right": direction = "left"; break;
+        }
+    }
     void die () {
         playDeathSound();
         room.monsterList.remove(this);

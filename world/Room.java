@@ -10,7 +10,7 @@ import entity.Entity;
 import main.CollisionChecker;
 import main.GamePanel;
 
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Graphics2D;
 import entity.*;
 import pickup.*;
@@ -48,7 +48,7 @@ public class Room {
     }
     Random rand = new Random();
 
-    public Room (String filepath, GamePanel gp) {
+    public Room (String filepath, GamePanel gp, boolean safe) {
         this.gp = gp;
         player = gp.player;
         entityList.add(player);
@@ -75,16 +75,20 @@ public class Room {
             e.printStackTrace();
         }
         initMap();
-        int it = rand.nextInt(propCap) + 1;
-        while (it > 0) {
-            initializeProp();
-            it--;
-        }
-        it = rand.nextInt(enemyCap) + 1;
-        while (it > 0) {
-            String name = enemyNames[rand.nextInt(enemyNames.length)];
-            generateEnemy(name);
-            it--;
+
+        if (safe == false)
+        {
+            int it = rand.nextInt(propCap) + 1;
+            while (it > 0) {
+                initializeProp();
+                it--;
+            }
+            it = rand.nextInt(enemyCap) + 1;
+            while (it > 0) {
+                String name = enemyNames[rand.nextInt(enemyNames.length)];
+                generateEnemy(name);
+                it--;
+            }
         }
     }
     void initializeProp () {
@@ -117,9 +121,9 @@ public class Room {
             }
         }
 
-        // Debug
+        /*// Debug
         g.setColor(Color.RED);
-        g.draw(solidAreaMap);
+        g.draw(solidAreaMap);*/
     }
     void generateEnemy (String enemyName) {
             Monster monster = null;
