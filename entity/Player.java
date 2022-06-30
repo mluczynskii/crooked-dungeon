@@ -46,10 +46,10 @@ public class Player extends Entity {
     int attack_tick = attack_cd;
     public Area attackArea = null;
 
-    final Area solid_at_up = new Area(new Rectangle(0, -GamePanel.tileSize, GamePanel.tileSize, GamePanel.tileSize * 2));
+    final Area solid_at_up = new Area(new Rectangle(22, -GamePanel.tileSize+6, 22, 76));
     final Area solid_at_down = new Area(new Rectangle(20, 46, 22, 76));
-    final Area solid_at_left = new Area(new Rectangle(-GamePanel.tileSize, 0, GamePanel.tileSize * 2, GamePanel.tileSize));
-    final Area solid_at_right = new Area(new Rectangle(0, 0, GamePanel.tileSize * 2, GamePanel.tileSize));
+    final Area solid_at_left = new Area(new Rectangle(-GamePanel.tileSize+6, 28, 76, 22));
+    final Area solid_at_right = new Area(new Rectangle(46, 28, 76, 22));
 
     final Area solid_default = new Area(new Rectangle(12 * GamePanel.scale, 16 * GamePanel.scale, 9 * GamePanel.scale, 9 * GamePanel.scale));
 
@@ -251,7 +251,7 @@ public class Player extends Entity {
       }
       g.drawImage(image, x, y, width, height, null);
 
-      /*// debug
+      // debug
       Rectangle bounds = solidArea.getBounds();
       g.setColor(Color.BLACK);
       g.drawRect(this.x + bounds.x, this.y + bounds.y, bounds.width, bounds.height);
@@ -259,7 +259,7 @@ public class Player extends Entity {
             Rectangle bounds2 = attackArea.getBounds();
             g.setColor(Color.RED);
             g.drawRect(this.x + bounds2.x, this.y + bounds2.y, bounds2.width, bounds2.height);
-      }*/
+      }
     }
 
     public void getPlayerImage() {
