@@ -56,7 +56,7 @@ public class UI {
             this.s = ImageIO.read(getClass().getResourceAsStream(iconPath + "s-key.png")); 
             this.d = ImageIO.read(getClass().getResourceAsStream(iconPath + "d-key.png"));
             this.z = ImageIO.read(getClass().getResourceAsStream(iconPath + "z-key.png"));
-            this.x = ImageIO.read(getClass().getResourceAsStream(iconPath` + "x-key.png"));
+            this.x = ImageIO.read(getClass().getResourceAsStream(iconPath + "x-key.png"));
             this.p = ImageIO.read(getClass().getResourceAsStream(iconPath + "p-key.png"));
         } catch (Exception e) {
             System.out.println("Missing sprites");
