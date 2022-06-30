@@ -1,6 +1,10 @@
 package entity;
 
+import java.io.IOException;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
+
 import world.Room;
 
 public class Crooked extends Monster {
@@ -9,7 +13,7 @@ public class Crooked extends Monster {
 
     public Crooked (int x, int y, Room room) {
         super(room);
-        loadIdle("crooked");
+        getImages();
         setStats(200, 3, 20);
         setPosition(x, y);
 
@@ -35,5 +39,17 @@ public class Crooked extends Monster {
         int index = possibleDrops[rand.nextInt(possibleDrops.length)];
         generateDrop(index); 
     }
-    
+    public void getImages() {
+        try{
+            // Can split into several loops if animation length is different for any of the directions/actions
+            for (int i = 1; i <= 2; i++) {
+                up.add(ImageIO.read(getClass().getResourceAsStream(path + "crooked_up" + i + ".png")));
+                down.add(ImageIO.read(getClass().getResourceAsStream(path + "crooked_down" + i + ".png")));
+                left.add(ImageIO.read(getClass().getResourceAsStream(path + "crooked_left" + i + ".png")));
+                right.add(ImageIO.read(getClass().getResourceAsStream(path + "crooked_right" + i + ".png")));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
