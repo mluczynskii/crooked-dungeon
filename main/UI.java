@@ -100,7 +100,7 @@ public class UI {
             drawText(">", x - 30, y, g, titleFont1);
         }
 
-        text = "LOAD GAME";
+        text = "LOAD GAME (WIP)";
         y = 540;
         drawText(text, x, y, g, titleFont1);
         if(currentCommand == Command.LOAD){

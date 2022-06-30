@@ -23,6 +23,7 @@ public abstract class Entity implements Drawable {
     public int spriteNum = 0;
     public Area solidArea = new Area();
     public boolean collisionOn = false;
+    public double dmg_reduction = 1;
 
     public boolean invulnerable = false;
     public int invulnerable_tick = 0;
@@ -32,7 +33,7 @@ public abstract class Entity implements Drawable {
     public void takeDamage (Entity entity) {
         if (invulnerable == false) {
             playDamageSound();
-            currentHealth = currentHealth - entity.dmg;
+            currentHealth = currentHealth - (entity.dmg * dmg_reduction);
             invulnerable = true;
             invulnerable_tick = 0;
             if (currentHealth <= 0)

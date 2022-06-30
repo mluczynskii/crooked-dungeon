@@ -14,8 +14,8 @@ public class Shop extends Room {
     static String[] shop_layouts = {"shop1.txt", "shop2.txt", "shop3.txt"};
 
     String[] lowQualityItems = {"items.MagicMushroom", "items.Poison"};
-    String[] medQualityItems = {"items.FishTank"};
-    String[] highQualityItems = {"items.DevilPact"};
+    String[] medQualityItems = {"items.FishTank", "items.Armor"};
+    String[] highQualityItems = {"items.DevilPact", "items.Halo"};
 
     
     static Random rand = new Random ();
