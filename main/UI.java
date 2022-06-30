@@ -13,7 +13,8 @@ import java.awt.geom.*;
 public class UI {
     GamePanel gp;
 
-    static String path = "/graphic_assets/sprites/icons/";
+    static String iconPath = "/graphic_assets/sprites/icons/";
+    static String titlePath = "/graphic_assets/single objects/startscreen.png";
 
     // Fonts
     static Font infoFont = new Font("haxorville Nerd Font", Font.PLAIN, 25);
@@ -37,21 +38,24 @@ public class UI {
     BufferedImage dmgIcon, speedIcon, coinIcon;
     BufferedImage w, a, s, d, z, x, p;
 
+    BufferedImage titleScreen;
+
     Rectangle hpContainer = new Rectangle(0, 0, GamePanel.screenWidth/3, 30);
 
     public UI (GamePanel gp) {
         this.gp = gp;
         try {
-            this.dmgIcon = ImageIO.read(getClass().getResourceAsStream(path + "dmg.png"));
-            this.speedIcon = ImageIO.read(getClass().getResourceAsStream(path + "speed.png"));
-            this.coinIcon = ImageIO.read(getClass().getResourceAsStream(path + "coin.png"));
-            this.w= ImageIO.read(getClass().getResourceAsStream(path + "w-key.png"));
-            this.a = ImageIO.read(getClass().getResourceAsStream(path + "a-key.png"));
-            this.s = ImageIO.read(getClass().getResourceAsStream(path + "s-key.png")); 
-            this.d = ImageIO.read(getClass().getResourceAsStream(path + "d-key.png"));
-            this.z = ImageIO.read(getClass().getResourceAsStream(path + "z-key.png"));
-            this.x = ImageIO.read(getClass().getResourceAsStream(path + "x-key.png"));
-            this.p = ImageIO.read(getClass().getResourceAsStream(path + "p-key.png"));
+            this.dmgIcon = ImageIO.read(getClass().getResourceAsStream(iconPath + "dmg.png"));
+            this.speedIcon = ImageIO.read(getClass().getResourceAsStream(iconPath + "speed.png"));
+            this.coinIcon = ImageIO.read(getClass().getResourceAsStream(iconPath + "coin.png"));
+            this.w= ImageIO.read(getClass().getResourceAsStream(iconPath + "w-key.png"));
+            this.a = ImageIO.read(getClass().getResourceAsStream(iconPath + "a-key.png"));
+            this.s = ImageIO.read(getClass().getResourceAsStream(iconPath + "s-key.png")); 
+            this.d = ImageIO.read(getClass().getResourceAsStream(iconPath + "d-key.png"));
+            this.z = ImageIO.read(getClass().getResourceAsStream(iconPath + "z-key.png"));
+            this.x = ImageIO.read(getClass().getResourceAsStream(iconPath + "x-key.png"));
+            this.p = ImageIO.read(getClass().getResourceAsStream(iconPath + "p-key.png"));
+            this.titleScreen = ImageIO.read(getClass().getResourceAsStream(titlePath));
         } catch (Exception e) {
             System.out.println("Missing sprites");
         }
@@ -81,6 +85,7 @@ public class UI {
     
 
     void drawTitleScreen(Graphics2D g){
+        g.drawImage(titleScreen, 0, 0, GamePanel.screenWidth, GamePanel.screenHeight, null);
         String text = "NEW GAME";
         int x = 415;
         int y = 480;
