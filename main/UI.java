@@ -34,7 +34,7 @@ public class UI {
 
     // Icons
     static int iconSize = GamePanel.tileSize * 2/3;
-    BufferedImage dmgIcon, speedIcon, coinIcon;
+    BufferedImage dmgIcon, speedIcon, coinIcon, titleSC;
     BufferedImage w, a, s, d, z, x, p;
 
     Rectangle hpContainer = new Rectangle(0, 0, GamePanel.screenWidth/3, 30);
@@ -45,6 +45,7 @@ public class UI {
             this.dmgIcon = ImageIO.read(getClass().getResourceAsStream(path + "dmg.png"));
             this.speedIcon = ImageIO.read(getClass().getResourceAsStream(path + "speed.png"));
             this.coinIcon = ImageIO.read(getClass().getResourceAsStream(path + "coin.png"));
+            this.titleSC = ImageIO.read(getClass().getResourceAsStream("/graphic_assets/single_objects/startscreen.png"));
             this.w= ImageIO.read(getClass().getResourceAsStream(path + "w-key.png"));
             this.a = ImageIO.read(getClass().getResourceAsStream(path + "a-key.png"));
             this.s = ImageIO.read(getClass().getResourceAsStream(path + "s-key.png")); 
@@ -81,6 +82,9 @@ public class UI {
     
 
     void drawTitleScreen(Graphics2D g){
+
+        g.drawImage(titleSC, 0, 0, 1024,  640,null);
+
         String text = "NEW GAME";
         int x = 415;
         int y = 480;
